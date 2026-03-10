@@ -65,6 +65,17 @@
 	<div class="flex flex-col h-full bg-white">
 		<!-- Header with Customer -->
 		<div class="px-2.5 py-2 border-b border-gray-200 bg-gray-50">
+
+			<div v-if="cartStore.restaurantTable" class="mb-2 bg-blue-50 border border-blue-200 rounded-lg p-2 flex justify-between items-center">
+				<div class="flex items-center text-blue-800">
+					<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+					<span class="text-xs font-semibold">Table: {{ cartStore.restaurantTable.table_name }}</span>
+				</div>
+				<button @click="cartStore.setRestaurantTable(null)" class="text-blue-500 hover:text-blue-700">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+				</button>
+			</div>
+
 			<!-- Inline Customer Search/Selection -->
 			<div ref="customerSearchContainer" class="relative">
 				<div v-if="customer">
@@ -158,6 +169,18 @@
 									</svg>
 									<span>{{ __("Order") }}</span>
 								</button>
+
+				<!-- Send to Kitchen Button -->
+				<button
+					type="button"
+					v-if="items.length > 0 && cartStore.restaurantTable"
+					@click="sendToKitchen"
+					class="flex-1 py-2.5 px-2 rounded-lg font-semibold text-xs text-purple-700 bg-purple-50 hover:bg-purple-100 active:bg-purple-200 transition-all touch-manipulation active:scale-[0.98] flex items-center justify-center"
+					:aria-label="__('Send to Kitchen')"
+				>
+					<svg class="w-4 h-4 me-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+					<span>{{ __("Kitchen") }}</span>
+				</button>
 							</div>
 						</div>
 					</div>
@@ -793,6 +816,15 @@
 									>
 										{{ item.item_name }}
 									</h4>
+									<!-- Special Instructions Badge -->
+									<span
+										v-if="item.posa_special_instructions"
+										class="inline-flex items-center px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded-full text-[9px] font-bold flex-shrink-0"
+										:title="item.posa_special_instructions"
+									>
+										<svg class="w-2.5 h-2.5 me-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+										{{ __("Note") }}
+									</span>
 									<!-- Free Item Badge -->
 									<span
 										v-if="item.free_qty && item.free_qty > 0"
@@ -835,6 +867,18 @@
 										}}
 									</div>
 								</div>
+
+								<!-- Add Modifiers Button -->
+								<button
+									v-if="!item.is_free_item && cartStore.restaurantTable"
+									type="button"
+									@click.stop="$emit('open-modifiers', item)"
+									class="text-gray-400 hover:text-blue-600 active:text-blue-700 transition-colors flex-shrink-0 p-0.5 -m-0.5 mr-1 touch-manipulation active:scale-90"
+									:title="__('Add Note / Modifier')"
+								>
+									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+								</button>
+
 								<button
 									v-if="!item.is_free_item"
 									type="button"
@@ -1283,6 +1327,11 @@ const { formatQuantity } = useFormatters(); // Quantity formatting utilities
 
 function handleProceedToPayment() {
 	emit("proceed-to-payment");
+}
+
+function sendToKitchen() {
+	cartStore.setKdsStatus("Pending");
+	emit("save-draft");
 }
 
 /**

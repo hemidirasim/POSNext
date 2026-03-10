@@ -756,6 +756,7 @@ export function useInvoice() {
 			is_rate_manually_edited: item.is_rate_manually_edited || 0,
 			original_rate: item.original_rate || null,
 			is_free_item: item.is_free_item || 0,
+			posa_special_instructions: item.posa_special_instructions || "",
 		}))
 	}
 
@@ -892,12 +893,16 @@ export function useInvoice() {
 				const rawItems = toRaw(invoiceItems.value)
 				const rawPayments = toRaw(payments.value)
 				const rawSalesTeam = toRaw(salesTeam.value)
+				const { usePOSCartStore } = await import("@/stores/posCart")
+				const cartStore = usePOSCartStore()
 
 				const invoiceData = {
 					doctype: targetDoctype,
 					pos_profile: posProfile.value,
 					posa_pos_opening_shift: posOpeningShift.value,
 					customer: customer.value?.name || customer.value,
+					restaurant_table: cartStore.restaurantTable?.name,
+					kds_status: cartStore.kdsStatus,
 					items: formatItemsForSubmission(rawItems),
 					payments: rawPayments.map((p) => ({
 						mode_of_payment: p.mode_of_payment,
