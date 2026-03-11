@@ -441,13 +441,56 @@
   },
   {
    "default": "0",
+   "description": "Enable delivery feature for this POS",
+   "fieldname": "enable_delivery",
+   "fieldtype": "Check",
+   "label": "Enable Delivery"
+  },
+  {
+   "default": "0",
+   "depends_on": "enable_delivery",
    "description": "Enable delivery fee calculation",
    "fieldname": "use_delivery_charges",
    "fieldtype": "Check",
    "label": "Use Delivery Charges"
   },
   {
+   "depends_on": "use_delivery_charges",
+   "description": "Service item for delivery charges",
+   "fieldname": "delivery_item",
+   "fieldtype": "Link",
+   "label": "Delivery Item",
+   "options": "Item"
+  },
+  {
+   "depends_on": "use_delivery_charges",
+   "description": "Default delivery charge amount",
+   "fieldname": "default_delivery_charge",
+   "fieldtype": "Currency",
+   "label": "Default Delivery Charge"
+  },
+  {
+   "fieldname": "column_break_delivery",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "use_delivery_charges",
+   "description": "Minimum order amount for free delivery (0 = no free delivery)",
+   "fieldname": "free_delivery_above",
+   "fieldtype": "Currency",
+   "label": "Free Delivery Above"
+  },
+  {
+   "depends_on": "use_delivery_charges",
+   "description": "Account for delivery charges",
+   "fieldname": "delivery_charge_account",
+   "fieldtype": "Link",
+   "label": "Delivery Charge Account",
+   "options": "Account"
+  },
+  {
    "default": "0",
+   "depends_on": "enable_delivery",
    "description": "Automatically calculate delivery fee",
    "fieldname": "auto_set_delivery_charges",
    "fieldtype": "Check",

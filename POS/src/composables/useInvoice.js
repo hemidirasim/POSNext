@@ -861,6 +861,7 @@ export function useInvoice() {
 		targetDoctype = "Sales Invoice",
 		deliveryDate = null,
 		writeOffAmount = 0,
+		deliveryInfo = null,
 	) {
 		/**
 		 * Two-step submission process with mutex protection:
@@ -875,6 +876,7 @@ export function useInvoice() {
 		 * @param {string} targetDoctype - The document type to create (Sales Invoice or Sales Order)
 		 * @param {string|null} deliveryDate - Delivery date for Sales Orders
 		 * @param {number} writeOffAmount - Amount to write off (small remaining balances)
+		 * @param {object|null} deliveryInfo - Delivery information (address, charge, etc.)
 		 */
 		return await submitMutex.withLock(async () => {
 			// Check if already submitting (belt and suspenders with mutex)
@@ -927,6 +929,11 @@ export function useInvoice() {
 					}))
 				}
 
+				// Add delivery information if provided
+				if (deliveryInfo && deliveryInfo.enabled) {
+					invoiceData.delivery = deliveryInfo
+				}
+
 				const draftInvoice = await updateInvoiceResource.submit({
 					data: invoiceData,
 				})
@@ -950,6 +957,7 @@ export function useInvoice() {
 					change_amount:
 						remainingAmount.value < 0 ? Math.abs(remainingAmount.value) : 0,
 					write_off_amount: writeOffAmount || 0,
+					delivery: deliveryInfo,
 				}
 
 				try {

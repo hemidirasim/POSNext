@@ -453,6 +453,100 @@ def _should_block(pos_profile):
     return True
 
 
+def _handle_delivery_on_invoice(invoice_doc, delivery_data, pos_profile=None):
+    """
+    Handle delivery information on invoice.
+    Adds delivery charge line item and sets shipping address.
+    
+    Args:
+        invoice_doc: Sales Invoice document
+        delivery_data: dict with delivery information
+        pos_profile: POS Profile name
+    """
+    try:
+        charge = flt(delivery_data.get("charge", 0))
+        address = delivery_data.get("address")
+        is_free = cint(delivery_data.get("is_free", 0))
+        
+        # Set shipping address if provided
+        if address and isinstance(address, dict):
+            address_name = address.get("name")
+            if address_name and frappe.db.exists("Address", address_name):
+                invoice_doc.shipping_address_name = address_name
+                # Also update customer address if not set
+                if not invoice_doc.get("customer_address"):
+                    invoice_doc.customer_address = address_name
+        
+        # Add delivery charge line item if charge > 0
+        if charge > 0 and not is_free:
+            # Get delivery item from POS Settings
+            delivery_item = None
+            if pos_profile:
+                pos_settings = frappe.db.get_value(
+                    "POS Settings",
+                    {"pos_profile": pos_profile, "enabled": 1},
+                    ["delivery_item", "delivery_charge_account"],
+                    as_dict=True
+                )
+                if pos_settings:
+                    delivery_item = pos_settings.get("delivery_item")
+            
+            # Fallback to default delivery item if not configured
+            if not delivery_item:
+                # Try to find a service item for delivery
+                delivery_item = frappe.db.get_value(
+                    "Item",
+                    {"item_group": "Services", "disabled": 0},
+                    "name",
+                    order_by="name"
+                )
+            
+            if delivery_item and frappe.db.exists("Item", delivery_item):
+                # Check if delivery item already exists in invoice
+                existing_item = None
+                for item in invoice_doc.items:
+                    if item.item_code == delivery_item:
+                        existing_item = item
+                        break
+                
+                if existing_item:
+                    # Update existing delivery item
+                    existing_item.rate = charge
+                    existing_item.amount = charge
+                    existing_item.qty = 1
+                else:
+                    # Add new delivery charge line
+                    item_dict = {
+                        "item_code": delivery_item,
+                        "qty": 1,
+                        "rate": charge,
+                        "amount": charge,
+                        "warehouse": None,  # Service items don't need warehouse
+                        "description": "Delivery Charge",
+                    }
+                    
+                    # Set income account if configured
+                    if pos_settings and pos_settings.get("delivery_charge_account"):
+                        item_dict["income_account"] = pos_settings.get("delivery_charge_account")
+                    
+                    invoice_doc.append("items", item_dict)
+                    
+                frappe.logger().info(
+                    f"Added delivery charge {charge} to invoice using item {delivery_item}"
+                )
+            else:
+                frappe.logger().warning(
+                    f"Delivery item not found. Charge {charge} not added to invoice."
+                )
+                
+    except Exception as e:
+        # Log error but don't block invoice creation
+        frappe.log_error(
+            f"Error handling delivery on invoice: {str(e)}",
+            "POS Delivery Handler"
+        )
+
+
 def _validate_stock_on_invoice(invoice_doc):
     """Validate stock availability before submission."""
     if invoice_doc.doctype == "Sales Invoice" and not cint(
@@ -1316,6 +1410,11 @@ def submit_invoice(invoice=None, data=None):
 
         # Auto-set batch numbers for returns
         _auto_set_return_batches(invoice_doc)
+
+        # Handle delivery information
+        delivery_data = invoice.get("delivery") or data.get("delivery")
+        if delivery_data and delivery_data.get("enabled"):
+            _handle_delivery_on_invoice(invoice_doc, delivery_data, pos_profile)
 
         # Handle write-off amount if provided
         write_off_amount = flt(data.get("write_off_amount") or invoice.get("write_off_amount") or 0)

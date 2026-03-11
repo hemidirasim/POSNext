@@ -260,6 +260,45 @@
 						</template>
 					</div>
 
+					<!-- Delivery Selection -->
+					<div v-if="enableDelivery" class="bg-blue-50 border border-blue-200 rounded-lg p-2">
+						<div class="flex items-center justify-between">
+							<div class="flex items-center gap-2">
+								<svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+								</svg>
+								<div>
+									<p class="text-xs font-medium text-blue-900">
+										{{ deliveryAddress ? __('Delivery Address') : __('Add Delivery') }}
+									</p>
+									<p v-if="deliveryAddress" class="text-[10px] text-blue-700 truncate max-w-[200px]">
+										{{ deliveryAddress.address_title }} - {{ deliveryAddress.city }}
+									</p>
+									<p v-else-if="deliveryCharge > 0" class="text-[10px] text-blue-700">
+										{{ __('Select address for delivery') }}
+									</p>
+								</div>
+							</div>
+							<Button
+								variant="outline"
+								size="sm"
+								@click="showAddressDialog = true"
+							>
+								{{ deliveryAddress ? __('Change') : __('Select') }}
+							</Button>
+						</div>
+						<!-- Delivery Charge Info -->
+						<div v-if="deliveryInfo.has_delivery" class="mt-2 pt-2 border-t border-blue-200 flex items-center justify-between">
+							<span class="text-xs text-blue-700">
+								{{ deliveryInfo.is_free ? __('Free Delivery') : __('Delivery Charge') }}
+							</span>
+							<span :class="['text-sm font-semibold', deliveryInfo.is_free ? 'text-green-600' : 'text-blue-900']">
+								{{ deliveryInfo.is_free ? __('FREE') : formatCurrency(deliveryCharge) }}
+							</span>
+						</div>
+					</div>
+
 					<!-- Outstanding Balance Row (full width, two columns) -->
 					<div v-if="customerCreditEnabled && totalAvailableCredit !== 0" :class="[
 						'rounded-lg border p-2 flex items-center justify-between',
@@ -430,10 +469,21 @@
 								<span class="text-gray-600 text-start">{{ __('Discount') }}</span>
 								<span class="font-medium text-red-600 text-end">-{{ formatCurrency(discountAmount) }}</span>
 							</div>
+							<!-- Delivery Charge Row -->
+							<div v-if="deliveryCharge > 0" class="flex items-center justify-between text-sm">
+								<span class="text-blue-600 text-start flex items-center gap-1">
+									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0"/>
+									</svg>
+									{{ __('Delivery') }}
+								</span>
+								<span class="font-medium text-blue-700 text-end">{{ formatCurrency(deliveryCharge) }}</span>
+							</div>
+
 							<!-- Grand Total -->
 							<div class="flex items-center justify-between pt-2 mt-1 border-t border-gray-300">
 								<span :class="['font-bold text-gray-900 text-start', isCompactMode ? 'text-sm' : 'text-base']">{{ __('Grand Total') }}</span>
-								<span :class="['font-bold text-gray-900 text-end', dynamicTextSize.grandTotal]">{{ formatCurrency(grandTotal) }}</span>
+								<span :class="['font-bold text-gray-900 text-end', dynamicTextSize.grandTotal]">{{ formatCurrency(grandTotalWithDelivery) }}</span>
 							</div>
 						</div>
 
@@ -958,6 +1008,16 @@
 			<!-- End Two Column Layout -->
 		</template>
 	</Dialog>
+
+	<!-- Address Selection Dialog -->
+	<AddressDialog
+		v-model="showAddressDialog"
+		:customer="customer"
+		:cart-total="subtotal"
+		:pos-profile="posProfile"
+		@select="onAddressSelected"
+		@update:delivery-charge="onDeliveryChargeUpdate"
+	/>
 </template>
 
 <script setup>
@@ -973,6 +1033,7 @@ import { offlineWorker } from "@/utils/offline/workerClient"
 import { logger } from "@/utils/logger"
 import { Dialog, createResource, call } from "frappe-ui"
 import { computed, ref, watch, nextTick } from "vue"
+import AddressDialog from "./AddressDialog.vue"
 import { useToast } from "@/composables/useToast"
 import { useLongPress } from "@/composables/useLongPress"
 import { usePaymentNumpad } from "@/composables/usePaymentNumpad"
@@ -1054,6 +1115,10 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	enableDelivery: {
+		type: Boolean,
+		default: false,
+	},
 })
 
 const emit = defineEmits([
@@ -1094,6 +1159,17 @@ const walletPaymentMethods = ref(new Set()) // Set of mode_of_payment names that
 const deliveryDate = ref("")
 const today = new Date().toISOString().split("T")[0]
 const isSalesOrder = computed(() => props.targetDoctype === "Sales Order")
+
+// Delivery state
+const showAddressDialog = ref(false)
+const deliveryAddress = ref(null)
+const deliveryCharge = ref(0)
+const deliveryInfo = ref({ has_delivery: false, charge: 0 })
+
+// Computed grand total including delivery
+const grandTotalWithDelivery = computed(() => {
+	return roundCurrency(props.grandTotal + deliveryCharge.value)
+})
 
 // Column refs for height matching
 const rightColumnRef = ref(null)
@@ -1638,12 +1714,12 @@ const calculatedAdditionalDiscount = computed(() => {
 })
 
 const remainingAmount = computed(() => {
-	const remaining = roundCurrency(props.grandTotal) - totalPaid.value
+	const remaining = roundCurrency(grandTotalWithDelivery.value) - totalPaid.value
 	return remaining > 0 ? roundCurrency(remaining) : 0
 })
 
 const changeAmount = computed(() => {
-	const change = totalPaid.value - roundCurrency(props.grandTotal)
+	const change = totalPaid.value - roundCurrency(grandTotalWithDelivery.value)
 	return change > 0 ? roundCurrency(change) : 0
 })
 
@@ -1823,9 +1899,24 @@ const isExactAmountValid = computed(() => {
 	return totalPaid.value <= roundCurrency(props.grandTotal)
 })
 
+// Check if delivery is valid (address selected if delivery enabled)
+const isDeliveryValid = computed(() => {
+	if (!props.enableDelivery) return true
+	// If delivery is enabled but no charge, address is optional
+	if (deliveryCharge.value === 0 && deliveryInfo.value.has_delivery) return true
+	// If there's a delivery charge, address is required
+	if (deliveryCharge.value > 0) return !!deliveryAddress.value
+	return true
+})
+
 const canComplete = computed(() => {
 	// Check sales person validation first (mandatory when enabled)
 	if (!isSalesPersonValid.value) {
+		return false
+	}
+	
+	// Check delivery validation
+	if (!isDeliveryValid.value) {
 		return false
 	}
 
@@ -2329,6 +2420,15 @@ function completePayment() {
 		// Write-off data
 		write_off_amount: writeOffAmount.value,
 		is_write_off: writeOffAmount.value > 0,
+		// Delivery data
+		delivery: props.enableDelivery
+			? {
+					enabled: true,
+					address: deliveryAddress.value,
+					charge: deliveryCharge.value,
+					is_free: deliveryInfo.value.is_free,
+				}
+			: null,
 	}
 
 	log.debug("[PaymentDialog] Emitting payment-completed:", paymentData)
@@ -2336,6 +2436,18 @@ function completePayment() {
 	emit("payment-completed", paymentData)
 
 	show.value = false
+}
+
+// Delivery event handlers
+function onAddressSelected(data) {
+	deliveryAddress.value = data.address
+	deliveryInfo.value = data.deliveryInfo
+	deliveryCharge.value = data.deliveryInfo.charge || 0
+}
+
+function onDeliveryChargeUpdate(data) {
+	deliveryInfo.value = data
+	deliveryCharge.value = data.charge || 0
 }
 
 function formatCurrency(amount) {

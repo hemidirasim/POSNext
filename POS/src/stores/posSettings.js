@@ -52,8 +52,12 @@ export const usePOSSettingsStore = defineStore("posSettings", () => {
 		allow_print_last_invoice: 0,
 		silent_print: 0,
 		// Delivery
+		enable_delivery: 0,
 		use_delivery_charges: 0,
 		auto_set_delivery_charges: 0,
+		delivery_item: "",
+		default_delivery_charge: 0,
+		free_delivery_above: 0,
 		// Advanced Settings
 		use_limit_search: 0,
 		search_limit: 1000,
@@ -191,6 +195,9 @@ export const usePOSSettingsStore = defineStore("posSettings", () => {
 	const silentPrint = computed(() => Boolean(settings.value.silent_print))
 
 	// Computed - Delivery
+	const enableDelivery = computed(() =>
+		Boolean(settings.value.enable_delivery),
+	)
 	const useDeliveryCharges = computed(() =>
 		Boolean(settings.value.use_delivery_charges),
 	)
@@ -457,6 +464,7 @@ export const usePOSSettingsStore = defineStore("posSettings", () => {
 		silentPrint,
 
 		// Computed - Delivery
+		enableDelivery,
 		useDeliveryCharges,
 		autoSetDeliveryCharges,
 

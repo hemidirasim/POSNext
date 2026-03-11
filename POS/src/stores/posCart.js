@@ -256,6 +256,7 @@ export const usePOSCartStore = defineStore("posCart", () => {
 
 	const deliveryDate = ref("")
 	const writeOffAmount = ref(0)
+	const deliveryInfo = ref(null)
 	const restaurantTable = ref(null)
 	const kdsStatus = ref("Pending")
 
@@ -265,6 +266,10 @@ export const usePOSCartStore = defineStore("posCart", () => {
 
 	function setWriteOffAmount(amount) {
 		writeOffAmount.value = amount || 0
+	}
+
+	function setDeliveryInfo(info) {
+		deliveryInfo.value = info || null
 	}
 
 	function setRestaurantTable(table) {
@@ -285,10 +290,11 @@ export const usePOSCartStore = defineStore("posCart", () => {
 			return
 		}
 
-		const result = await baseSubmitInvoice(targetDoctype.value, deliveryDate.value, writeOffAmount.value)
-		// Reset write-off amount after successful submission
+		const result = await baseSubmitInvoice(targetDoctype.value, deliveryDate.value, writeOffAmount.value, deliveryInfo.value)
+		// Reset write-off amount and delivery info after successful submission
 		if (result) {
 			writeOffAmount.value = 0
+			deliveryInfo.value = null
 		}
 		return result
 	}
@@ -1774,6 +1780,10 @@ export const usePOSCartStore = defineStore("posCart", () => {
 		// Write-off feature
 		writeOffAmount,
 		setWriteOffAmount,
+
+		// Delivery feature
+		deliveryInfo,
+		setDeliveryInfo,
 
 		// Utilities
 		cancelPendingOfferProcessing: () => {

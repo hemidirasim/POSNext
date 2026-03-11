@@ -481,6 +481,7 @@
 			:discount-amount="cartStore.totalDiscount"
 			:target-doctype="cartStore.targetDoctype"
 			:is-submitting="cartStore.isSubmitting"
+			:enable-delivery="posSettingsStore.enableDelivery"
 			@payment-completed="handlePaymentCompleted"
 			@update-additional-discount="handleAdditionalDiscountUpdate"
 		/>
@@ -1996,6 +1997,11 @@ async function handlePaymentCompleted(paymentData) {
 			cartStore.setWriteOffAmount(paymentData.write_off_amount);
 		}
 
+		// Set delivery information if provided
+		if (paymentData.delivery && paymentData.delivery.enabled) {
+			cartStore.deliveryInfo = paymentData.delivery;
+		}
+
 		// Delete draft if it exists (since we're submitting/saving invoice)
 		const draftIdToDelete = cartStore.currentDraftId;
 
@@ -2016,6 +2022,7 @@ async function handlePaymentCompleted(paymentData) {
 				total_tax: cartStore.totalTax,
 				total_discount: cartStore.totalDiscount,
 				write_off_amount: paymentData.write_off_amount || 0,
+				delivery: paymentData.delivery || null,
 			};
 
 			await offlineStore.saveInvoiceOffline(invoiceData);
