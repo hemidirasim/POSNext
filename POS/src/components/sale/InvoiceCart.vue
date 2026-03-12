@@ -893,7 +893,7 @@
 								</button>
 
 								<button
-									v-if="!item.is_free_item"
+									v-if="!item.is_free_item && !(item.posa_sent_qty > 0)"
 									type="button"
 									@click.stop="$emit('remove-item', item.item_code, item.uom)"
 									class="text-gray-400 hover:text-red-600 active:text-red-700 transition-colors flex-shrink-0 p-0.5 -m-0.5 touch-manipulation active:scale-90"
@@ -967,15 +967,15 @@
 										<button
 											type="button"
 											@click.stop="decrementQuantity(item)"
-											:disabled="item.is_resolved_barcode"
+											:disabled="item.is_resolved_barcode || item.quantity <= (item.posa_sent_qty || 0)"
 											:class="[
 												'w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center font-bold transition-colors touch-manipulation border-e',
-												item.is_resolved_barcode
-													? 'bg-gray-100 text-gray-400 cursor-not-allowed border-amber-300'
+												item.is_resolved_barcode || item.quantity <= (item.posa_sent_qty || 0)
+													? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
 													: 'bg-white hover:bg-gray-100 active:bg-gray-200 text-gray-700 border-gray-200'
 											]"
 											:aria-label="__('Decrease quantity')"
-											:title="item.is_resolved_barcode ? __('Quantity locked (barcode item)') : __('Decrease quantity')"
+											:title="item.is_resolved_barcode ? __('Quantity locked (barcode item)') : item.quantity <= (item.posa_sent_qty || 0) ? __('Minimum quantity already sent to kitchen') : __('Decrease quantity')"
 										>
 											<svg
 												class="w-3 h-3"
@@ -1320,6 +1320,7 @@ import { useCartSort } from "@/composables/useCartSort";
 import { isOffline } from "@/utils/offline";
 import { offlineWorker } from "@/utils/offline/workerClient";
 import { logger } from "@/utils/logger";
+import { useToast } from "@/composables/useToast";
 import { FeatherIcon } from "frappe-ui";
 
 const log = logger.create("InvoiceCart");
@@ -1337,6 +1338,7 @@ const settingsStore = usePOSSettingsStore(); // Pinia store for POS settings
 const offersStore = usePOSOffersStore(); // Pinia store for offers/promotions
 const customerSearchStore = useCustomerSearchStore(); // Pinia store for customer search
 const { formatQuantity } = useFormatters(); // Quantity formatting utilities
+const { showError, showWarning } = useToast(); // Toast notifications
 
 function handleProceedToPayment() {
 	emit("proceed-to-payment");
@@ -1878,6 +1880,7 @@ function incrementQuantity(item) {
 /**
  * Decrement item quantity using smart step.
  * Removes item if quantity would become zero or negative.
+ * Prevents decreasing below already-sent quantity to kitchen.
  *
  * @param {Object} item - Cart item to decrement
  */
@@ -1885,8 +1888,18 @@ function decrementQuantity(item) {
 	// Prevent editing resolved barcode items
 	if (item.is_resolved_barcode) return;
 
+	// Prevent decreasing below sent quantity
+	const sentQty = item.posa_sent_qty || 0;
+	const minAllowedQty = Math.max(sentQty, 0);
+
 	const step = getSmartStep(item.quantity);
 	const newQty = Math.round((item.quantity - step) * 10000) / 10000;
+
+	// Cannot go below sent quantity
+	if (newQty < minAllowedQty) {
+		showError(__('Cannot reduce below {0} - already sent to kitchen', [sentQty]));
+		return;
+	}
 
 	if (newQty <= 0) {
 		// If quantity would be 0 or negative, remove the item
@@ -1899,6 +1912,7 @@ function decrementQuantity(item) {
 /**
  * Update quantity from direct input (manual typing).
  * Allows any positive number during typing without rounding.
+ * Prevents reducing below already-sent quantity to kitchen.
  *
  * @param {Object} item - Cart item to update
  * @param {String} value - New quantity value from input
@@ -1913,6 +1927,13 @@ function updateQuantity(item, value) {
 	// If the input isn't a valid number (e.g., user cleared the field), do nothing
 	if (isNaN(qty)) return;
 
+	// Check sent quantity restriction
+	const sentQty = item.posa_sent_qty || 0;
+	if (qty < sentQty) {
+		showError(__('Cannot reduce below {0} - already sent to kitchen', [sentQty]));
+		return;
+	}
+
 	// If quantity is zero or negative, remove the item from the cart
 	if (qty <= 0) return emit("remove-item", item.item_code, item.uom);
 
@@ -1925,14 +1946,29 @@ function updateQuantity(item, value) {
  * Called when user leaves the quantity input field.
  * - Removes item if quantity is 0 or invalid
  * - Rounds to 4 decimal places for consistency
+ * - Prevents going below sent quantity
  *
  * @param {Object} item - Cart item that lost focus
  */
 function handleQuantityBlur(item) {
+	// Check sent quantity restriction first
+	const sentQty = item.posa_sent_qty || 0;
+	
 	// When user leaves the input field, round and validate
 	if (!item.quantity || item.quantity <= 0) {
+		// Cannot remove item if already sent to kitchen
+		if (sentQty > 0) {
+			showError(__('Cannot remove item - {0} already sent to kitchen', [sentQty]));
+			// Reset to sent quantity
+			emit("update-quantity", item.item_code, sentQty, item.uom);
+			return;
+		}
 		// If quantity is 0 or invalid, remove the item
 		emit("remove-item", item.item_code, item.uom);
+	} else if (item.quantity < sentQty) {
+		// Cannot go below sent quantity
+		showError(__('Cannot reduce below {0} - already sent to kitchen', [sentQty]));
+		emit("update-quantity", item.item_code, sentQty, item.uom);
 	} else {
 		// Round to 4 decimal places for consistency
 		const roundedQty = Math.round(item.quantity * 10000) / 10000;
