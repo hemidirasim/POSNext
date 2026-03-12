@@ -1,22 +1,22 @@
 <template>
 	<div class="flex flex-col h-full bg-gray-50">
 		<!-- Restaurant Table Info (if enabled) - NOW AT TOP OF LEFT PANEL -->
-		<div v-if="restaurantTable" class="px-3 sm:px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
+		<div v-if="restaurantTable" class="px-3 sm:px-4 py-3 bg-indigo-900 shadow-lg">
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
-					<div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+					<div class="w-10 h-10 rounded-full bg-indigo-700 flex items-center justify-center border border-indigo-500">
 						<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
 						</svg>
 					</div>
 					<div>
-						<p class="text-xs text-indigo-200 font-medium">{{ __('Current Table') }}</p>
-						<p class="text-lg font-bold">{{ restaurantTable.table_name }}</p>
+						<p class="text-xs text-indigo-300 font-medium uppercase tracking-wide">{{ __('Current Table') }}</p>
+						<p class="text-lg font-bold text-white drop-shadow-sm">{{ restaurantTable.table_name }}</p>
 					</div>
 				</div>
 				<button 
 					@click="$emit('change-table')"
-					class="flex items-center gap-1.5 px-3 py-1.5 bg-white text-indigo-600 rounded-lg text-sm font-medium hover:bg-indigo-50 transition-colors shadow-sm"
+					class="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-white rounded-lg text-sm font-semibold transition-colors shadow-md border border-amber-400"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
