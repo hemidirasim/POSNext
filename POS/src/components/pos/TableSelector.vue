@@ -122,16 +122,18 @@ onMounted(async () => {
 const selectTable = async (table) => {
 	console.log('[TableSelector] selectTable called:', table.name);
 	
-	// Set the table in the cart
+	// IMPORTANT: Emit event FIRST, before setting table
+	// Because v-if will remove this component when table is set
+	console.log('[TableSelector] Emitting table-selected event');
+	emit("table-selected", table)
+	console.log('[TableSelector] Event emitted');
+	
+	// Set the table in the cart (this will hide the selector via v-if)
 	cartStore.setRestaurantTable(table)
 
 	// Automatically update table status if it's empty
 	if (table.status === "Empty") {
 		await restaurantStore.updateTableStatus(table.name, "Occupied")
 	}
-
-	console.log('[TableSelector] Emitting table-selected event');
-	emit("table-selected", table)
-	console.log('[TableSelector] Event emitted');
 }
 </script>
