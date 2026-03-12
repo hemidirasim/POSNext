@@ -1111,6 +1111,19 @@ const showTableSelector = computed(() => {
 	return !cartStore.restaurantTable;
 });
 
+// Auto-save draft when cart changes (for current table)
+let autoSaveTimeout = null;
+watch(() => cartStore.invoiceItems.length, () => {
+	if (!cartStore.restaurantTable || cartStore.invoiceItems.length === 0) return;
+	
+	// Debounce: 500ms after last change
+	clearTimeout(autoSaveTimeout);
+	autoSaveTimeout = setTimeout(() => {
+		console.log('[DEBUG] Auto-saving draft after cart change');
+		saveTableDraft();
+	}, 500);
+});
+
 // Open table selector manually
 function openTableSelector() {
 	console.log('[DEBUG] openTableSelector called');
