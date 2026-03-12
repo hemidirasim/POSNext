@@ -24,7 +24,6 @@ def get_tables():
         areas = frappe.get_all(
             "Restaurant Area",
             fields=["name", "area_name", "description"],
-            filters={"disabled": 0},
             order_by="area_name"
         )
         
@@ -32,7 +31,6 @@ def get_tables():
         tables = frappe.get_all(
             "Restaurant Table",
             fields=["name", "table_name", "area", "capacity", "status"],
-            filters={"disabled": 0},
             order_by="table_name"
         )
         
