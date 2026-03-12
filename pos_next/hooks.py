@@ -100,6 +100,8 @@ fixtures = [
 					"Sales Invoice-kds_status",
 					"Sales Invoice Item-posa_special_instructions",
 					"POS Invoice-kds_status",
+					"POS Invoice-restaurant_table",
+					"POS Invoice Item-posa_special_instructions",
 					"Item-custom_company",
 					"POS Profile-posa_cash_mode_of_payment",
 					"POS Profile-posa_allow_delete",
