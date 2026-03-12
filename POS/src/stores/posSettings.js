@@ -339,8 +339,13 @@ export const usePOSSettingsStore = defineStore("posSettings", () => {
 			fetch_coupon: 0,
 			allow_print_last_invoice: 0,
 			silent_print: 0,
+			// Delivery
+			enable_delivery: 0,
 			use_delivery_charges: 0,
 			auto_set_delivery_charges: 0,
+			delivery_item: "",
+			default_delivery_charge: 0,
+			free_delivery_above: 0,
 			use_limit_search: 0,
 			search_limit: 1000,
 			allow_submissions_in_background_job: 0,
