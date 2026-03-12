@@ -231,19 +231,45 @@
 
 				<!-- Delivery Charge Info -->
 				<div v-if="deliveryInfo.has_delivery" class="bg-amber-50 rounded-lg p-3 mt-4">
-					<div class="flex items-start gap-2">
+					<div class="flex items-start gap-2 mb-3">
 						<svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
 						</svg>
-						<div>
+						<div class="flex-1">
 							<p class="text-sm font-medium text-amber-900">{{ __('Delivery Information') }}</p>
-							<p class="text-xs text-amber-700 mt-0.5">
-								{{ deliveryInfo.is_free 
-									? __('Free delivery applied!') 
-									: __('Delivery charge') + ': ' + formatCurrency(deliveryInfo.charge) 
-								}}
+							<p v-if="deliveryInfo.is_free" class="text-xs text-amber-700 mt-0.5">
+								{{ __('Free delivery applied!') }}
 							</p>
 						</div>
+					</div>
+					
+					<!-- Custom Delivery Charge Input (when not free) -->
+					<div v-if="!deliveryInfo.is_free" class="mt-3 pt-3 border-t border-amber-200">
+						<label class="block text-xs font-medium text-amber-800 mb-2">
+							{{ __('Delivery Charge') }}
+						</label>
+						<div class="flex items-center gap-2">
+							<div class="relative flex-1">
+								<span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">{{ currencySymbol }}</span>
+								<input
+									v-model.number="customDeliveryCharge"
+									type="number"
+									min="0"
+									step="0.01"
+									class="w-full pl-8 pr-3 py-2 border border-amber-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+									@input="onChargeInput"
+								/>
+							</div>
+							<button
+								class="px-3 py-2 text-xs border border-amber-300 rounded-lg hover:bg-amber-100 text-amber-700"
+								@click="resetToDefaultCharge"
+							>
+								{{ __('Default') }}
+							</button>
+						</div>
+						<p class="text-[10px] text-amber-600 mt-1">
+							{{ __('You can change the delivery charge for this order') }}
+						</p>
 					</div>
 				</div>
 			</div>
@@ -308,6 +334,16 @@ const addresses = ref([])
 const selectedAddress = ref(null)
 const showCreateForm = ref(false)
 const deliveryInfo = ref({ has_delivery: false, charge: 0 })
+const customDeliveryCharge = ref(0)
+
+// Computed
+const currencySymbol = computed(() => {
+	const symbols = {
+		'USD': '$', 'EUR': '€', 'GBP': '£', 'AZN': '₼', 
+		'TRY': '₺', 'RUB': '₽', 'SAR': '﷼', 'AED': 'د.إ'
+	}
+	return symbols[props.currency] || props.currency + ' '
+})
 
 // New address form
 const newAddress = ref({
@@ -390,11 +426,41 @@ async function updateDeliveryCharge() {
 		subtotal: props.cartTotal || 0,
 		pos_profile: props.posProfile,
 	})
+	
+	// Set initial custom charge from calculated value
+	if (deliveryInfo.value.charge !== undefined) {
+		customDeliveryCharge.value = deliveryInfo.value.charge
+		deliveryInfo.value.original_charge = deliveryInfo.value.charge
+	}
 }
 
 function selectAddress(address) {
 	selectedAddress.value = address
 	updateDeliveryCharge()
+}
+
+function onChargeInput() {
+	// Ensure charge is not negative
+	if (customDeliveryCharge.value < 0) {
+		customDeliveryCharge.value = 0
+	}
+	// Update delivery info with custom charge
+	deliveryInfo.value = {
+		...deliveryInfo.value,
+		charge: customDeliveryCharge.value,
+		custom: true
+	}
+	emit('update:delivery-charge', deliveryInfo.value)
+}
+
+function resetToDefaultCharge() {
+	customDeliveryCharge.value = deliveryInfo.value.original_charge || 0
+	deliveryInfo.value = {
+		...deliveryInfo.value,
+		charge: customDeliveryCharge.value,
+		custom: false
+	}
+	emit('update:delivery-charge', deliveryInfo.value)
 }
 
 function formatAddress(address) {
@@ -443,9 +509,15 @@ function resetForm() {
 function confirmSelection() {
 	if (!selectedAddress.value) return
 	
+	// Use custom charge if set
+	const finalDeliveryInfo = {
+		...deliveryInfo.value,
+		charge: customDeliveryCharge.value,
+	}
+	
 	emit('select', {
 		address: selectedAddress.value,
-		deliveryInfo: deliveryInfo.value,
+		deliveryInfo: finalDeliveryInfo,
 	})
 	close()
 }
