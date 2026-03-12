@@ -1132,9 +1132,10 @@ function openTableSelector() {
 		console.log('[DEBUG] Saving draft before opening selector');
 		saveTableDraft();
 	}
-	// Clear table to show selector
-	console.log('[DEBUG] Clearing restaurantTable to show selector');
+	// Clear table and cart to show selector
+	console.log('[DEBUG] Clearing restaurantTable and cart to show selector');
 	cartStore.setRestaurantTable(null);
+	cartStore.clearCart();
 }
 
 // Close table selector (cancel)
