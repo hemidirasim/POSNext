@@ -14,19 +14,15 @@
 						<p class="text-lg font-bold">{{ restaurantTable.table_name }}</p>
 					</div>
 				</div>
-				<Button 
-					variant="outline" 
-					size="sm" 
+				<button 
 					@click="$emit('change-table')"
-					class="bg-white/10 border-white/30 text-white hover:bg-white/20"
+					class="flex items-center gap-1.5 px-3 py-1.5 bg-white text-indigo-600 rounded-lg text-sm font-medium hover:bg-indigo-50 transition-colors shadow-sm"
 				>
-					<template #prefix>
-						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-						</svg>
-					</template>
-					{{ __('Change Table') }}
-				</Button>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+					</svg>
+					{{ __('Change') }}
+				</button>
 			</div>
 		</div>
 
@@ -748,7 +744,6 @@
 <script setup>
 import LazyImage from "@/components/common/LazyImage.vue"
 import WarehouseAvailabilityDialog from "@/components/sale/WarehouseAvailabilityDialog.vue"
-import { Button } from "frappe-ui"
 import { useItemSearchStore } from "@/stores/itemSearch"
 import { usePOSSettingsStore } from "@/stores/posSettings"
 import { useCartStore } from "@/stores/posCart"
