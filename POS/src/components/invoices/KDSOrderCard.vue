@@ -149,14 +149,19 @@ async function updateStatus(newStatus) {
 			status: newStatus
 		})
 
-		if (res && res.status === 'success') {
+		if (res && res.success) {
 			emit("status-updated")
+		} else {
+			showError(res?.message || ("Failed to update KDS order status."))
 		}
 	} catch (error) {
 		console.error("Failed to update status:", error)
-		showError(__("Failed to update KDS order status."))
+		showError("Failed to update KDS order status.")
 	} finally {
 		loading.value = false
 	}
 }
+
+// Translation helper
+const __ = (text) => text
 </script>

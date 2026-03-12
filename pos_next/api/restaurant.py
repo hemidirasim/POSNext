@@ -119,3 +119,144 @@ def get_table_orders(table_name):
     except Exception as e:
         frappe.log_error(f"Failed to get table orders: {str(e)}")
         return []
+
+
+@frappe.whitelist()
+def get_kds_orders():
+    """
+    Get active kitchen display orders (KDS).
+    Returns draft POS invoices with restaurant_table set and kds_status not completed.
+    
+    Returns:
+        list: Active orders for kitchen display
+    """
+    try:
+        # Get active orders from POS Invoice
+        orders = frappe.get_all(
+            "POS Invoice",
+            fields=[
+                "name", "customer", "customer_name", "restaurant_table",
+                "kds_status", "creation", "modified", "grand_total",
+                "posting_date", "posting_time"
+            ],
+            filters={
+                "docstatus": 0,  # Draft invoices only
+                "restaurant_table": ["is", "set"],  # Must have a table
+                "kds_status": ["in", ["Pending", "Preparing", "Ready"]]  # Active KDS statuses
+            },
+            order_by="creation asc"  # Oldest first
+        )
+        
+        # Get items for each order
+        for order in orders:
+            order.items = frappe.get_all(
+                "POS Invoice Item",
+                fields=["item_code", "item_name", "qty", "description", "posa_special_instructions"],
+                filters={"parent": order.name}
+            )
+            # Get table name
+            if order.restaurant_table:
+                table = frappe.db.get_value("Restaurant Table", order.restaurant_table, "table_name", as_dict=True)
+                if table:
+                    order.restaurant_table = table.table_name
+        
+        return orders or []
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to get KDS orders: {str(e)}")
+        return []
+
+
+@frappe.whitelist()
+def update_kds_status(invoice_name, status):
+    """
+    Update KDS status of a POS Invoice.
+    
+    Args:
+        invoice_name: POS Invoice name
+        status: New KDS status (Pending, Preparing, Ready, Delivered)
+    
+    Returns:
+        dict: { success: bool, message: str }
+    """
+    try:
+        if not invoice_name:
+            frappe.throw(_("Invoice name is required"))
+        
+        valid_statuses = ["Pending", "Preparing", "Ready", "Delivered"]
+        if status not in valid_statuses:
+            frappe.throw(_("Invalid KDS status. Must be one of: {0}").format(", ".join(valid_statuses)))
+        
+        # Check if user has permission
+        if not frappe.has_permission("POS Invoice", "write", invoice_name):
+            frappe.throw(_("You don't have permission to update this invoice"))
+        
+        # Update KDS status
+        frappe.db.set_value("POS Invoice", invoice_name, "kds_status", status)
+        
+        return {
+            "success": True,
+            "message": _("Order status updated to {0}").format(status)
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to update KDS status: {str(e)}")
+        return {
+            "success": False,
+            "message": str(e)
+        }
+
+
+@frappe.whitelist(allow_guest=True)
+def get_cfd_order(order_id):
+    """
+    Get order status for Customer Facing Display (CFD).
+    This endpoint allows guest access for customer displays.
+    
+    Args:
+        order_id: POS Invoice name
+    
+    Returns:
+        dict: Order details with status
+    """
+    try:
+        if not order_id:
+            return None
+        
+        # Get order details
+        order = frappe.get_all(
+            "POS Invoice",
+            fields=[
+                "name", "customer_name", "restaurant_table", "kds_status",
+                "creation", "modified", "grand_total"
+            ],
+            filters={
+                "name": order_id,
+                "docstatus": 0  # Only draft invoices
+            },
+            limit=1
+        )
+        
+        if not order:
+            return None
+        
+        order = order[0]
+        
+        # Get order items
+        order.items = frappe.get_all(
+            "POS Invoice Item",
+            fields=["item_code", "item_name", "qty"],
+            filters={"parent": order_id}
+        )
+        
+        # Get table name
+        if order.restaurant_table:
+            table = frappe.db.get_value("Restaurant Table", order.restaurant_table, "table_name", as_dict=True)
+            if table:
+                order.restaurant_table = table.table_name
+        
+        return order
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to get CFD order: {str(e)}")
+        return None
