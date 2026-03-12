@@ -1785,6 +1785,10 @@ export const usePOSCartStore = defineStore("posCart", () => {
 		deliveryInfo,
 		setDeliveryInfo,
 
+		// Restaurant feature
+		restaurantTable,
+		setRestaurantTable,
+
 		// Utilities
 		cancelPendingOfferProcessing: () => {
 			debouncedProcessOffers.cancel()
