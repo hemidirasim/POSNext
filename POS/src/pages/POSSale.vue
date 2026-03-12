@@ -1253,28 +1253,41 @@ async function handleSendToKitchen() {
 		return;
 	}
 	
-	// Filter items that haven't been sent to kitchen yet
-	const unsentItems = cartStore.invoiceItems.filter(item => !item.posa_is_sent_to_kitchen);
+	// Calculate pending quantities for each item
+	// posa_sent_qty = already sent to kitchen
+	// quantity = total quantity in cart
+	// pending = quantity - posa_sent_qty
+	const itemsToSend = [];
 	
-	if (unsentItems.length === 0) {
+	for (const item of cartStore.invoiceItems) {
+		const sentQty = item.posa_sent_qty || 0;
+		const pendingQty = item.quantity - sentQty;
+		
+		if (pendingQty > 0) {
+			itemsToSend.push({
+				item_code: item.item_code,
+				item_name: item.item_name,
+				quantity: pendingQty,  // Only send the pending amount
+				total_quantity: item.quantity,  // For reference
+				uom: item.uom,
+				special_instructions: item.posa_special_instructions || '',
+			});
+		}
+	}
+	
+	if (itemsToSend.length === 0) {
 		showWarning(__('All items already sent to kitchen'));
 		return;
 	}
 	
-	console.log('[DEBUG] Unsent items:', unsentItems.length);
+	console.log('[DEBUG] Items to send:', itemsToSend);
 	
 	try {
 		// Prepare order data for KDS
 		const orderData = {
 			table_name: cartStore.restaurantTable.table_name,
 			table_id: cartStore.restaurantTable.name,
-			items: unsentItems.map(item => ({
-				item_code: item.item_code,
-				item_name: item.item_name,
-				quantity: item.quantity,
-				uom: item.uom,
-				special_instructions: item.posa_special_instructions || '',
-			})),
+			items: itemsToSend,
 			timestamp: new Date().toISOString(),
 			status: 'Pending'
 		};
@@ -1283,10 +1296,11 @@ async function handleSendToKitchen() {
 		const result = await restaurantStore.sendToKitchen(orderData);
 		
 		if (result.success) {
-			// Mark items as sent to kitchen
+			// Update sent_qty for each item
 			for (const item of cartStore.invoiceItems) {
-				if (!item.posa_is_sent_to_kitchen) {
-					item.posa_is_sent_to_kitchen = 1;
+				const sentItem = itemsToSend.find(s => s.item_code === item.item_code && s.uom === item.uom);
+				if (sentItem) {
+					item.posa_sent_qty = (item.posa_sent_qty || 0) + sentItem.quantity;
 				}
 			}
 			

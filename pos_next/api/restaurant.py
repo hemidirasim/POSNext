@@ -308,14 +308,27 @@ def send_to_kitchen(order_data):
         # Save invoice
         invoice.save(ignore_permissions=True)
         
+        # Build KDS notification with item details
+        kds_items = []
+        for item_data in items:
+            kds_items.append({
+                "item_code": item_data.get("item_code"),
+                "item_name": item_data.get("item_name"),
+                "qty": item_data.get("quantity"),
+                "total_qty": item_data.get("total_quantity"),  # Total in cart
+                "is_additional": item_data.get("total_quantity", 0) > item_data.get("quantity", 0)
+            })
+        
         # Notify KDS about the order
         frappe.publish_realtime(
             event="kds_new_order",
             message={
                 "order_id": invoice.name,
                 "table": table_display_name or table_name,
+                "items": kds_items,
                 "items_count": len(items),
-                "timestamp": frappe.utils.now()
+                "timestamp": frappe.utils.now(),
+                "is_update": len(invoice.items) > len(items)  # True if adding to existing
             },
             room="kds_room"
         )

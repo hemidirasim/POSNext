@@ -815,26 +815,26 @@
 										<svg class="w-2.5 h-2.5 me-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
 										{{ __("Note") }}
 									</span>
-											<!-- Kitchen Status Badge -->
+											<!-- Kitchen Status Badge - Show pending/sent quantities -->
 												<span
-													v-if="!item.posa_is_sent_to_kitchen"
+													v-if="(item.quantity - (item.posa_sent_qty || 0)) > 0"
 													class="inline-flex items-center px-1.5 py-0.5 bg-orange-100 text-orange-700 rounded-full text-[9px] font-bold flex-shrink-0 border border-orange-200"
-													:title="__('Not sent to kitchen')"
+													:title="__('Not sent: {0}', [item.quantity - (item.posa_sent_qty || 0)])"
 												>
 													<svg class="w-2.5 h-2.5 me-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
 													</svg>
-													{{ __('Kitchen') }}
+													+{{ item.quantity - (item.posa_sent_qty || 0) }}
 												</span>
 												<span
-													v-else
+													v-if="(item.posa_sent_qty || 0) > 0"
 													class="inline-flex items-center px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full text-[9px] font-bold flex-shrink-0 border border-green-200"
-													:title="__('Sent to kitchen')"
+													:title="__('Sent: {0}', [item.posa_sent_qty])"
 												>
 													<svg class="w-2.5 h-2.5 me-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
 													</svg>
-													{{ __('Sent') }}
+													{{ item.posa_sent_qty }}
 												</span>
 
 												<!-- Free Item Badge -->
