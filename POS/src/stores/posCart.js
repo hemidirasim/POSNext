@@ -224,12 +224,31 @@ export const usePOSCartStore = defineStore("posCart", () => {
 			}
 		}
 
-		// If quantity is decreased, also decrease sent_qty to not exceed new quantity
-		if (newQty < item.quantity && item.posa_sent_qty) {
-			item.posa_sent_qty = Math.min(item.posa_sent_qty, newQty)
+		// Prevent reducing below sent quantity
+		const sentQty = item.posa_sent_qty || 0
+		if (newQty < sentQty) {
+			showError(__('Cannot reduce below {0} - already sent to kitchen', [sentQty]))
+			return
 		}
 
 		baseUpdateItemQuantity(itemCode, quantity, uom)
+	}
+
+	/**
+	 * Remove item from cart with kitchen check.
+	 * Prevents removing items that have been sent to kitchen.
+	 */
+	function removeItemWithCheck(itemCode, uom = null) {
+		const item = uom
+			? invoiceItems.value.find((i) => i.item_code === itemCode && i.uom === uom)
+			: invoiceItems.value.find((i) => i.item_code === itemCode)
+
+		if (item && item.posa_sent_qty > 0) {
+			showError(__('Cannot remove item - {0} already sent to kitchen', [item.posa_sent_qty]))
+			return
+		}
+
+		removeItem(itemCode, uom)
 	}
 
 	function clearCart() {
@@ -1749,7 +1768,7 @@ export const usePOSCartStore = defineStore("posCart", () => {
 
 		// Actions
 		addItem,
-		removeItem,
+		removeItem: removeItemWithCheck,
 		updateItemQuantity,
 		updateItemInstructions,
 		clearCart,
