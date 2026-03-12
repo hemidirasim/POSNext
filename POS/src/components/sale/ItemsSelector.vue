@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col h-full bg-gray-50">
 		<!-- Restaurant Table Info (if enabled) - NOW AT TOP OF LEFT PANEL -->
-		<div v-if="restaurantStore.isEnabled && restaurantTable" class="px-3 sm:px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
+		<div v-if="restaurantTable" class="px-3 sm:px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
 					<div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -751,7 +751,7 @@ import WarehouseAvailabilityDialog from "@/components/sale/WarehouseAvailability
 import { Button } from "frappe-ui"
 import { useItemSearchStore } from "@/stores/itemSearch"
 import { usePOSSettingsStore } from "@/stores/posSettings"
-import { useRestaurantStore } from "@/stores/restaurant"
+import { useCartStore } from "@/stores/posCart"
 import { useStock } from "@/composables/useStock"
 import { useDialogState } from "@/composables/useDialogState"
 import { useSearchInput } from "@/composables/useSearchInput"
@@ -785,17 +785,12 @@ const emit = defineEmits(["item-selected", "change-table"])
 // Use composables
 const { getStockStatus } = useStock()
 const settingsStore = usePOSSettingsStore()
-const restaurantStore = useRestaurantStore()
+const cartStore = useCartStore()
 const { showError, showWarning } = useToast()
 const { isAnyDialogOpen } = useDialogState()
 
 // Restaurant table info
-const restaurantTable = computed(() => restaurantStore.restaurantTable)
-
-// DEBUG: Log restaurant state
-watch([() => restaurantStore.isEnabled, restaurantTable], ([isEnabled, table]) => {
-	console.log('[ItemsSelector] Restaurant Debug:', { isEnabled, table: table?.table_name || null })
-}, { immediate: true })
+const restaurantTable = computed(() => cartStore.restaurantTable)
 
 // Use Pinia store
 const itemStore = useItemSearchStore()
