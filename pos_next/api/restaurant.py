@@ -131,6 +131,14 @@ def get_kds_orders():
         list: Active orders for kitchen display
     """
     try:
+        # DEBUG: Log all POS Invoices with restaurant_table
+        all_with_table = frappe.get_all(
+            "POS Invoice",
+            fields=["name", "restaurant_table", "kds_status", "docstatus"],
+            filters={"restaurant_table": ["is", "set"]}
+        )
+        frappe.logger().info(f"[KDS DEBUG] All POS Invoices with table: {all_with_table}")
+        
         # Get active orders from POS Invoice
         orders = frappe.get_all(
             "POS Invoice",
@@ -146,6 +154,8 @@ def get_kds_orders():
             },
             order_by="creation asc"  # Oldest first
         )
+        
+        frappe.logger().info(f"[KDS DEBUG] Filtered orders: {len(orders)}")
         
         # Get items for each order
         for order in orders:
@@ -242,12 +252,16 @@ def send_to_kitchen(order_data):
         dict: { success: bool, invoice_name: str, message: str }
     """
     try:
+        frappe.logger().info(f"[KDS DEBUG] send_to_kitchen called with: {order_data}")
+        
         if not order_data:
             frappe.throw(_("Order data is required"))
         
         table_name = order_data.get("table_id")
         table_display_name = order_data.get("table_name")
         items = order_data.get("items", [])
+        
+        frappe.logger().info(f"[KDS DEBUG] table_name: {table_name}, items: {len(items)}")
         
         if not table_name:
             frappe.throw(_("Table is required"))
@@ -258,7 +272,7 @@ def send_to_kitchen(order_data):
         # Check for existing draft invoice for this table
         existing_invoice = frappe.get_all(
             "POS Invoice",
-            fields=["name"],
+            fields=["name", "kds_status", "restaurant_table"],
             filters={
                 "restaurant_table": table_name,
                 "docstatus": 0,
@@ -267,15 +281,20 @@ def send_to_kitchen(order_data):
             limit=1
         )
         
+        frappe.logger().info(f"[KDS DEBUG] existing_invoice: {existing_invoice}")
+        
         if existing_invoice:
             # Update existing invoice
             invoice = frappe.get_doc("POS Invoice", existing_invoice[0].name)
+            frappe.logger().info(f"[KDS DEBUG] Updating existing invoice: {invoice.name}")
         else:
             # Create new invoice
+            frappe.logger().info(f"[KDS DEBUG] Creating new invoice")
             invoice = frappe.new_doc("POS Invoice")
             invoice.restaurant_table = table_name
             invoice.kds_status = "Pending"
             invoice.customer = frappe.defaults.get_user_default("Customer") or "Walk-in Customer"
+            frappe.logger().info(f"[KDS DEBUG] New invoice created: {invoice.name if invoice.name else 'not saved yet'}")
         
         # Add items to invoice
         for item_data in items:
@@ -307,6 +326,7 @@ def send_to_kitchen(order_data):
         
         # Save invoice
         invoice.save(ignore_permissions=True)
+        frappe.logger().info(f"[KDS DEBUG] Invoice saved: {invoice.name}, kds_status: {invoice.kds_status}, table: {invoice.restaurant_table}")
         
         # Build KDS notification with item details
         kds_items = []
@@ -318,6 +338,8 @@ def send_to_kitchen(order_data):
                 "total_qty": item_data.get("total_quantity"),  # Total in cart
                 "is_additional": item_data.get("total_quantity", 0) > item_data.get("quantity", 0)
             })
+        
+        frappe.logger().info(f"[KDS DEBUG] Publishing realtime event to kds_room")
         
         # Notify KDS about the order
         frappe.publish_realtime(
@@ -332,6 +354,8 @@ def send_to_kitchen(order_data):
             },
             room="kds_room"
         )
+        
+        frappe.logger().info(f"[KDS DEBUG] Returning success response")
         
         return {
             "success": True,
