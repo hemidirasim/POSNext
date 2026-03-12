@@ -224,6 +224,11 @@ export const usePOSCartStore = defineStore("posCart", () => {
 			}
 		}
 
+		// If quantity is decreased, also decrease sent_qty to not exceed new quantity
+		if (newQty < item.quantity && item.posa_sent_qty) {
+			item.posa_sent_qty = Math.min(item.posa_sent_qty, newQty)
+		}
+
 		baseUpdateItemQuantity(itemCode, quantity, uom)
 	}
 
