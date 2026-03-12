@@ -1460,6 +1460,16 @@ def submit_invoice(invoice=None, data=None):
         # Submit invoice
         invoice_doc.submit()
         invoice_submitted = True
+        
+        # Notify KDS if this is a restaurant order (has restaurant_table)
+        if invoice_doc.get("restaurant_table") and not invoice_doc.get("is_return"):
+            try:
+                from pos_next.api.restaurant import notify_kds_new_order
+                notify_kds_new_order(invoice_doc.name)
+            except Exception as kds_error:
+                # Don't fail the invoice if KDS notification fails
+                frappe.log_error(f"KDS notification failed for {invoice_doc.name}: {kds_error}")
+        
         # Handle wallet transaction reversal for returns
         if invoice_doc.get("is_return") and invoice_doc.get("return_against"):
             try:

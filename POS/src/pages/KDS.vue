@@ -4,10 +4,14 @@
 		<header class="bg-white dark:bg-gray-800 shadow-sm z-10 p-4 flex justify-between items-center">
 			<div>
 				<h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __("Kitchen Display System") }}</h1>
-				<p class="text-sm text-gray-500 dark:text-gray-400">{{ __("Active Orders") }}: {{ orders.length }}</p>
+				<p class="text-sm text-gray-500 dark:text-gray-400">
+					{{ __("Active Orders") }}: {{ orders.length }} 
+					<span v-if="socketConnected" class="text-green-500 ml-2">● {{ __("Live") }}</span>
+					<span v-else class="text-orange-500 ml-2">○ {{ __("Offline") }}</span>
+				</p>
 			</div>
 			<div class="flex gap-2">
-				<Button @click="loadOrders" icon="refresh-cw">
+				<Button @click="loadOrders" icon="refresh-cw" :loading="loading">
 					{{ __("Refresh") }}
 				</Button>
 				<Button @click="$router.push('/')" variant="subtle">
@@ -18,7 +22,7 @@
 
 		<!-- Orders Grid -->
 		<main class="flex-1 overflow-x-auto overflow-y-hidden p-6">
-			<div v-if="loading" class="flex justify-center items-center h-full">
+			<div v-if="loading && orders.length === 0" class="flex justify-center items-center h-full">
 				<div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-white"></div>
 			</div>
 
@@ -33,7 +37,7 @@
 					v-for="order in sortedOrders"
 					:key="order.name"
 					:order="order"
-					@status-updated="loadOrders"
+					@status-updated="handleStatusUpdate"
 					class="snap-start"
 				/>
 			</div>
@@ -47,10 +51,13 @@ import { Button } from "frappe-ui"
 import KDSOrderCard from "@/components/invoices/KDSOrderCard.vue"
 import { call } from "@/utils/apiWrapper"
 import { useToast } from "@/composables/useToast"
+import { initSocket, useSocket } from "@/socket"
 
-const { showError } = useToast()
+const { showError, showSuccess } = useToast()
 const orders = ref([])
 const loading = ref(true)
+const socketConnected = ref(false)
+let socket = null
 let pollInterval = null
 
 const sortedOrders = computed(() => {
@@ -60,8 +67,9 @@ const sortedOrders = computed(() => {
 
 async function loadOrders() {
 	try {
+		loading.value = true
 		const res = await call("pos_next.api.restaurant.get_kds_orders")
-
+		
 		if (res) {
 			orders.value = res
 		}
@@ -73,17 +81,105 @@ async function loadOrders() {
 	}
 }
 
-onMounted(() => {
+function handleStatusUpdate() {
+	showSuccess(__("Order status updated"))
 	loadOrders()
-	// Poll for new orders every 10 seconds
-	pollInterval = setInterval(loadOrders, 10000)
+}
+
+// Socket.io realtime updates
+function setupSocket() {
+	socket = initSocket()
+	
+	if (!socket) {
+		console.warn("Socket not available, falling back to polling")
+		return false
+	}
+	
+	// Connect socket
+	socket.connect()
+	
+	socket.on("connect", () => {
+		console.log("KDS Socket connected")
+		socketConnected.value = true
+		
+		// Join KDS room for updates
+		socket.emit("join_kds_room")
+	})
+	
+	socket.on("disconnect", () => {
+		console.log("KDS Socket disconnected")
+		socketConnected.value = false
+	})
+	
+	// Listen for new orders
+	socket.on("kds_new_order", (data) => {
+		console.log("New KDS order received:", data)
+		// Play notification sound
+		playNotificationSound()
+		// Reload orders
+		loadOrders()
+	})
+	
+	// Listen for status updates
+	socket.on("kds_status_update", (data) => {
+		console.log("KDS status update received:", data)
+		// Update specific order in the list
+		const index = orders.value.findIndex(o => o.name === data.order_id)
+		if (index !== -1) {
+			orders.value[index].kds_status = data.status
+		} else {
+			// Order not in list, reload all
+			loadOrders()
+		}
+	})
+	
+	// Listen for completed orders (remove from display)
+	socket.on("kds_order_completed", (data) => {
+		console.log("KDS order completed:", data)
+		orders.value = orders.value.filter(o => o.name !== data.order_id)
+	})
+	
+	return true
+}
+
+function playNotificationSound() {
+	try {
+		const audio = new Audio("/assets/pos_next/sounds/order-notification.mp3")
+		audio.volume = 0.5
+		audio.play().catch(e => console.log("Audio play failed:", e))
+	} catch (e) {
+		console.log("Sound notification not available")
+	}
+}
+
+onMounted(() => {
+	// Initial load
+	loadOrders()
+	
+	// Try socket first
+	const socketWorks = setupSocket()
+	
+	// Fallback to polling if socket fails
+	if (!socketWorks) {
+		console.log("Using polling fallback for KDS")
+		pollInterval = setInterval(loadOrders, 5000) // 5 seconds
+	}
 })
 
 onUnmounted(() => {
 	if (pollInterval) {
 		clearInterval(pollInterval)
 	}
+	if (socket) {
+		socket.off("kds_new_order")
+		socket.off("kds_status_update")
+		socket.off("kds_order_completed")
+		socket.emit("leave_kds_room")
+	}
 })
+
+// Translation helper
+const __ = (text) => text
 </script>
 
 <style scoped>
@@ -98,17 +194,5 @@ onUnmounted(() => {
 ::-webkit-scrollbar-thumb {
 	background: rgba(0,0,0,0.2);
 	border-radius: 6px;
-}
-::-webkit-scrollbar-thumb:hover {
-	background: rgba(0,0,0,0.3);
-}
-.dark ::-webkit-scrollbar-track {
-	background: rgba(255,255,255,0.05);
-}
-.dark ::-webkit-scrollbar-thumb {
-	background: rgba(255,255,255,0.2);
-}
-.dark ::-webkit-scrollbar-thumb:hover {
-	background: rgba(255,255,255,0.3);
 }
 </style>

@@ -194,6 +194,28 @@ def update_kds_status(invoice_name, status):
         # Update KDS status
         frappe.db.set_value("POS Invoice", invoice_name, "kds_status", status)
         
+        # Emit realtime event to all connected KDS displays
+        frappe.publish_realtime(
+            event="kds_status_update",
+            message={
+                "order_id": invoice_name,
+                "status": status,
+                "timestamp": frappe.utils.now()
+            },
+            room="kds_room"
+        )
+        
+        # If status is Delivered, emit completion event
+        if status == "Delivered":
+            frappe.publish_realtime(
+                event="kds_order_completed",
+                message={
+                    "order_id": invoice_name,
+                    "timestamp": frappe.utils.now()
+                },
+                room="kds_room"
+            )
+        
         return {
             "success": True,
             "message": _("Order status updated to {0}").format(status)
@@ -205,6 +227,42 @@ def update_kds_status(invoice_name, status):
             "success": False,
             "message": str(e)
         }
+
+
+@frappe.whitelist()
+def notify_kds_new_order(invoice_name):
+    """
+    Notify KDS displays about a new order.
+    Called when a new order is created with restaurant_table.
+    
+    Args:
+        invoice_name: POS Invoice name
+    """
+    try:
+        if not invoice_name:
+            return
+        
+        # Get order details
+        order = frappe.get_doc("POS Invoice", invoice_name)
+        
+        # Only notify if it has a restaurant table
+        if not order.restaurant_table:
+            return
+        
+        # Emit realtime event
+        frappe.publish_realtime(
+            event="kds_new_order",
+            message={
+                "order_id": invoice_name,
+                "table": order.restaurant_table,
+                "items_count": len(order.items),
+                "timestamp": frappe.utils.now()
+            },
+            room="kds_room"
+        )
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to notify KDS: {str(e)}")
 
 
 @frappe.whitelist(allow_guest=True)
