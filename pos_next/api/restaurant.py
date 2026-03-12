@@ -1,61 +1,123 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2025, BrainWise and contributors
+# For license information, please see license.txt
+
+"""
+POS Next Restaurant API
+Handles table management, areas, and restaurant operations
+"""
+
 import frappe
 from frappe import _
 
+
 @frappe.whitelist()
 def get_tables():
-	"""Fetch all restaurant areas and tables."""
-	areas = frappe.get_all("Restaurant Area", fields=["name", "area_name", "description"])
-	tables = frappe.get_all("Restaurant Table", fields=["name", "table_name", "area", "capacity", "status"])
-	return {
-		"areas": areas,
-		"tables": tables
-	}
+    """
+    Get all restaurant tables and areas for the current POS Profile.
+    
+    Returns:
+        dict: { areas: [...], tables: [...] }
+    """
+    try:
+        # Get all restaurant areas
+        areas = frappe.get_all(
+            "Restaurant Area",
+            fields=["name", "area_name", "description"],
+            filters={"disabled": 0},
+            order_by="area_name"
+        )
+        
+        # Get all restaurant tables
+        tables = frappe.get_all(
+            "Restaurant Table",
+            fields=["name", "table_name", "area", "capacity", "status"],
+            filters={"disabled": 0},
+            order_by="table_name"
+        )
+        
+        return {
+            "areas": areas or [],
+            "tables": tables or []
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to get restaurant tables: {str(e)}")
+        return {
+            "areas": [],
+            "tables": [],
+            "error": str(e)
+        }
+
 
 @frappe.whitelist()
 def update_table_status(table_name, status):
-	"""Update the status of a specific table."""
-	if not frappe.has_permission("Restaurant Table", "write"):
-		frappe.throw(_("Not permitted"), frappe.PermissionError)
+    """
+    Update the status of a restaurant table.
+    
+    Args:
+        table_name: Restaurant Table name
+        status: New status (Empty, Occupied, Reserved, Cleaning)
+    
+    Returns:
+        dict: { success: bool, message: str }
+    """
+    try:
+        if not table_name:
+            frappe.throw(_("Table name is required"))
+        
+        if status not in ["Empty", "Occupied", "Reserved", "Cleaning"]:
+            frappe.throw(_("Invalid status"))
+        
+        # Check if user has permission
+        if not frappe.has_permission("Restaurant Table", "write", table_name):
+            frappe.throw(_("You don't have permission to update this table"))
+        
+        # Update table status
+        frappe.db.set_value("Restaurant Table", table_name, "status", status)
+        
+        return {
+            "success": True,
+            "message": _("Table status updated to {0}").format(status)
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to update table status: {str(e)}")
+        return {
+            "success": False,
+            "message": str(e)
+        }
 
-	if not frappe.db.exists("Restaurant Table", table_name):
-		frappe.throw(_("Table {0} not found").format(table_name))
-
-	frappe.db.set_value("Restaurant Table", table_name, "status", status)
-	return {"status": "success"}
 
 @frappe.whitelist()
-def update_kds_status(invoice_name, status):
-	"""Update the KDS status of a sales invoice."""
-	if not frappe.has_permission("Sales Invoice", "write"):
-		frappe.throw(_("Not permitted"), frappe.PermissionError)
-
-	if not frappe.db.exists("Sales Invoice", invoice_name):
-		frappe.throw(_("Invoice {0} not found").format(invoice_name))
-
-	frappe.db.set_value("Sales Invoice", invoice_name, "kds_status", status)
-	return {"status": "success"}
-
-@frappe.whitelist()
-def get_kds_orders():
-	"""Fetch all pending and preparing orders for the KDS."""
-	# Only fetch submitted invoices or drafts depending on how POS Next saves KDS orders.
-	# Assuming here we fetch draft invoices that have a table and are not delivered.
-	orders = frappe.get_all(
-		"Sales Invoice",
-		filters={
-			"docstatus": 0, # Drafts
-			"is_pos": 1,
-			"restaurant_table": ["is", "set"],
-			"kds_status": ["in", ["Pending", "Preparing", "Ready"]]
-		},
-		fields=["name", "customer", "restaurant_table", "kds_status", "creation", "modified"]
-	)
-
-	for order in orders:
-		order["items"] = frappe.get_all(
-			"Sales Invoice Item",
-			filters={"parent": order.name},
-			fields=["item_code", "item_name", "qty", "description", "posa_special_instructions"]
-		)
-
-	return orders
+def get_table_orders(table_name):
+    """
+    Get active orders for a specific table.
+    
+    Args:
+        table_name: Restaurant Table name
+    
+    Returns:
+        list: Active orders for the table
+    """
+    try:
+        if not table_name:
+            return []
+        
+        # Get active POS invoices for this table
+        orders = frappe.get_all(
+            "POS Invoice",
+            fields=["name", "customer", "grand_total", "posting_time"],
+            filters={
+                "restaurant_table": table_name,
+                "docstatus": 0,  # Draft invoices
+                "status": ["!=", "Paid"]
+            },
+            order_by="posting_time desc"
+        )
+        
+        return orders or []
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to get table orders: {str(e)}")
+        return []

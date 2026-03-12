@@ -94,10 +94,28 @@ const filteredTables = computed(() => {
 })
 
 onMounted(async () => {
+	// First try to load from local cache
 	await restaurantStore.loadTablesAndAreas()
+	
+	// If no data in cache, fetch from network
+	if (areas.value.length === 0 || tables.value.length === 0) {
+		console.log('No cached tables/areas found, fetching from network...')
+		await restaurantStore.fetchFromNetwork()
+	}
+	
+	console.log('Areas loaded:', areas.value)
+	console.log('Tables loaded:', tables.value)
+	console.log('Default area:', restaurantStore.defaultArea)
 
 	if (areas.value.length > 0) {
-		selectedArea.value = restaurantStore.defaultArea || areas.value[0].name
+		// Try to match default area by name or area_name
+		const defaultAreaName = restaurantStore.defaultArea
+		const foundArea = areas.value.find(a => 
+			a.name === defaultAreaName || 
+			a.area_name === defaultAreaName
+		)
+		selectedArea.value = foundArea?.name || areas.value[0].name
+		console.log('Selected area:', selectedArea.value)
 	}
 })
 
