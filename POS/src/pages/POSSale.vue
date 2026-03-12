@@ -371,7 +371,7 @@
 								@edit-customer="handleEditCustomer"
 								@proceed-to-payment="handleProceedToPayment"
 								@clear-cart="handleClearCart"
-								@save-draft="handleSaveDraft"
+								@send-to-kitchen="handleSendToKitchen"
 								@open-modifiers="handleOpenModifiers"
 								@apply-coupon="uiStore.showCouponDialog = true"
 								@show-offers="uiStore.showOffersDialog = true"
@@ -1241,6 +1241,65 @@ function clearTableDraft(tableName) {
 		delete tableDrafts[tableName];
 		localStorage.setItem('pos_table_drafts', JSON.stringify(tableDrafts));
 		console.log('Cleared draft for table:', tableName);
+	}
+}
+
+// Send order to kitchen (KDS)
+async function handleSendToKitchen() {
+	console.log('[DEBUG] handleSendToKitchen called');
+	
+	if (!cartStore.restaurantTable) {
+		showError(__('No table selected'));
+		return;
+	}
+	
+	// Filter items that haven't been sent to kitchen yet
+	const unsentItems = cartStore.invoiceItems.filter(item => !item.posa_is_sent_to_kitchen);
+	
+	if (unsentItems.length === 0) {
+		showWarning(__('All items already sent to kitchen'));
+		return;
+	}
+	
+	console.log('[DEBUG] Unsent items:', unsentItems.length);
+	
+	try {
+		// Prepare order data for KDS
+		const orderData = {
+			table_name: cartStore.restaurantTable.table_name,
+			table_id: cartStore.restaurantTable.name,
+			items: unsentItems.map(item => ({
+				item_code: item.item_code,
+				item_name: item.item_name,
+				quantity: item.quantity,
+				uom: item.uom,
+				special_instructions: item.posa_special_instructions || '',
+			})),
+			timestamp: new Date().toISOString(),
+			status: 'Pending'
+		};
+		
+		// Send to kitchen via restaurant store
+		const result = await restaurantStore.sendToKitchen(orderData);
+		
+		if (result.success) {
+			// Mark items as sent to kitchen
+			for (const item of cartStore.invoiceItems) {
+				if (!item.posa_is_sent_to_kitchen) {
+					item.posa_is_sent_to_kitchen = 1;
+				}
+			}
+			
+			// Save updated draft
+			saveTableDraft();
+			
+			showSuccess(__('Order sent to kitchen successfully'));
+		} else {
+			showError(result.message || __('Failed to send to kitchen'));
+		}
+	} catch (error) {
+		console.error('Send to kitchen error:', error);
+		showError(__('Error sending to kitchen'));
 	}
 }
 

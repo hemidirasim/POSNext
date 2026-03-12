@@ -815,6 +815,29 @@
 										<svg class="w-2.5 h-2.5 me-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
 										{{ __("Note") }}
 									</span>
+											<!-- Kitchen Status Badge -->
+												<span
+													v-if="!item.posa_is_sent_to_kitchen"
+													class="inline-flex items-center px-1.5 py-0.5 bg-orange-100 text-orange-700 rounded-full text-[9px] font-bold flex-shrink-0 border border-orange-200"
+													:title="__('Not sent to kitchen')"
+												>
+													<svg class="w-2.5 h-2.5 me-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+													</svg>
+													{{ __('Kitchen') }}
+												</span>
+												<span
+													v-else
+													class="inline-flex items-center px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full text-[9px] font-bold flex-shrink-0 border border-green-200"
+													:title="__('Sent to kitchen')"
+												>
+													<svg class="w-2.5 h-2.5 me-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+													</svg>
+													{{ __('Sent') }}
+												</span>
+
+												<!-- Free Item Badge -->
 									<!-- Free Item Badge -->
 									<span
 										v-if="item.free_qty && item.free_qty > 0"
@@ -1243,13 +1266,13 @@
 					<span>{{ __("Checkout") }}</span>
 				</button>
 
-				<!-- Hold Order Button (Secondary - 50% width) -->
+				<!-- Send to Kitchen Button (Secondary - 50% width) -->
 				<button
 					type="button"
 					v-if="items.length > 0"
-					@click="$emit('save-draft')"
+					@click="$emit('send-to-kitchen')"
 					class="flex-1 py-2.5 px-2 rounded-lg font-semibold text-xs text-orange-700 bg-orange-50 hover:bg-orange-100 active:bg-orange-200 transition-all touch-manipulation active:scale-[0.98] flex items-center justify-center"
-					:aria-label="__('Hold order as draft')"
+					:aria-label="__('Send order to kitchen')"
 				>
 					<svg
 						class="w-4 h-4 me-1.5"
@@ -1261,10 +1284,10 @@
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
-							d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+							d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
 						/>
 					</svg>
-					<span>{{ __("Hold", null, "order") }}</span>
+					<span>{{ __("Send to Kitchen") }}</span>
 				</button>
 			</div>
 		</div>
@@ -1390,7 +1413,7 @@ const emit = defineEmits([
 	"create-customer", // (searchText) - Open create customer dialog
 	"proceed-to-payment", // () - Navigate to payment screen
 	"clear-cart", // () - Clear all items from cart
-	"save-draft", // () - Save current cart as draft/hold order
+	"send-to-kitchen", // () - Send order items to kitchen/KDS
 	"apply-coupon", // () - Open coupon application dialog
 	"show-coupons", // () - Show available coupons
 	"show-offers", // () - Show available offers dialog

@@ -230,6 +230,111 @@ def update_kds_status(invoice_name, status):
 
 
 @frappe.whitelist()
+def send_to_kitchen(order_data):
+    """
+    Send order items to kitchen (KDS).
+    Creates or updates a POS Invoice for the table.
+    
+    Args:
+        order_data: dict with table_name, table_id, items, timestamp, status
+    
+    Returns:
+        dict: { success: bool, invoice_name: str, message: str }
+    """
+    try:
+        if not order_data:
+            frappe.throw(_("Order data is required"))
+        
+        table_name = order_data.get("table_id")
+        table_display_name = order_data.get("table_name")
+        items = order_data.get("items", [])
+        
+        if not table_name:
+            frappe.throw(_("Table is required"))
+        
+        if not items:
+            frappe.throw(_("No items to send to kitchen"))
+        
+        # Check for existing draft invoice for this table
+        existing_invoice = frappe.get_all(
+            "POS Invoice",
+            fields=["name"],
+            filters={
+                "restaurant_table": table_name,
+                "docstatus": 0,
+                "status": ["!=", "Paid"]
+            },
+            limit=1
+        )
+        
+        if existing_invoice:
+            # Update existing invoice
+            invoice = frappe.get_doc("POS Invoice", existing_invoice[0].name)
+        else:
+            # Create new invoice
+            invoice = frappe.new_doc("POS Invoice")
+            invoice.restaurant_table = table_name
+            invoice.kds_status = "Pending"
+            invoice.customer = frappe.defaults.get_user_default("Customer") or "Walk-in Customer"
+        
+        # Add items to invoice
+        for item_data in items:
+            item_code = item_data.get("item_code")
+            qty = item_data.get("quantity", 1)
+            
+            # Check if item already exists in invoice
+            existing_item = None
+            for item in invoice.items:
+                if item.item_code == item_code:
+                    existing_item = item
+                    break
+            
+            if existing_item:
+                # Update quantity
+                existing_item.qty += qty
+            else:
+                # Add new item
+                item_doc = frappe.get_doc("Item", item_code)
+                
+                invoice.append("items", {
+                    "item_code": item_code,
+                    "item_name": item_data.get("item_name") or item_doc.item_name,
+                    "qty": qty,
+                    "uom": item_data.get("uom") or item_doc.stock_uom,
+                    "rate": item_doc.standard_rate or 0,
+                    "posa_special_instructions": item_data.get("special_instructions", "")
+                })
+        
+        # Save invoice
+        invoice.save(ignore_permissions=True)
+        
+        # Notify KDS about the order
+        frappe.publish_realtime(
+            event="kds_new_order",
+            message={
+                "order_id": invoice.name,
+                "table": table_display_name or table_name,
+                "items_count": len(items),
+                "timestamp": frappe.utils.now()
+            },
+            room="kds_room"
+        )
+        
+        return {
+            "success": True,
+            "invoice_name": invoice.name,
+            "message": _("Order sent to kitchen successfully")
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to send order to kitchen: {str(e)}")
+        return {
+            "success": False,
+            "message": str(e)
+        }
+
+
+@frappe.whitelist()
 def notify_kds_new_order(invoice_name):
     """
     Notify KDS displays about a new order.

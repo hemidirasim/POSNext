@@ -78,6 +78,28 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 		}
 	}
 
+	// Send order to kitchen (KDS)
+	async function sendToKitchen(orderData) {
+		try {
+			log.info("Sending order to kitchen:", orderData)
+			
+			// Send to backend API
+			if (navigator.onLine) {
+				const result = await call("pos_next.api.restaurant.send_to_kitchen", {
+					order_data: orderData
+				})
+				return { success: true, data: result }
+			} else {
+				// Queue for later if offline
+				log.warn("Offline - order queued for kitchen")
+				return { success: false, message: __('You are offline. Order will be sent when connection is restored.') }
+			}
+		} catch (error) {
+			log.error("Failed to send order to kitchen:", error)
+			return { success: false, message: error.message || __('Failed to send to kitchen') }
+		}
+	}
+
 	return {
 		tables,
 		areas,
@@ -85,6 +107,7 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 		defaultArea,
 		loadTablesAndAreas,
 		fetchFromNetwork,
-		updateTableStatus
+		updateTableStatus,
+		sendToKitchen
 	}
 })
