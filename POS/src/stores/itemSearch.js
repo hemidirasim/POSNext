@@ -523,6 +523,11 @@ export const useItemSearchStore = defineStore("itemSearch", () => {
 				list = sourceItems
 			}
 
+			// Exclude service items (delivery charges, etc.) from normal browsing
+			// These items should only be added automatically by the system, not manually
+			const excludedGroups = ['Services', 'Service', 'Hizmetler', 'Servisler']
+			list = list.filter(i => !excludedGroups.includes(i.item_group))
+
 			// Cache the filtered results for next time
 			filteredItemsCache.set(filterKey, list)
 			lastFilterKey = filterKey
