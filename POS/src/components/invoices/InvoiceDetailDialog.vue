@@ -180,6 +180,30 @@
 					</div>
 				</div>
 
+				<!-- Delivery Info (if shipping address exists) -->
+				<div v-if="invoiceData.shipping_address_name || hasDeliveryItem" class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+					<div class="flex items-start gap-3">
+						<div class="w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center flex-shrink-0">
+							<svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+							</svg>
+						</div>
+						<div class="flex-1 text-start">
+							<h4 class="text-sm font-semibold text-blue-900">{{ __('Delivery') }}</h4>
+							<p v-if="invoiceData.shipping_address" class="text-xs text-blue-700 mt-1">
+								{{ invoiceData.shipping_address }}
+							</p>
+							<p v-else class="text-xs text-blue-600 mt-1">
+								{{ __('Delivery order') }}
+							</p>
+							<p v-if="deliveryCharge > 0" class="text-xs text-blue-600 mt-1 font-medium">
+								{{ __('Charge:') }} {{ formatCurrency(deliveryCharge) }}
+							</p>
+						</div>
+					</div>
+				</div>
+
 				<!-- Totals Section -->
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
 					<!-- Payment Info -->
@@ -334,6 +358,25 @@ const isCashRefund = computed(() => {
 	// Cash refund if payments were made (refund given)
 	return totalPaid >= 0.01
 })
+
+// Delivery charge from delivery item
+const deliveryCharge = computed(() => {
+	if (!invoiceData.value?.items) return 0
+	// Find delivery item - common patterns
+	const deliveryItem = invoiceData.value.items.find(item => {
+		const code = (item.item_code || '').toUpperCase()
+		const name = (item.item_name || '').toUpperCase()
+		return code.includes('TESLIMAT') || 
+		       code.includes('DELIVERY') ||
+		       name.includes('TESLIMAT') ||
+		       name.includes('DELIVERY') ||
+		       name.includes('ÇATDIRILMA')
+	})
+	return deliveryItem ? Math.abs(deliveryItem.amount || 0) : 0
+})
+
+// Check if invoice has delivery
+const hasDeliveryItem = computed(() => deliveryCharge.value > 0)
 
 watch(
 	() => props.modelValue,
