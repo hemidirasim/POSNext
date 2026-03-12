@@ -1413,7 +1413,7 @@ onMounted(async () => {
 
 		// Fire independent operations in parallel while settings load.
 		// Settings must complete before tax rules, but the rest are independent.
-		const settingsPromise = posSettingsStore.loadSettings(shiftStore.profileName);
+		const settingsPromise = posSettingsStore.loadSettings(shiftStore.profileName, true)  // Force refresh to bypass bootstrap cache;
 
 		const backgroundOps = Promise.allSettled([
 			cartStore.setDefaultCustomer(),
@@ -1744,7 +1744,7 @@ async function handleShiftOpened() {
 	}
 
 	// Mirror initPOS: fire independent operations in parallel while settings load
-	const settingsPromise = posSettingsStore.loadSettings(shiftStore.profileName);
+	const settingsPromise = posSettingsStore.loadSettings(shiftStore.profileName, true)  // Force refresh to bypass bootstrap cache;
 
 	const backgroundOps = Promise.allSettled([
 		cartStore.setDefaultCustomer(),

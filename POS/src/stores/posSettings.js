@@ -266,7 +266,7 @@ export const usePOSSettingsStore = defineStore("posSettings", () => {
 	})
 
 	// Actions
-	async function loadSettings(posProfile) {
+	async function loadSettings(posProfile, forceRefresh = false) {
 		if (!posProfile) {
 			return false
 		}
@@ -275,17 +275,20 @@ export const usePOSSettingsStore = defineStore("posSettings", () => {
 		settings.value.pos_profile = posProfile
 
 		// OPTIMIZATION: Check if bootstrap has preloaded the settings
-		try {
-			const bootstrapStore = useBootstrapStore()
-			const preloadedSettings = bootstrapStore.getPreloadedPOSSettings()
-			if (preloadedSettings && Object.keys(preloadedSettings).length > 0) {
-				Object.assign(settings.value, preloadedSettings)
-				isLoaded.value = true
-				isLoading.value = false
-				return true
+		// Skip preloaded if forceRefresh is true (to get fresh values from API)
+		if (!forceRefresh) {
+			try {
+				const bootstrapStore = useBootstrapStore()
+				const preloadedSettings = bootstrapStore.getPreloadedPOSSettings()
+				if (preloadedSettings && Object.keys(preloadedSettings).length > 0) {
+					Object.assign(settings.value, preloadedSettings)
+					isLoaded.value = true
+					isLoading.value = false
+					return true
+				}
+			} catch {
+				// Bootstrap store may not be available, fall through to API call
 			}
-		} catch {
-			// Bootstrap store may not be available, fall through to API call
 		}
 
 		// Fallback to API call
@@ -404,6 +407,7 @@ export const usePOSSettingsStore = defineStore("posSettings", () => {
 
 		try {
 			// Use submit with pos_profile to ensure proper reload
+			// Force refresh to bypass bootstrap cache
 			await settingsResource.submit({ pos_profile: settings.value.pos_profile })
 			return true
 		} catch {
