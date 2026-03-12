@@ -1015,6 +1015,7 @@
 		:customer="customer"
 		:cart-total="subtotal"
 		:pos-profile="posProfile"
+		:currency="currency"
 		@select="onAddressSelected"
 		@update:delivery-charge="onDeliveryChargeUpdate"
 	/>

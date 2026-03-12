@@ -276,6 +276,10 @@ const props = defineProps({
 	customer: Object,
 	cartTotal: Number,
 	posProfile: String,
+	currency: {
+		type: String,
+		default: 'USD'
+	}
 })
 
 const emit = defineEmits(['update:modelValue', 'select', 'update:delivery-charge'])
@@ -284,7 +288,18 @@ const show = computed({
 	set: (val) => emit('update:modelValue', val),
 })
 
-const formatCurrency = inject('formatCurrency')
+// Try to inject formatCurrency, fallback to simple formatter
+const injectedFormatCurrency = inject('formatCurrency', null)
+const formatCurrency = injectedFormatCurrency || ((amount, currency) => {
+	const num = Number(amount || 0)
+	return new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: currency || props.currency || 'USD'
+	}).format(num)
+})
+
+// Translation helper with fallback
+const __ = (text) => text
 
 // State
 const loading = ref(false)
