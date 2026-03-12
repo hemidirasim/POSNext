@@ -1179,10 +1179,13 @@ async function loadTableDraft(tableName) {
 			cartStore.setCustomer(draft.customer);
 		}
 		
-		// Add items to cart
+		// Add items directly to invoice (preserving saved state)
 		for (const item of draft.items) {
-			await cartStore.addItem(item);
+			cartStore.invoiceItems.push({ ...item });
 		}
+		
+		// Recalculate totals
+		cartStore.rebuildIncrementalCache();
 		
 		showSuccess(__("Previous order loaded for this table"));
 	} else {
