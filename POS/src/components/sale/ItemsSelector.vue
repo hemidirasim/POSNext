@@ -1,5 +1,9 @@
 <template>
 	<div class="flex flex-col h-full bg-gray-50">
+		<!-- DEBUG: Store State -->
+		<div class="px-2 py-1 bg-red-600 text-white text-xs font-mono">
+			DEBUG: isEnabled={{ restaurantStore.isEnabled }} | table={{ restaurantTable?.table_name || 'null' }}
+		</div>
 		<!-- Restaurant Table Info (if enabled) - NOW AT TOP OF LEFT PANEL -->
 		<div v-if="restaurantStore.isEnabled && restaurantTable" class="px-3 sm:px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
 			<div class="flex items-center justify-between">
