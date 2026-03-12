@@ -748,6 +748,7 @@
 <script setup>
 import LazyImage from "@/components/common/LazyImage.vue"
 import WarehouseAvailabilityDialog from "@/components/sale/WarehouseAvailabilityDialog.vue"
+import { Button } from "frappe-ui"
 import { useItemSearchStore } from "@/stores/itemSearch"
 import { usePOSSettingsStore } from "@/stores/posSettings"
 import { useRestaurantStore } from "@/stores/restaurant"
