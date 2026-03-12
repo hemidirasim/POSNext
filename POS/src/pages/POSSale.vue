@@ -1113,11 +1113,14 @@ const showTableSelector = computed(() => {
 
 // Open table selector manually
 function openTableSelector() {
+	console.log('[DEBUG] openTableSelector called');
 	// Save current cart as draft if has items
 	if (cartStore.invoiceItems.length > 0) {
+		console.log('[DEBUG] Saving draft before opening selector');
 		saveTableDraft();
 	}
 	// Clear table to show selector
+	console.log('[DEBUG] Clearing restaurantTable to show selector');
 	cartStore.setRestaurantTable(null);
 }
 

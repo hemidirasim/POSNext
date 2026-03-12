@@ -120,6 +120,8 @@ onMounted(async () => {
 })
 
 const selectTable = async (table) => {
+	console.log('[TableSelector] selectTable called:', table.name);
+	
 	// Set the table in the cart
 	cartStore.setRestaurantTable(table)
 
@@ -128,6 +130,8 @@ const selectTable = async (table) => {
 		await restaurantStore.updateTableStatus(table.name, "Occupied")
 	}
 
+	console.log('[TableSelector] Emitting table-selected event');
 	emit("table-selected", table)
+	console.log('[TableSelector] Event emitted');
 }
 </script>
