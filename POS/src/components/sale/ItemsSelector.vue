@@ -1,5 +1,35 @@
 <template>
 	<div class="flex flex-col h-full bg-gray-50">
+		<!-- Restaurant Table Info (if enabled) -->
+		<div v-if="restaurantStore.isEnabled && restaurantTable" class="px-1.5 sm:px-3 pt-1.5 sm:pt-2 pb-1.5 sm:pb-2 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200">
+			<div class="flex items-center justify-between">
+				<div class="flex items-center gap-2">
+					<div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+						<svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+						</svg>
+					</div>
+					<div>
+						<p class="text-xs text-amber-600 font-medium">{{ __('Table') }}</p>
+						<p class="text-sm font-bold text-amber-900">{{ restaurantTable.table_name }}</p>
+					</div>
+				</div>
+				<Button 
+					variant="outline" 
+					size="sm" 
+					@click="$emit('change-table')"
+					class="border-amber-300 text-amber-700 hover:bg-amber-100"
+				>
+					<template #prefix>
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+						</svg>
+					</template>
+					{{ __('Change') }}
+				</Button>
+			</div>
+		</div>
+
 		<!-- Item Groups Filter Tabs -->
 		<div class="px-1.5 sm:px-3 pt-1.5 sm:pt-3 pb-1.5 sm:pb-2 bg-white border-b border-gray-200">
 			<div class="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-1 scrollbar-hide snap-x snap-mandatory">
@@ -720,6 +750,7 @@ import LazyImage from "@/components/common/LazyImage.vue"
 import WarehouseAvailabilityDialog from "@/components/sale/WarehouseAvailabilityDialog.vue"
 import { useItemSearchStore } from "@/stores/itemSearch"
 import { usePOSSettingsStore } from "@/stores/posSettings"
+import { useRestaurantStore } from "@/stores/restaurant"
 import { useStock } from "@/composables/useStock"
 import { useDialogState } from "@/composables/useDialogState"
 import { useSearchInput } from "@/composables/useSearchInput"
@@ -748,13 +779,17 @@ const props = defineProps({
 	},
 })
 
-const emit = defineEmits(["item-selected"])
+const emit = defineEmits(["item-selected", "change-table"])
 
 // Use composables
 const { getStockStatus } = useStock()
 const settingsStore = usePOSSettingsStore()
+const restaurantStore = useRestaurantStore()
 const { showError, showWarning } = useToast()
 const { isAnyDialogOpen } = useDialogState()
+
+// Restaurant table info
+const restaurantTable = computed(() => restaurantStore.restaurantTable)
 
 // Use Pinia store
 const itemStore = useItemSearchStore()

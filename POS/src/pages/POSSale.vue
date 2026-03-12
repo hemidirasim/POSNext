@@ -285,9 +285,21 @@
 							]"
 							style="contain: layout style paint"
 						>
-							<template v-if="restaurantStore.isEnabled && !cartStore.restaurantTable">
-								<TableSelector />
+							<!-- Table Selector Modal -->
+							<template v-if="showTableSelector">
+								<div class="flex flex-col h-full">
+									<div class="p-3 bg-amber-50 border-b border-amber-200 flex items-center justify-between">
+										<h3 class="text-sm font-bold text-amber-900">{{ __('Select Table') }}</h3>
+										<Button v-if="cartStore.restaurantTable" variant="ghost" size="sm" @click="closeTableSelector">
+											{{ __('Cancel') }}
+										</Button>
+									</div>
+									<div class="flex-1 overflow-auto">
+										<TableSelector @table-selected="onTableSelected" />
+									</div>
+								</div>
 							</template>
+							
 							<template v-else>
 								<ItemsSelector
 									ref="itemsSelectorRef"
@@ -295,6 +307,7 @@
 									:cart-items="cartStore.invoiceItems"
 									:currency="shiftStore.profileCurrency"
 									@item-selected="handleItemSelected"
+									@change-table="openTableSelector"
 								/>
 							</template>
 						</div>
@@ -1090,6 +1103,103 @@ const logoutAfterClose = ref(false);
 const editCustomer = ref(null); // Customer being edited (null for create mode)
 const showClearCacheDialog = ref(false);
 const clearCacheOverlayRef = ref(null);
+
+// Table selector state
+const showTableSelector = computed(() => {
+	// Show if restaurant mode enabled and no table selected
+	if (!restaurantStore.isEnabled) return false;
+	return !cartStore.restaurantTable;
+});
+
+// Open table selector manually
+function openTableSelector() {
+	// Save current cart as draft if has items
+	if (cartStore.invoiceItems.length > 0) {
+		saveTableDraft();
+	}
+	// Clear table to show selector
+	cartStore.setRestaurantTable(null);
+}
+
+// Close table selector (cancel)
+function closeTableSelector() {
+	// If there's a previous table, restore it
+	const lastTable = localStorage.getItem('pos_last_table');
+	if (lastTable) {
+		const table = JSON.parse(lastTable);
+		cartStore.setRestaurantTable(table);
+		loadTableDraft(table.name);
+	}
+}
+
+// Handle table selection
+async function onTableSelected(table) {
+	console.log('Table selected:', table);
+	
+	// Save current cart if has items
+	if (cartStore.invoiceItems.length > 0) {
+		saveTableDraft();
+	}
+	
+	// Set new table
+	cartStore.setRestaurantTable(table);
+	localStorage.setItem('pos_last_table', JSON.stringify(table));
+	
+	// Load draft for this table
+	await loadTableDraft(table.name);
+}
+
+// Save current cart as draft for table
+function saveTableDraft() {
+	if (!cartStore.restaurantTable || cartStore.invoiceItems.length === 0) return;
+	
+	const tableDrafts = JSON.parse(localStorage.getItem('pos_table_drafts') || '{}');
+	tableDrafts[cartStore.restaurantTable.name] = {
+		items: JSON.parse(JSON.stringify(cartStore.invoiceItems)),
+		customer: cartStore.customer,
+		timestamp: new Date().toISOString()
+	};
+	localStorage.setItem('pos_table_drafts', JSON.stringify(tableDrafts));
+	console.log('Saved draft for table:', cartStore.restaurantTable.name);
+}
+
+// Load draft for table
+async function loadTableDraft(tableName) {
+	const tableDrafts = JSON.parse(localStorage.getItem('pos_table_drafts') || '{}');
+	const draft = tableDrafts[tableName];
+	
+	if (draft && draft.items && draft.items.length > 0) {
+		console.log('Loading draft for table:', tableName, draft);
+		
+		// Clear current cart
+		cartStore.clearCart();
+		
+		// Set customer
+		if (draft.customer) {
+			cartStore.setCustomer(draft.customer);
+		}
+		
+		// Add items to cart
+		for (const item of draft.items) {
+			await cartStore.addItem(item);
+		}
+		
+		showSuccess(__("Previous order loaded for this table"));
+	} else {
+		console.log('No draft found for table:', tableName);
+		cartStore.clearCart();
+	}
+}
+
+// Clear table draft after checkout
+function clearTableDraft(tableName) {
+	const tableDrafts = JSON.parse(localStorage.getItem('pos_table_drafts') || '{}');
+	if (tableDrafts[tableName]) {
+		delete tableDrafts[tableName];
+		localStorage.setItem('pos_table_drafts', JSON.stringify(tableDrafts));
+		console.log('Cleared draft for table:', tableName);
+	}
+}
 
 // Debounce timer for offer reapplication
 const offerReapplyTimer = ref(null);
@@ -2032,6 +2142,12 @@ async function handlePaymentCompleted(paymentData) {
 				paymentData.paid_amount
 			);
 			uiStore.showPaymentDialog = false;
+			
+			// Clear table draft if restaurant mode
+			if (cartStore.restaurantTable) {
+				clearTableDraft(cartStore.restaurantTable.name);
+			}
+			
 			cartStore.clearCart();
 			// Reset cart hash after successful payment
 			previousCartHash = "";
@@ -2054,6 +2170,12 @@ async function handlePaymentCompleted(paymentData) {
 				const paidAmount = paymentData.paid_amount || invoiceTotal;
 
 				uiStore.showPaymentDialog = false;
+				
+				// Clear table draft if restaurant mode
+				if (cartStore.restaurantTable) {
+					clearTableDraft(cartStore.restaurantTable.name);
+				}
+				
 				cartStore.clearCart();
 				// Reset cart hash after successful payment
 				previousCartHash = "";
