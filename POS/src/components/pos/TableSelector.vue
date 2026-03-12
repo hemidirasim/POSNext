@@ -120,12 +120,15 @@ onMounted(async () => {
 })
 
 const selectTable = async (table) => {
-	console.log('[TableSelector] selectTable called:', table.name);
+	console.log('[TableSelector] selectTable called:', table.name, 'currentTable:', cartStore.restaurantTable?.name);
 	
-	// IMPORTANT: Emit event FIRST, before setting table
-	// Because v-if will remove this component when table is set
+	// IMPORTANT: Get current table BEFORE emitting event
+	// Because parent needs to save draft for the OLD table
+	const currentTable = cartStore.restaurantTable;
+	
+	// Emit event with BOTH new and old table info
 	console.log('[TableSelector] Emitting table-selected event');
-	emit("table-selected", table)
+	emit("table-selected", table, currentTable)
 	console.log('[TableSelector] Event emitted');
 	
 	// Set the table in the cart (this will hide the selector via v-if)

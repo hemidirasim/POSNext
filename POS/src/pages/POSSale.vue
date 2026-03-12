@@ -1136,46 +1136,50 @@ function closeTableSelector() {
 }
 
 // Handle table selection
-async function onTableSelected(table) {
+async function onTableSelected(newTable, oldTable) {
 	console.log('[DEBUG] === TABLE SELECTED ===');
-	console.log('[DEBUG] Table:', table.name, 'Current items:', cartStore.invoiceItems.length);
+	console.log('[DEBUG] New table:', newTable.name, 'Old table:', oldTable?.name, 'Current items:', cartStore.invoiceItems.length);
 	
-	// Save current cart if has items
-	if (cartStore.invoiceItems.length > 0) {
-		console.log('[DEBUG] Saving current cart before switch...');
-		saveTableDraft();
+	// Save current cart if has items (using OLD table name)
+	if (cartStore.invoiceItems.length > 0 && oldTable) {
+		console.log('[DEBUG] Saving current cart for old table:', oldTable.name);
+		saveTableDraftForTable(oldTable.name);
 	} else {
-		console.log('[DEBUG] No items to save');
+		console.log('[DEBUG] No items to save or no old table');
 	}
 	
 	// Set new table
-	console.log('[DEBUG] Setting new table:', table.name);
-	cartStore.setRestaurantTable(table);
-	localStorage.setItem('pos_last_table', JSON.stringify(table));
+	console.log('[DEBUG] Setting new table:', newTable.name);
+	cartStore.setRestaurantTable(newTable);
+	localStorage.setItem('pos_last_table', JSON.stringify(newTable));
 	
 	// Load draft for this table
-	console.log('[DEBUG] Loading draft for:', table.name);
-	await loadTableDraft(table.name);
+	console.log('[DEBUG] Loading draft for:', newTable.name);
+	await loadTableDraft(newTable.name);
 	console.log('[DEBUG] === END TABLE SELECTED ===');
 }
 
-// Save current cart as draft for table
-function saveTableDraft() {
-	console.log('[DEBUG] saveTableDraft called, table:', cartStore.restaurantTable?.name, 'items:', cartStore.invoiceItems.length);
-	
-	if (!cartStore.restaurantTable || cartStore.invoiceItems.length === 0) {
-		console.log('[DEBUG] saveTableDraft: SKIPPING - no table or no items');
+// Save draft for specific table name
+function saveTableDraftForTable(tableName) {
+	if (!tableName || cartStore.invoiceItems.length === 0) {
+		console.log('[DEBUG] saveTableDraftForTable: SKIPPING - no table name or no items');
 		return;
 	}
 	
 	const tableDrafts = JSON.parse(localStorage.getItem('pos_table_drafts') || '{}');
-	tableDrafts[cartStore.restaurantTable.name] = {
+	tableDrafts[tableName] = {
 		items: JSON.parse(JSON.stringify(cartStore.invoiceItems)),
 		customer: cartStore.customer,
 		timestamp: new Date().toISOString()
 	};
 	localStorage.setItem('pos_table_drafts', JSON.stringify(tableDrafts));
-	console.log('[DEBUG] Saved draft for table:', cartStore.restaurantTable.name, 'items:', cartStore.invoiceItems.length);
+	console.log('[DEBUG] Saved draft for table:', tableName, 'items:', cartStore.invoiceItems.length);
+}
+
+// Save current cart as draft for current table
+function saveTableDraft() {
+	console.log('[DEBUG] saveTableDraft called, table:', cartStore.restaurantTable?.name, 'items:', cartStore.invoiceItems.length);
+	saveTableDraftForTable(cartStore.restaurantTable?.name);
 }
 
 // Load draft for table
