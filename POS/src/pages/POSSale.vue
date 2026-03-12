@@ -1134,24 +1134,36 @@ function closeTableSelector() {
 
 // Handle table selection
 async function onTableSelected(table) {
-	console.log('Table selected:', table);
+	console.log('[DEBUG] === TABLE SELECTED ===');
+	console.log('[DEBUG] Table:', table.name, 'Current items:', cartStore.invoiceItems.length);
 	
 	// Save current cart if has items
 	if (cartStore.invoiceItems.length > 0) {
+		console.log('[DEBUG] Saving current cart before switch...');
 		saveTableDraft();
+	} else {
+		console.log('[DEBUG] No items to save');
 	}
 	
 	// Set new table
+	console.log('[DEBUG] Setting new table:', table.name);
 	cartStore.setRestaurantTable(table);
 	localStorage.setItem('pos_last_table', JSON.stringify(table));
 	
 	// Load draft for this table
+	console.log('[DEBUG] Loading draft for:', table.name);
 	await loadTableDraft(table.name);
+	console.log('[DEBUG] === END TABLE SELECTED ===');
 }
 
 // Save current cart as draft for table
 function saveTableDraft() {
-	if (!cartStore.restaurantTable || cartStore.invoiceItems.length === 0) return;
+	console.log('[DEBUG] saveTableDraft called, table:', cartStore.restaurantTable?.name, 'items:', cartStore.invoiceItems.length);
+	
+	if (!cartStore.restaurantTable || cartStore.invoiceItems.length === 0) {
+		console.log('[DEBUG] saveTableDraft: SKIPPING - no table or no items');
+		return;
+	}
 	
 	const tableDrafts = JSON.parse(localStorage.getItem('pos_table_drafts') || '{}');
 	tableDrafts[cartStore.restaurantTable.name] = {
@@ -1160,7 +1172,7 @@ function saveTableDraft() {
 		timestamp: new Date().toISOString()
 	};
 	localStorage.setItem('pos_table_drafts', JSON.stringify(tableDrafts));
-	console.log('Saved draft for table:', cartStore.restaurantTable.name);
+	console.log('[DEBUG] Saved draft for table:', cartStore.restaurantTable.name, 'items:', cartStore.invoiceItems.length);
 }
 
 // Load draft for table
@@ -1168,11 +1180,15 @@ async function loadTableDraft(tableName) {
 	const tableDrafts = JSON.parse(localStorage.getItem('pos_table_drafts') || '{}');
 	const draft = tableDrafts[tableName];
 	
+	console.log('[DEBUG] loadTableDraft:', tableName, 'draft:', draft);
+	console.log('[DEBUG] All drafts:', Object.keys(tableDrafts));
+	
 	if (draft && draft.items && draft.items.length > 0) {
-		console.log('Loading draft for table:', tableName, draft);
+		console.log('[DEBUG] Loading draft for table:', tableName, 'items:', draft.items.length);
 		
 		// Clear current cart
 		cartStore.clearCart();
+		console.log('[DEBUG] Cart cleared, items:', cartStore.invoiceItems.length);
 		
 		// Set customer
 		if (draft.customer) {
@@ -1181,15 +1197,19 @@ async function loadTableDraft(tableName) {
 		
 		// Add items directly to invoice (preserving saved state)
 		for (const item of draft.items) {
+			console.log('[DEBUG] Adding item:', item.item_name, 'qty:', item.quantity);
 			cartStore.invoiceItems.push({ ...item });
 		}
+		
+		console.log('[DEBUG] Total items after push:', cartStore.invoiceItems.length);
 		
 		// Recalculate totals
 		cartStore.rebuildIncrementalCache();
 		
+		console.log('[DEBUG] Draft loaded successfully');
 		showSuccess(__("Previous order loaded for this table"));
 	} else {
-		console.log('No draft found for table:', tableName);
+		console.log('[DEBUG] No draft found for table:', tableName);
 		cartStore.clearCart();
 	}
 }
