@@ -1,31 +1,31 @@
 <template>
 	<div class="flex flex-col h-full bg-gray-50">
-		<!-- Restaurant Table Info (if enabled) -->
-		<div v-if="restaurantStore.isEnabled && restaurantTable" class="px-1.5 sm:px-3 pt-1.5 sm:pt-2 pb-1.5 sm:pb-2 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200">
+		<!-- Restaurant Table Info (if enabled) - NOW AT TOP OF LEFT PANEL -->
+		<div v-if="restaurantStore.isEnabled && restaurantTable" class="px-3 sm:px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
 			<div class="flex items-center justify-between">
-				<div class="flex items-center gap-2">
-					<div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
-						<svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<div class="flex items-center gap-3">
+					<div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+						<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
 						</svg>
 					</div>
 					<div>
-						<p class="text-xs text-amber-600 font-medium">{{ __('Table') }}</p>
-						<p class="text-sm font-bold text-amber-900">{{ restaurantTable.table_name }}</p>
+						<p class="text-xs text-indigo-200 font-medium">{{ __('Current Table') }}</p>
+						<p class="text-lg font-bold">{{ restaurantTable.table_name }}</p>
 					</div>
 				</div>
 				<Button 
 					variant="outline" 
 					size="sm" 
 					@click="$emit('change-table')"
-					class="border-amber-300 text-amber-700 hover:bg-amber-100"
+					class="bg-white/10 border-white/30 text-white hover:bg-white/20"
 				>
 					<template #prefix>
-						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
 						</svg>
 					</template>
-					{{ __('Change') }}
+					{{ __('Change Table') }}
 				</Button>
 			</div>
 		</div>
