@@ -319,13 +319,25 @@ def send_to_kitchen(order_data=None):
             frappe.logger().info(f"[KDS DEBUG] New invoice created: {invoice.name if invoice.name else 'not saved yet'}")
         
         # Add items to invoice
-        frappe.logger().info(f"[KDS DEBUG] Starting to add items, count: {len(items)}")
+        frappe.logger().info(f"[KDS DEBUG] Step 1: About to check items length")
+        item_count = len(items)
+        frappe.logger().info(f"[KDS DEBUG] Step 2: Items count: {item_count}")
+        
+        frappe.logger().info(f"[KDS DEBUG] Step 3: About to check invoice.items")
+        frappe.logger().info(f"[KDS DEBUG] Step 3a: invoice type: {type(invoice)}")
+        frappe.logger().info(f"[KDS DEBUG] Step 3b: invoice.items type: {type(invoice.items)}")
+        frappe.logger().info(f"[KDS DEBUG] Step 3c: invoice.items value: {invoice.items}")
         
         # Ensure invoice.items is a list (not None)
         if invoice.items is None:
+            frappe.logger().info(f"[KDS DEBUG] Step 4: invoice.items is None, initializing")
             invoice.items = []
-            frappe.logger().info(f"[KDS DEBUG] Initialized invoice.items to empty list")
-            
+            frappe.logger().info(f"[KDS DEBUG] Step 5: Initialized invoice.items")
+        
+        frappe.logger().info(f"[KDS DEBUG] Step 6: About to start for loop")
+        frappe.logger().info(f"[KDS DEBUG] Step 6a: items type: {type(items)}")
+        frappe.logger().info(f"[KDS DEBUG] Step 6b: first item: {items[0] if items else 'no items'}")
+        
         for idx, item_data in enumerate(items):
             try:
                 frappe.logger().info(f"[KDS DEBUG] Processing item {idx}: {item_data.get('item_code')}")
