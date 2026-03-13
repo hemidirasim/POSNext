@@ -127,28 +127,46 @@ def update_kds_status(invoice_name, status):
         dict: { success: bool, message: str }
     """
     try:
-        if not invoice_name or not status:
-            return {"success": False, "message": _("Invoice and status required")}
+        if not invoice_name:
+            return {"success": False, "message": _("Invoice name required")}
+        
+        if not status:
+            return {"success": False, "message": _("Status required")}
+        
+        # Check if invoice exists
+        if not frappe.db.exists("POS Invoice", invoice_name):
+            return {"success": False, "message": _("Invoice not found: {0}").format(invoice_name)}
         
         invoice = frappe.get_doc("POS Invoice", invoice_name)
+        
+        # Update status
         invoice.kds_status = status
+        
+        # Save with ignore_permissions and ignore_version
+        invoice.flags.ignore_permissions = True
         invoice.save(ignore_permissions=True)
         
         # Notify KDS displays about status change
-        frappe.publish_realtime(
-            event="kds_status_update",
-            message={
-                "order_id": invoice_name,
-                "status": status,
-                "table": invoice.restaurant_table
-            },
-            room="kds_room"
-        )
+        try:
+            frappe.publish_realtime(
+                event="kds_status_update",
+                message={
+                    "order_id": invoice_name,
+                    "status": status,
+                    "table": invoice.restaurant_table
+                },
+                room="kds_room"
+            )
+        except Exception:
+            pass  # Realtime notification is not critical
         
-        return {"success": True, "message": _("Status updated")}
+        return {"success": True, "message": _("Status updated to {0}").format(status)}
         
+    except frappe.exceptions.ValidationError as e:
+        # Return validation errors clearly
+        return {"success": False, "message": str(e), "error_type": "validation"}
     except Exception as e:
-        frappe.log_error(f"Failed to update KDS status: {str(e)[:100]}")
+        frappe.log_error(f"KDS status update error: {str(e)[:200]}")
         return {"success": False, "message": str(e)}
 
 
