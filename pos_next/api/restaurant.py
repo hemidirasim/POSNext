@@ -417,11 +417,11 @@ def send_to_kitchen(order_data=None):
         
     except Exception as e:
         import traceback
-        error_msg = str(e)
-        frappe.log_error(f"KDS Error: {error_msg[:200]}")
+        error_msg = str(e)[:100]  # Sadece ilk 100 karakter
+        frappe.log_error(f"KDS: {error_msg}")
         return {
             "success": False,
-            "message": error_msg
+            "message": f"Error: {error_msg}"
         }
 
 
