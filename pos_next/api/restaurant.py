@@ -240,7 +240,7 @@ def update_kds_status(invoice_name, status):
 
 
 @frappe.whitelist()
-def send_to_kitchen(order_data):
+def send_to_kitchen(**kwargs):
     """
     Send order items to kitchen (KDS).
     Creates or updates a POS Invoice for the table.
@@ -252,7 +252,9 @@ def send_to_kitchen(order_data):
         dict: { success: bool, invoice_name: str, message: str }
     """
     try:
-        frappe.logger().info(f"[KDS DEBUG] send_to_kitchen called with: {order_data}")
+        order_data = kwargs.get('order_data')
+        frappe.logger().info(f"[KDS DEBUG] send_to_kitchen called with order_data: {order_data}")
+        frappe.logger().info(f"[KDS DEBUG] kwargs: {kwargs}")
         
         if not order_data:
             frappe.throw(_("Order data is required"))
