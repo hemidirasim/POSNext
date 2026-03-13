@@ -1276,22 +1276,16 @@ async function handleSendToKitchen() {
 		}
 	}
 	
-	if (itemsToSend.length === 0) {
-		showWarning(__('All items already sent to kitchen'));
-		return;
-	}
-	
 	console.log('[DEBUG] Items to send:', itemsToSend);
 	console.log('[DEBUG] itemsToSend.length:', itemsToSend.length);
-	console.log('[DEBUG] About to check itemsToSend.length...');
 	
 	if (itemsToSend.length === 0) {
-		console.log('[DEBUG] itemsToSend is empty, showing warning and returning');
+		console.log('[DEBUG] itemsToSend is empty, showing warning');
 		showWarning(__('All items already sent to kitchen'));
 		return;
 	}
 	
-	console.log('[DEBUG] itemsToSend has items, continuing...');
+	console.log('[DEBUG] itemsToSend has items, will call API...');
 	console.log('[DEBUG] restaurantStore:', restaurantStore);
 	console.log('[DEBUG] sendToKitchen function:', typeof restaurantStore.sendToKitchen);
 	
