@@ -253,10 +253,12 @@ def send_to_kitchen(order_data=None):
     """
     import traceback
     try:
-        # Debug: Log request info
+        # Debug: Log request info (truncated to avoid CharacterLengthExceededError)
         frappe.logger().info(f"[KDS DEBUG] ===== REQUEST INFO =====")
-        frappe.logger().info(f"[KDS DEBUG] frappe.form_dict: {frappe.form_dict}")
-        frappe.logger().info(f"[KDS DEBUG] frappe.request.method: {frappe.request.method if frappe.request else 'no request'}")
+        form_dict_str = str(frappe.form_dict)[:500] if frappe.form_dict else "empty"
+        frappe.logger().info(f"[KDS DEBUG] frappe.form_dict: {form_dict_str}...")
+        method = frappe.request.method if frappe.request else 'no request'
+        frappe.logger().info(f"[KDS DEBUG] method: {method}")
         
         # Parse order_data if it's a string (JSON)
         if isinstance(order_data, str):
@@ -271,7 +273,8 @@ def send_to_kitchen(order_data=None):
                 order_data = json.loads(order_data)
         
         frappe.logger().info(f"[KDS DEBUG] send_to_kitchen called with order_data type: {type(order_data)}")
-        frappe.logger().info(f"[KDS DEBUG] order_data: {order_data}")
+        order_data_str = str(order_data)[:500] if order_data else "None"
+        frappe.logger().info(f"[KDS DEBUG] order_data: {order_data_str}...")
         
         if not order_data:
             frappe.throw(_("Order data is required"))
@@ -384,10 +387,10 @@ def send_to_kitchen(order_data=None):
         
     except Exception as e:
         error_msg = str(e)
-        stack_trace = traceback.format_exc()
+        stack_trace = traceback.format_exc()[:1000]  # Truncate stack trace
         frappe.logger().error(f"[KDS DEBUG] ERROR: {error_msg}")
-        frappe.logger().error(f"[KDS DEBUG] STACK TRACE: {stack_trace}")
-        frappe.log_error(f"Failed to send order to kitchen: {error_msg}\n\n{stack_trace}")
+        frappe.logger().error(f"[KDS DEBUG] STACK: {stack_trace}...")
+        frappe.log_error(f"KDS Error: {error_msg}")
         return {
             "success": False,
             "message": error_msg
