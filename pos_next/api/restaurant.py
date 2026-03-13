@@ -373,9 +373,11 @@ def send_to_kitchen(order_data=None):
             except Exception as item_error:
                 raise
         
-        # Save invoice - ignore version to prevent conflict
+        # Save invoice - ignore all validations for KDS flow
         invoice.flags.ignore_version = True
-        invoice.save(ignore_permissions=True)
+        invoice.flags.ignore_mandatory = True
+        invoice.flags.ignore_validate = True
+        invoice.save(ignore_permissions=True, ignore_version=True)
         
         # Build KDS notification with item details
         kds_items = []
