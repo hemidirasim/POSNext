@@ -273,14 +273,19 @@ def send_to_kitchen(order_data=None):
         order_id = f"KDS-{table_name}-{frappe.utils.now_datetime().strftime('%H%M%S')}"
         
         # Send to KDS
+        message_data = {
+            "order_id": order_id,
+            "table": order_data.get("table_name", table_name),
+            "items": kds_items,
+            "timestamp": frappe.utils.now()
+        }
+        
+        # Log for debugging
+        frappe.logger().info(f"[KDS] Publishing to kds_room: {message_data}")
+        
         frappe.publish_realtime(
             event="kds_new_order",
-            message={
-                "order_id": order_id,
-                "table": order_data.get("table_name", table_name),
-                "items": kds_items,
-                "timestamp": frappe.utils.now()
-            },
+            message=message_data,
             room="kds_room"
         )
         

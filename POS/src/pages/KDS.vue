@@ -91,28 +91,41 @@ function handleStatusUpdate() {
 
 // Socket.io realtime updates
 function setupSocket() {
+	console.log("[KDS] Setting up socket...")
 	socket = initSocket()
 	
 	if (!socket) {
-		console.warn("Socket not available, falling back to polling")
+		console.warn("[KDS] Socket not available, falling back to polling")
 		return false
 	}
 	
+	console.log("[KDS] Socket object:", socket)
+	
 	// Connect socket
+	console.log("[KDS] Calling socket.connect()...")
 	socket.connect()
 	
 	socket.on("connect", () => {
-		console.log("KDS Socket connected")
+		console.log("[KDS] ✅ Socket connected! ID:", socket.id)
 		socketConnected.value = true
 		
 		// Join KDS room for updates
+		console.log("[KDS] Joining kds_room...")
 		socket.emit("join_kds_room")
+		console.log("[KDS] join_kds_room emitted")
 	})
 	
-	socket.on("disconnect", () => {
-		console.log("KDS Socket disconnected")
+	socket.on("connect_error", (error) => {
+		console.error("[KDS] ❌ Socket connection error:", error)
+	})
+	
+	socket.on("disconnect", (reason) => {
+		console.log("[KDS] Socket disconnected, reason:", reason)
 		socketConnected.value = false
 	})
+	
+	return true
+}
 	
 	// Listen for new orders
 	socket.on("kds_new_order", (data) => {
