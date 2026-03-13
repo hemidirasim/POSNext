@@ -334,12 +334,9 @@ def send_to_kitchen(order_data=None):
             invoice.restaurant_table = table_name
             invoice.kds_status = "Pending"
             
-            # Set payments directly (not append) for new invoice
-            invoice.payments = [{
-                "mode_of_payment": "Cash",
-                "amount": 0,
-                "base_amount": 0
-            }]
+            # No payment needed at this stage - payment will be collected at checkout
+            # Set is_pos to False to avoid payment validation for KDS orders
+            invoice.is_pos = 0
             
         
         # Add items to invoice
