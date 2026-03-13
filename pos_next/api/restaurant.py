@@ -115,6 +115,44 @@ def update_table_status(table_name, status):
 
 
 @frappe.whitelist()
+def update_kds_status(invoice_name, status):
+    """
+    Update KDS status for a POS Invoice.
+    
+    Args:
+        invoice_name: POS Invoice name
+        status: New KDS status (e.g., "Pending", "Preparing", "Ready", "Served")
+    
+    Returns:
+        dict: { success: bool, message: str }
+    """
+    try:
+        if not invoice_name or not status:
+            return {"success": False, "message": _("Invoice and status required")}
+        
+        invoice = frappe.get_doc("POS Invoice", invoice_name)
+        invoice.kds_status = status
+        invoice.save(ignore_permissions=True)
+        
+        # Notify KDS displays about status change
+        frappe.publish_realtime(
+            event="kds_status_update",
+            message={
+                "order_id": invoice_name,
+                "status": status,
+                "table": invoice.restaurant_table
+            },
+            room="kds_room"
+        )
+        
+        return {"success": True, "message": _("Status updated")}
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to update KDS status: {str(e)[:100]}")
+        return {"success": False, "message": str(e)}
+
+
+@frappe.whitelist()
 def get_table_orders(table_name):
     """
     Get active orders for a specific table.
