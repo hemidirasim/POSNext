@@ -1480,15 +1480,22 @@ const cartSortContainer = ref(null);
  * New customers are immediately available after creation without page refresh.
  */
 // Load customers via the shared Pinia store (if not already loaded)
-if (props.posProfile) {
-	customerSearchStore.loadAllCustomers(props.posProfile);
-}
+// Also watch for posProfile changes
+watch(() => props.posProfile, (newProfile) => {
+	if (newProfile) {
+		console.log('[InvoiceCart] Loading customers for profile:', newProfile);
+		customerSearchStore.loadAllCustomers(newProfile);
+		offersStore.ensureOffersFetched(newProfile);
+	}
+}, { immediate: true });
 
-// Load offers on component init (uses shared store method to prevent duplicate fetches)
-// ensureOffersFetched handles both online/offline cases and caching
-if (props.posProfile) {
-	offersStore.ensureOffersFetched(props.posProfile);
-}
+// Fallback: If customers not loaded after 3 seconds, try loading without profile
+setTimeout(() => {
+	if (customerSearchStore.allCustomers.length === 0 && !customerSearchStore.loading) {
+		console.log('[InvoiceCart] Fallback: Loading customers without profile');
+		customerSearchStore.loadAllCustomers(props.posProfile || 'default');
+	}
+}, 3000);
 
 /**
  * Gift Cards Resource
