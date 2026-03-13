@@ -334,14 +334,12 @@ def send_to_kitchen(order_data=None):
             invoice.restaurant_table = table_name
             invoice.kds_status = "Pending"
             
-            # Initialize payments list and add dummy payment
-            if not invoice.payments:
-                invoice.payments = []
-            invoice.append("payments", {
+            # Set payments directly (not append) for new invoice
+            invoice.payments = [{
                 "mode_of_payment": "Cash",
                 "amount": 0,
                 "base_amount": 0
-            })
+            }]
             
         
         # Add items to invoice
