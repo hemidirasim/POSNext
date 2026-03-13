@@ -597,8 +597,6 @@ def get_kds_orders():
         
         # Enrich with table name and items
         enriched_orders = []
-        now = frappe.utils.now()
-        now_dt = frappe.utils.get_datetime(now)
         
         for order in orders:
             # Get table display name
@@ -610,10 +608,12 @@ def get_kds_orders():
                 )
                 order.table_display = table_name or order.restaurant_table
             
-            # Check if order was modified in last 30 minutes (new items added)
+            # is_recently_modified: true if order was modified after creation (new items added)
+            # and status is still Pending (not yet started preparing)
+            creation_dt = frappe.utils.get_datetime(order.creation)
             modified_dt = frappe.utils.get_datetime(order.modified)
-            minutes_since_modified = (now_dt - modified_dt).total_seconds() / 60
-            order.is_recently_modified = minutes_since_modified < 30
+            # If modified more than 10 seconds after creation, consider it as "recently modified"
+            order.is_recently_modified = (modified_dt - creation_dt).total_seconds() > 10
             
             # Get order items
             invoice = frappe.get_doc("POS Invoice", order.name)
