@@ -4,7 +4,7 @@
 			'border-yellow-300': order.kds_status === 'Pending' && !order.is_recently_modified,
 			'border-blue-400': order.kds_status === 'Preparing',
 			'border-green-500': order.kds_status === 'Ready',
-			'border-red-500 border-4 animate-pulse': order.kds_status === 'Pending' && order.is_recently_modified
+			'border-red-600 border-4 shadow-[0_0_20px_rgba(220,38,38,0.6)] animate-pulse': order.kds_status === 'Pending' && order.is_recently_modified
 	       }">
 
 		<!-- Card Header -->
@@ -26,7 +26,7 @@
 				</div>
 				<!-- Modified badge - only show when Pending and recently modified -->
 				<span v-if="order.kds_status === 'Pending' && order.is_recently_modified" 
-					class="text-[10px] uppercase font-bold tracking-wider rounded-full px-2 py-0.5 bg-red-500 text-white animate-pulse mb-1 inline-block">
+					class="text-[10px] uppercase font-bold tracking-wider rounded-full px-3 py-1 bg-red-600 text-white animate-bounce mb-1 inline-block shadow-lg">
 					{{ __("MODIFIED") }}
 				</span>
 				<span class="text-[10px] uppercase font-bold tracking-wider rounded-full px-2 py-0.5 block"
