@@ -203,9 +203,7 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 			if (!tableName) return []
 			
 			return await call("pos_next.api.restaurant.get_table_orders", {
-				table_name: tableName,
-			pos_profile: posProfile,
-			customer: customer
+				table_name: tableName
 			})
 		} catch (error) {
 			log.error("Failed to get table orders:", error)
