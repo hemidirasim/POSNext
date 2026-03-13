@@ -357,9 +357,19 @@ def send_to_kitchen(order_data=None):
             except Exception as item_error:
                 raise
         
-        # Save invoice - disable ERPNext auto-validations
-        invoice.set_missing_values = lambda *args, **kwargs: None
-        invoice.validate = lambda: None  # Skip ERPNext validation
+        # Save invoice - set missing values first, then restore custom fields
+        # Store custom fields before set_missing_values (which might clear them)
+        custom_table = invoice.restaurant_table
+        custom_kds_status = invoice.kds_status
+        
+        # Call ERPNext's set_missing_values to populate mandatory fields
+        invoice.set_missing_values()
+        
+        # Restore custom fields
+        invoice.restaurant_table = custom_table
+        invoice.kds_status = custom_kds_status
+        
+        # Now save
         invoice.save(ignore_permissions=True)
         
         # Build KDS notification with item details
