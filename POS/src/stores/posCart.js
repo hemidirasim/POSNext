@@ -123,7 +123,7 @@ export const usePOSCartStore = defineStore("posCart", () => {
 	const selectionMode = ref("uom") // 'uom' or 'variant'
 	const currentDraftId = ref(null)
 	const serverInvoiceName = ref(null)
-	const targetDoctype = ref("Sales Invoice")
+	const targetDoctype = ref("POS Invoice")
 
 	// Offer processing state management
 	const offerProcessingState = ref({

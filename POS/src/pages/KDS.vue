@@ -109,8 +109,9 @@ function setupSocket() {
 		console.log("[KDS] ✅ Socket connected! ID:", socket.id)
 		socketConnected.value = true
 		
-		// Broadcast - no room needed
-		console.log("[KDS] Socket ready for broadcast events")
+		// Join KDS room – this matches the room name used in restaurant.py realtime events
+		console.log("[KDS] Joining kds_room...")
+		socket.emit("join_kds_room")
 	})
 	
 	socket.on("connect_error", (error) => {

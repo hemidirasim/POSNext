@@ -321,12 +321,19 @@ def notify_kds_new_order(invoice_name):
         if not order.restaurant_table:
             return
         
+        # Get table name
+        table_display = order.restaurant_table
+        if order.restaurant_table:
+            table_name = frappe.db.get_value("Restaurant Table", order.restaurant_table, "table_name")
+            if table_name:
+                table_display = table_name
+        
         # Emit realtime event
         frappe.publish_realtime(
             event="kds_new_order",
             message={
                 "order_id": invoice_name,
-                "table": order.restaurant_table,
+                "table": table_display,
                 "items": [
                     {
                         "item_code": item.item_code,
@@ -338,7 +345,8 @@ def notify_kds_new_order(invoice_name):
                 ],
                 "status": order.kds_status or "Pending",
                 "timestamp": str(order.creation)
-            }
+            },
+            room="kds_room"
         )
         
     except Exception as e:
