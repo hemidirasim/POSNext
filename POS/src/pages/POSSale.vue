@@ -2312,54 +2312,70 @@ async function handlePaymentCompleted(paymentData) {
 		} else {
 			// Get item codes from cart before clearing
 			const soldItemCodes = cartStore.invoiceItems.map((item) => item.item_code);
-
-			const result = await cartStore.submitInvoice();
-
-			if (result) {
-				const invoiceName = result.name || result.message?.name || __("Unknown");
-				const invoiceTotal = result.grand_total || result.total || 0;
-				const paidAmount = paymentData.paid_amount || invoiceTotal;
-
-				uiStore.showPaymentDialog = false;
-				
-				// Close table tab if restaurant mode (using Running Tab API)
-				if (cartStore.restaurantTable && cartStore.serverInvoiceName) {
-					await restaurantStore.closeTableInvoice(
-						cartStore.serverInvoiceName,
-						paymentData.payments,
-						paymentData.write_off_amount || 0
-					);
-				}
-				
-				cartStore.clearCart();
-				// Reset cart hash after successful payment
-				previousCartHash = "";
-
-				// Delete draft after successful submission
-				if (draftIdToDelete) {
-					draftsStore.deleteDraft(draftIdToDelete);
-				}
-
-				// Refresh stock - Direct API (50-200ms), no Socket.IO lag!
-				await stockStore.refresh(soldItemCodes, shiftStore.profileWarehouse);
-
-				// Refresh invoice history cache in background (non-blocking)
-				loadInvoiceHistoryData().catch((err) =>
-					log.debug("Background invoice cache refresh failed:", err)
+			
+			let invoiceName, invoiceTotal, paidAmount;
+			
+			// Restaurant mode: use running tab invoice
+			if (cartStore.restaurantTable && cartStore.serverInvoiceName) {
+				console.log('[DEBUG] Restaurant mode - using running tab invoice');
+				const result = await restaurantStore.closeTableInvoice(
+					cartStore.serverInvoiceName,
+					paymentData.payments,
+					paymentData.write_off_amount || 0
 				);
-
-				if (shiftStore.autoPrintEnabled || posSettingsStore.silentPrint) {
-					try {
-						await handlePrintInvoice({ name: invoiceName });
-						showSuccess(__("Invoice {0} created and sent to printer", [invoiceName]));
-					} catch (error) {
-						log.error("Auto-print error:", error);
-						showWarning(__("Invoice {0} created but print failed", [invoiceName]));
-					}
-				} else {
-					uiStore.showSuccess(invoiceName, invoiceTotal, paidAmount);
-					showSuccess(__("Invoice {0} created successfully", [invoiceName]));
+				
+				if (!result || !result.success) {
+					showError(result?.message || __('Failed to close table tab'));
+					return;
 				}
+				
+				invoiceName = cartStore.serverInvoiceName;
+				invoiceTotal = cartStore.grandTotal;
+				paidAmount = paymentData.paid_amount || invoiceTotal;
+			} else {
+				// Normal mode: create new invoice
+				console.log('[DEBUG] Normal mode - creating new invoice');
+				const result = await cartStore.submitInvoice();
+				
+				if (!result) {
+					return;
+				}
+				
+				invoiceName = result.name || result.message?.name || __("Unknown");
+				invoiceTotal = result.grand_total || result.total || 0;
+				paidAmount = paymentData.paid_amount || invoiceTotal;
+			}
+
+			uiStore.showPaymentDialog = false;
+			
+			cartStore.clearCart();
+			// Reset cart hash after successful payment
+			previousCartHash = "";
+
+			// Delete draft after successful submission
+			if (draftIdToDelete) {
+				draftsStore.deleteDraft(draftIdToDelete);
+			}
+
+			// Refresh stock - Direct API (50-200ms), no Socket.IO lag!
+			await stockStore.refresh(soldItemCodes, shiftStore.profileWarehouse);
+
+			// Refresh invoice history cache in background (non-blocking)
+			loadInvoiceHistoryData().catch((err) =>
+				log.debug("Background invoice cache refresh failed:", err)
+			);
+
+			if (shiftStore.autoPrintEnabled || posSettingsStore.silentPrint) {
+				try {
+					await handlePrintInvoice({ name: invoiceName });
+					showSuccess(__("Invoice {0} created and sent to printer", [invoiceName]));
+				} catch (error) {
+					log.error("Auto-print error:", error);
+					showWarning(__("Invoice {0} created but print failed", [invoiceName]));
+				}
+			} else {
+				uiStore.showSuccess(invoiceName, invoiceTotal, paidAmount);
+				showSuccess(__("Invoice {0} created successfully", [invoiceName]));
 			}
 		}
 	} catch (error) {
