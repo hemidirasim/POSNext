@@ -1312,7 +1312,9 @@ async function handleSendToKitchen() {
 		const result = await restaurantStore.mergeItemsToInvoice(
 			cartStore.serverInvoiceName,
 			unsentItems,
-			cartStore.restaurantTable.name
+			cartStore.restaurantTable.name,
+			shiftStore.currentProfile?.name,
+			cartStore.customer?.name || cartStore.customer
 		);
 		
 		if (result && result.success) {

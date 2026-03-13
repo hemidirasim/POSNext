@@ -123,7 +123,7 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 	 * Merge new items to running tab
 	 * Returns which items were actually sent to kitchen (new/additional)
 	 */
-	async function mergeItemsToInvoice(invoiceName, items, tableName) {
+	async function mergeItemsToInvoice(invoiceName, items, tableName, posProfile, customer) {
 		if (!items?.length) return { success: true, sentItems: [] }
 		
 		try {
@@ -132,7 +132,9 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 			const result = await call("pos_next.api.restaurant.merge_items_to_invoice", {
 				invoice_name: invoiceName,
 				new_items: JSON.stringify(items),
-				table_name: tableName
+				table_name: tableName,
+			pos_profile: posProfile,
+			customer: customer
 			})
 			
 			if (result && result.success) {
@@ -201,7 +203,9 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 			if (!tableName) return []
 			
 			return await call("pos_next.api.restaurant.get_table_orders", {
-				table_name: tableName
+				table_name: tableName,
+			pos_profile: posProfile,
+			customer: customer
 			})
 		} catch (error) {
 			log.error("Failed to get table orders:", error)
