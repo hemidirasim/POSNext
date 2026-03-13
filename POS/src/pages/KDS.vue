@@ -124,12 +124,9 @@ function setupSocket() {
 		socketConnected.value = false
 	})
 	
-	return true
-}
-	
 	// Listen for new orders
 	socket.on("kds_new_order", (data) => {
-		console.log("New KDS order received:", data)
+		console.log("[KDS] ✅ New order received:", data)
 		// Play notification sound
 		playNotificationSound()
 		// Add order to local list (don't reload from backend - order is not saved as POS Invoice)
@@ -148,7 +145,7 @@ function setupSocket() {
 	
 	// Listen for status updates
 	socket.on("kds_status_update", (data) => {
-		console.log("KDS status update received:", data)
+		console.log("[KDS] Status update received:", data)
 		// Update specific order in the list
 		const index = orders.value.findIndex(o => o.name === data.order_id)
 		if (index !== -1) {
@@ -161,11 +158,9 @@ function setupSocket() {
 	
 	// Listen for completed orders (remove from display)
 	socket.on("kds_order_completed", (data) => {
-		console.log("KDS order completed:", data)
+		console.log("[KDS] Order completed:", data)
 		orders.value = orders.value.filter(o => o.name !== data.order_id)
 	})
-	
-	return true
 }
 
 function playNotificationSound() {
