@@ -409,17 +409,8 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     sent_items = []
     existing_items = {f"{i.item_code}-{i.uom}": i for i in invoice.items}
     
-    # Check if invoice has any status other than Pending - reset to Pending for new items
-    # This ensures that when customers add more items, the kitchen sees it as active again
-    current_status = invoice.get('kds_status') or 'Pending'
-    was_modified = current_status != 'Pending'
-    if was_modified and new_items:
-        frappe.logger().info(f"[KDS] Resetting status from {current_status} to Pending for invoice {invoice.name}")
-        invoice.kds_status = 'Pending'
-        # Ensure the field is marked as dirty for saving
-        invoice._doc_before_save = None
-    else:
-        frappe.logger().info(f"[KDS] No status change needed. Current: {current_status}, was_modified: {was_modified}, new_items: {len(new_items) if new_items else 0}")
+    # Note: kds_status will be reset to Pending AFTER set_missing_values() 
+    # to ensure it's not overwritten by any default value calculations
     
     # Get income account from Mode of Payment or Company
     income_account = None
@@ -527,11 +518,15 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         frappe.log_error(f"Invoice calculation error: {str(e)[:100]}")
         return {"success": False, "message": _("Error calculating invoice totals. Please check POS Profile and item configurations.")}
     
+    # Check if status needs to be reset to Pending (AFTER set_missing_values)
+    # This ensures new items added to any non-Pending order bring it back to Pending
+    current_status = invoice.get('kds_status') or 'Pending'
+    was_modified = current_status != 'Pending'
+    if was_modified:
+        invoice.kds_status = 'Pending'
+    
     # Save invoice (draft)
     invoice.save(ignore_permissions=True)
-    
-    # Verify status was saved
-    frappe.logger().info(f"[KDS] Invoice {invoice.name} saved with status: {invoice.kds_status}")
     
     # Notify KDS about new items
     if sent_items:
