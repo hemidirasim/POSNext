@@ -27,9 +27,14 @@ def get_mode_of_payment_account(mode_of_payment, company):
         mop_doc = frappe.get_doc("Mode of Payment", mode_of_payment)
         for acc in mop_doc.accounts:
             if acc.company == company:
-                return acc.default_account
+                # Try different field names for account
+                # ERPNext versions may use 'default_account' or 'account'
+                account = getattr(acc, 'default_account', None) or getattr(acc, 'account', None)
+                if account:
+                    return account
         return None
-    except Exception:
+    except Exception as e:
+        frappe.log_error(f"Error getting MoP account for {mode_of_payment}: {str(e)[:100]}")
         return None
 
 
