@@ -82,13 +82,16 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 	async function sendToKitchen(orderData) {
 		try {
 			log.info("Sending order to kitchen:", orderData)
+			console.log('[RestaurantStore] sendToKitchen called:', orderData)
 			
 			// Send to backend API
 			if (navigator.onLine) {
+				console.log('[RestaurantStore] Calling API...')
 				const result = await call("pos_next.api.restaurant.send_to_kitchen", {
 					order_data: orderData
 				})
-				return { success: true, data: result }
+				console.log('[RestaurantStore] API response:', result)
+				return result  // Return result directly (backend already returns success field)
 			} else {
 				// Queue for later if offline
 				log.warn("Offline - order queued for kitchen")
@@ -96,6 +99,7 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 			}
 		} catch (error) {
 			log.error("Failed to send order to kitchen:", error)
+			console.error('[RestaurantStore] Error:', error)
 			return { success: false, message: error.message || __('Failed to send to kitchen') }
 		}
 	}

@@ -1294,7 +1294,9 @@ async function handleSendToKitchen() {
 		};
 		
 		// Send to kitchen via restaurant store
+		console.log('[DEBUG] Calling sendToKitchen API...');
 		const result = await restaurantStore.sendToKitchen(orderData);
+		console.log('[DEBUG] API result:', result);
 		
 		if (result.success) {
 			// Update sent_qty for each item
@@ -1313,8 +1315,9 @@ async function handleSendToKitchen() {
 			showError(result.message || __('Failed to send to kitchen'));
 		}
 	} catch (error) {
-		console.error('Send to kitchen error:', error);
-		showError(__('Error sending to kitchen'));
+		console.error('[DEBUG] Send to kitchen error:', error);
+		console.error('[DEBUG] Error details:', error.message, error.stack);
+		showError(__('Error sending to kitchen: {0}', [error.message]));
 	}
 }
 
