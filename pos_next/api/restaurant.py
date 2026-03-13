@@ -250,6 +250,9 @@ def send_to_kitchen(order_data=None):
         dict: { success: bool, invoice_name: str, message: str }
     """
     try:
+        # Debug: Log entry
+        frappe.logger().info(f"[KDS] send_to_kitchen started")
+        
         # Parse order_data if it's a string (JSON)
         if isinstance(order_data, str):
             import json
@@ -419,19 +422,12 @@ def send_to_kitchen(order_data=None):
         }
         
     except Exception as e:
+        import traceback
         error_msg = str(e)
-        stack_trace = traceback.format_exc()
-        # Log only the most relevant part of stack trace
-        relevant_lines = []
-        for line in stack_trace.split('\n'):
-            if 'restaurant.py' in line or 'Error' in line or 'line' in line:
-                relevant_lines.append(line)
-        short_stack = '\n'.join(relevant_lines[-10:])  # Last 10 relevant lines
-        
-        frappe.log_error(f"KDS Error: {error_msg}")
+        frappe.log_error(f"KDS Error: {error_msg}\n\n{traceback.format_exc()}")
         return {
             "success": False,
-            "message": f"{error_msg} (check logs for details)"
+            "message": error_msg
         }
 
 
