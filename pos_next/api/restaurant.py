@@ -293,10 +293,8 @@ def send_to_kitchen(order_data=None):
         
         
         if existing_invoice:
-            # Update existing invoice - get fresh copy with lock
-            invoice = frappe.get_doc("POS Invoice", existing_invoice[0].name, for_update=True)
-            # Reset modified timestamp to prevent version conflict
-            invoice.modified = frappe.utils.now()
+            # Update existing invoice
+            invoice = frappe.get_doc("POS Invoice", existing_invoice[0].name)
         else:
             # Create new invoice with required fields
             invoice = frappe.new_doc("POS Invoice")
@@ -375,14 +373,9 @@ def send_to_kitchen(order_data=None):
             except Exception as item_error:
                 raise
         
-        # Save invoice - use insert/update instead of save to avoid validation issues
-        try:
-            invoice.save(ignore_permissions=True)
-        except Exception as save_error:
-            # If save fails due to missing values, try with minimal validation
-            invoice.flags.ignore_mandatory = True
-            invoice.flags.ignore_validate = True
-            invoice.insert(ignore_permissions=True) if not invoice.name else invoice.save(ignore_permissions=True)
+        # Save invoice - ignore version to prevent conflict
+        invoice.flags.ignore_version = True
+        invoice.save(ignore_permissions=True)
         
         # Build KDS notification with item details
         kds_items = []
