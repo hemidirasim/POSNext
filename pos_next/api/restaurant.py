@@ -251,11 +251,24 @@ def send_to_kitchen(order_data=None):
     Returns:
         dict: { success: bool, invoice_name: str, message: str }
     """
+    import traceback
     try:
+        # Debug: Log request info
+        frappe.logger().info(f"[KDS DEBUG] ===== REQUEST INFO =====")
+        frappe.logger().info(f"[KDS DEBUG] frappe.form_dict: {frappe.form_dict}")
+        frappe.logger().info(f"[KDS DEBUG] frappe.request.method: {frappe.request.method if frappe.request else 'no request'}")
+        
         # Parse order_data if it's a string (JSON)
         if isinstance(order_data, str):
             import json
             order_data = json.loads(order_data)
+        
+        # If order_data is still None, try to get from form_dict
+        if order_data is None and 'order_data' in frappe.form_dict:
+            order_data = frappe.form_dict.get('order_data')
+            if isinstance(order_data, str):
+                import json
+                order_data = json.loads(order_data)
         
         frappe.logger().info(f"[KDS DEBUG] send_to_kitchen called with order_data type: {type(order_data)}")
         frappe.logger().info(f"[KDS DEBUG] order_data: {order_data}")
@@ -370,10 +383,14 @@ def send_to_kitchen(order_data=None):
         }
         
     except Exception as e:
-        frappe.log_error(f"Failed to send order to kitchen: {str(e)}")
+        error_msg = str(e)
+        stack_trace = traceback.format_exc()
+        frappe.logger().error(f"[KDS DEBUG] ERROR: {error_msg}")
+        frappe.logger().error(f"[KDS DEBUG] STACK TRACE: {stack_trace}")
+        frappe.log_error(f"Failed to send order to kitchen: {error_msg}\n\n{stack_trace}")
         return {
             "success": False,
-            "message": str(e)
+            "message": error_msg
         }
 
 
