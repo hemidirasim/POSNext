@@ -4,14 +4,14 @@
 			'border-yellow-300': order.kds_status === 'Pending' && !order.is_recently_modified,
 			'border-blue-400': order.kds_status === 'Preparing',
 			'border-green-500': order.kds_status === 'Ready',
-			'border-red-500 border-4 animate-pulse': order.is_recently_modified
-		}">
+			'border-red-500 border-4 animate-pulse': order.kds_status === 'Pending' && order.is_recently_modified
+	       }">
 
 		<!-- Card Header -->
 		<div class="px-4 py-3 border-b flex justify-between items-center"
 			:class="{
 				'bg-yellow-50 dark:bg-yellow-900/30': order.kds_status === 'Pending' && !order.is_recently_modified,
-				'bg-red-100 dark:bg-red-900/50': order.is_recently_modified,
+				'bg-red-100 dark:bg-red-900/50': order.kds_status === 'Pending' && order.is_recently_modified,
 				'bg-blue-50 dark:bg-blue-900/30': order.kds_status === 'Preparing',
 				'bg-green-50 dark:bg-green-900/30': order.kds_status === 'Ready'
 			}">
@@ -24,8 +24,8 @@
 				<div class="font-mono text-xl font-bold" :class="timeColorClass">
 					{{ elapsedTime }}
 				</div>
-				<!-- Modified badge -->
-				<span v-if="order.is_recently_modified" 
+				<!-- Modified badge - only show when Pending and recently modified -->
+				<span v-if="order.kds_status === 'Pending' && order.is_recently_modified" 
 					class="text-[10px] uppercase font-bold tracking-wider rounded-full px-2 py-0.5 bg-red-500 text-white animate-pulse mb-1 inline-block">
 					{{ __("MODIFIED") }}
 				</span>

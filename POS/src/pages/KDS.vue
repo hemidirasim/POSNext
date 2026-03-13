@@ -154,6 +154,11 @@ function setupSocket() {
 		const index = orders.value.findIndex(o => o.name === data.order_id)
 		if (index !== -1) {
 			orders.value[index].kds_status = data.status
+				// Clear recently modified flag when status changes from Pending
+				// This removes the red border/pulse animation
+				if (data.status !== 'Pending') {
+					orders.value[index].is_recently_modified = false
+				}
 		} else {
 			// Order not in list, reload all
 			loadOrders()
