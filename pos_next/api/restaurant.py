@@ -293,8 +293,9 @@ def send_to_kitchen(order_data=None):
         
         
         if existing_invoice:
-            # Update existing invoice
+            # Update existing invoice - reload to get fresh data
             invoice = frappe.get_doc("POS Invoice", existing_invoice[0].name)
+            invoice.reload()  # Prevent version conflict
         else:
             # Create new invoice with required fields
             invoice = frappe.new_doc("POS Invoice")
