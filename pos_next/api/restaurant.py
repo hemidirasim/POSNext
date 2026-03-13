@@ -137,7 +137,6 @@ def get_kds_orders():
             fields=["name", "restaurant_table", "kds_status", "docstatus"],
             filters={"restaurant_table": ["is", "set"]}
         )
-        frappe.logger().info(f"[KDS DEBUG] All POS Invoices with table: {all_with_table}")
         
         # Get active orders from POS Invoice
         orders = frappe.get_all(
@@ -155,7 +154,6 @@ def get_kds_orders():
             order_by="creation asc"  # Oldest first
         )
         
-        frappe.logger().info(f"[KDS DEBUG] Filtered orders: {len(orders)}")
         
         # Get items for each order
         for order in orders:
@@ -251,15 +249,7 @@ def send_to_kitchen(order_data=None):
     Returns:
         dict: { success: bool, invoice_name: str, message: str }
     """
-    import traceback
     try:
-        # Debug: Log request info (truncated to avoid CharacterLengthExceededError)
-        frappe.logger().info(f"[KDS DEBUG] ===== REQUEST INFO =====")
-        form_dict_str = str(frappe.form_dict)[:500] if frappe.form_dict else "empty"
-        frappe.logger().info(f"[KDS DEBUG] frappe.form_dict: {form_dict_str}...")
-        method = frappe.request.method if frappe.request else 'no request'
-        frappe.logger().info(f"[KDS DEBUG] method: {method}")
-        
         # Parse order_data if it's a string (JSON)
         if isinstance(order_data, str):
             import json
@@ -272,10 +262,6 @@ def send_to_kitchen(order_data=None):
                 import json
                 order_data = json.loads(order_data)
         
-        frappe.logger().info(f"[KDS DEBUG] send_to_kitchen called with order_data type: {type(order_data)}")
-        order_data_str = str(order_data)[:500] if order_data else "None"
-        frappe.logger().info(f"[KDS DEBUG] order_data: {order_data_str}...")
-        
         if not order_data:
             frappe.throw(_("Order data is required"))
         
@@ -283,7 +269,6 @@ def send_to_kitchen(order_data=None):
         table_display_name = order_data.get("table_name")
         items = order_data.get("items", [])
         
-        frappe.logger().info(f"[KDS DEBUG] table_name: {table_name}, items: {len(items)}")
         
         if not table_name:
             frappe.throw(_("Table is required"))
@@ -303,15 +288,12 @@ def send_to_kitchen(order_data=None):
             limit=1
         )
         
-        frappe.logger().info(f"[KDS DEBUG] existing_invoice: {existing_invoice}")
         
         if existing_invoice:
             # Update existing invoice
             invoice = frappe.get_doc("POS Invoice", existing_invoice[0].name)
-            frappe.logger().info(f"[KDS DEBUG] Updating existing invoice: {invoice.name}")
         else:
             # Create new invoice with required fields
-            frappe.logger().info(f"[KDS DEBUG] Creating new invoice with required fields")
             invoice = frappe.new_doc("POS Invoice")
             
             # Get default values - find any active customer
@@ -323,7 +305,6 @@ def send_to_kitchen(order_data=None):
             if not default_pos_profile:
                 # List all profiles for debugging
                 all_profiles = frappe.get_all("POS Profile", fields=["name", "disabled", "company"])
-                frappe.logger().error(f"[KDS DEBUG] No active POS Profile found. All profiles: {all_profiles}")
             
             today = frappe.utils.today()
             
@@ -337,50 +318,33 @@ def send_to_kitchen(order_data=None):
             invoice.restaurant_table = table_name
             invoice.kds_status = "Pending"
             
-            frappe.logger().info(f"[KDS DEBUG] company: {default_company}, pos_profile: {default_pos_profile}")
         
         # Add items to invoice
-        frappe.logger().info(f"[KDS DEBUG] Step 1: About to check items length")
         item_count = len(items)
-        frappe.logger().info(f"[KDS DEBUG] Step 2: Items count: {item_count}")
         
-        frappe.logger().info(f"[KDS DEBUG] Step 3: About to check invoice.items")
-        frappe.logger().info(f"[KDS DEBUG] Step 3a: invoice type: {type(invoice)}")
-        frappe.logger().info(f"[KDS DEBUG] Step 3b: invoice.items type: {type(invoice.items)}")
-        frappe.logger().info(f"[KDS DEBUG] Step 3c: invoice.items value: {invoice.items}")
         
         # Ensure invoice.items is a list (not None)
         if invoice.items is None:
-            frappe.logger().info(f"[KDS DEBUG] Step 4: invoice.items is None, initializing")
             invoice.items = []
-            frappe.logger().info(f"[KDS DEBUG] Step 5: Initialized invoice.items")
         
-        frappe.logger().info(f"[KDS DEBUG] Step 6: About to start for loop")
-        frappe.logger().info(f"[KDS DEBUG] Step 6a: items type: {type(items)}")
-        frappe.logger().info(f"[KDS DEBUG] Step 6b: first item: {items[0] if items else 'no items'}")
         
         for idx, item_data in enumerate(items):
             try:
-                frappe.logger().info(f"[KDS DEBUG] Processing item {idx}: {item_data.get('item_code')}")
                 item_code = item_data.get("item_code")
                 qty = item_data.get("quantity", 1)
                 
                 # Check if item already exists in invoice
                 existing_item = None
-                frappe.logger().info(f"[KDS DEBUG] Checking existing items, count: {len(invoice.items)}")
                 for item in invoice.items:
                     if item.item_code == item_code:
                         existing_item = item
                         break
                 
                 if existing_item:
-                    frappe.logger().info(f"[KDS DEBUG] Updating existing item qty: {existing_item.qty} + {qty}")
                     existing_item.qty += qty
                 else:
-                    frappe.logger().info(f"[KDS DEBUG] Adding new item: {item_code}")
                     # Add new item
                     item_doc = frappe.get_doc("Item", item_code)
-                    frappe.logger().info(f"[KDS DEBUG] Got item_doc: {item_doc.name if item_doc else 'None'}")
                     
                     invoice.append("items", {
                         "item_code": item_code,
@@ -390,16 +354,13 @@ def send_to_kitchen(order_data=None):
                         "rate": item_doc.standard_rate or 0,
                         "posa_special_instructions": item_data.get("special_instructions", "")
                     })
-                    frappe.logger().info(f"[KDS DEBUG] Item appended successfully")
             except Exception as item_error:
-                frappe.logger().error(f"[KDS DEBUG] Error processing item {idx}: {str(item_error)}")
                 raise
         
         # Save invoice - disable ERPNext auto-validations
         invoice.set_missing_values = lambda *args, **kwargs: None
         invoice.validate = lambda: None  # Skip ERPNext validation
         invoice.save(ignore_permissions=True)
-        frappe.logger().info(f"[KDS DEBUG] Invoice saved: {invoice.name}, kds_status: {invoice.kds_status}, table: {invoice.restaurant_table}")
         
         # Build KDS notification with item details
         kds_items = []
@@ -412,7 +373,6 @@ def send_to_kitchen(order_data=None):
                 "is_additional": item_data.get("total_quantity", 0) > item_data.get("quantity", 0)
             })
         
-        frappe.logger().info(f"[KDS DEBUG] Publishing realtime event to kds_room")
         
         # Notify KDS about the order
         frappe.publish_realtime(
@@ -428,7 +388,6 @@ def send_to_kitchen(order_data=None):
             room="kds_room"
         )
         
-        frappe.logger().info(f"[KDS DEBUG] Returning success response")
         
         return {
             "success": True,
@@ -446,8 +405,6 @@ def send_to_kitchen(order_data=None):
                 relevant_lines.append(line)
         short_stack = '\n'.join(relevant_lines[-10:])  # Last 10 relevant lines
         
-        frappe.logger().error(f"[KDS DEBUG] ERROR: {error_msg}")
-        frappe.logger().error(f"[KDS DEBUG] STACK: {short_stack}")
         frappe.log_error(f"KDS Error: {error_msg}")
         return {
             "success": False,
