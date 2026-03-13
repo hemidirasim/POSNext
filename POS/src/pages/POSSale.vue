@@ -1282,6 +1282,8 @@ async function handleSendToKitchen() {
 	}
 	
 	console.log('[DEBUG] Items to send:', itemsToSend);
+	console.log('[DEBUG] restaurantStore:', restaurantStore);
+	console.log('[DEBUG] sendToKitchen function:', typeof restaurantStore.sendToKitchen);
 	
 	try {
 		// Prepare order data for KDS
@@ -1293,8 +1295,10 @@ async function handleSendToKitchen() {
 			status: 'Pending'
 		};
 		
+		console.log('[DEBUG] orderData prepared:', orderData);
+		
 		// Send to kitchen via restaurant store
-		console.log('[DEBUG] Calling sendToKitchen API...');
+		console.log('[DEBUG] About to call sendToKitchen...');
 		const result = await restaurantStore.sendToKitchen(orderData);
 		console.log('[DEBUG] API result:', result);
 		
