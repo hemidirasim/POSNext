@@ -238,6 +238,11 @@ doc_events = {
 	}
 }
 
+socketio_event_handlers = {
+	"join_kds_room": "pos_next.api.restaurant.join_kds_room",
+	"leave_kds_room": "pos_next.api.restaurant.leave_kds_room"
+}
+
 # Scheduled Tasks
 # ---------------
 

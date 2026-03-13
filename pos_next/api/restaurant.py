@@ -406,3 +406,36 @@ def get_cfd_order(order_id):
     except Exception as e:
         frappe.log_error(f"Failed to get CFD order: {str(e)}")
         return None
+
+
+@frappe.whitelist(allow_guest=True)
+def join_kds_room():
+    """KDS səhifəsini 'kds_room' otağına əlavə et"""
+    try:
+        if frappe.request:
+            # Note: This requires a custom socket.io setup or specific Frappe version
+            if hasattr(frappe, "socketio"):
+                frappe.socketio.join_room("kds_room")
+                return {"success": True}
+            
+            # Standard Frappe way is usually for client to join via socket.emit('join_room', 'room_name')
+            return {"success": False, "error": "frappe.socketio not found"}
+    except Exception as e:
+        frappe.log_error(f"Failed to join KDS room: {str(e)}")
+        return {"success": False, "error": str(e)}
+    return {"success": False, "error": "No socket connection"}
+
+@frappe.whitelist(allow_guest=True)  
+def leave_kds_room():
+    """KDS səhifəsini 'kds_room' otağından çıxar"""
+    try:
+        if frappe.request:
+            if hasattr(frappe, "socketio"):
+                frappe.socketio.leave_room("kds_room")
+                return {"success": True}
+            return {"success": False, "error": "frappe.socketio not found"}
+    except Exception as e:
+        frappe.log_error(f"Failed to leave KDS room: {str(e)}")
+        return {"success": False, "error": str(e)}
+    return {"success": False, "error": "No socket connection"}
+
