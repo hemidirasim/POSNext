@@ -1193,6 +1193,7 @@ function saveTableDraftForTable(tableName) {
 // Save current cart as draft for current table
 function saveTableDraft() {
 	console.log('[DEBUG] saveTableDraft called, table:', cartStore.restaurantTable?.name, 'items:', cartStore.invoiceItems.length);
+	console.log('[DEBUG] saveTableDraft caller:', new Error().stack);
 	saveTableDraftForTable(cartStore.restaurantTable?.name);
 }
 
@@ -1247,12 +1248,16 @@ function clearTableDraft(tableName) {
 
 // Send order to kitchen (KDS)
 async function handleSendToKitchen() {
-	console.log('[DEBUG] handleSendToKitchen called');
+	console.log('[DEBUG] ========================================');
+	console.log('[DEBUG] handleSendToKitchen START');
+	console.log('[DEBUG] ========================================');
 	
-	if (!cartStore.restaurantTable) {
-		showError(__('No table selected'));
-		return;
-	}
+	try {
+		if (!cartStore.restaurantTable) {
+			console.log('[DEBUG] No table selected, returning');
+			showError(__('No table selected'));
+			return;
+		}
 	
 	// Calculate pending quantities for each item
 	// posa_sent_qty = already sent to kitchen
@@ -1327,6 +1332,13 @@ async function handleSendToKitchen() {
 		console.error('[DEBUG] Error details:', error.message, error.stack);
 		showError(__('Error sending to kitchen: {0}', [error.message]));
 	}
+	} catch (outerError) {
+		console.error('[DEBUG] CRITICAL ERROR in handleSendToKitchen:', outerError);
+		showError(__('Critical error: {0}', [outerError.message]));
+	}
+	console.log('[DEBUG] ========================================');
+	console.log('[DEBUG] handleSendToKitchen END');
+	console.log('[DEBUG] ========================================');
 }
 
 // Debounce timer for offer reapplication
