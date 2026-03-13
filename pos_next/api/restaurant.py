@@ -334,11 +334,13 @@ def send_to_kitchen(order_data=None):
             invoice.restaurant_table = table_name
             invoice.kds_status = "Pending"
             
-            # Add a dummy payment to satisfy POS Invoice validation
-            # This will be removed during actual checkout
+            # Initialize payments list and add dummy payment
+            if not invoice.payments:
+                invoice.payments = []
             invoice.append("payments", {
                 "mode_of_payment": "Cash",
-                "amount": 0
+                "amount": 0,
+                "base_amount": 0
             })
             
         
