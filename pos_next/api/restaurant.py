@@ -314,8 +314,8 @@ def send_to_kitchen(order_data=None):
             frappe.logger().info(f"[KDS DEBUG] Creating new invoice with required fields")
             invoice = frappe.new_doc("POS Invoice")
             
-            # Get default values
-            default_customer = frappe.defaults.get_user_default("Customer") or "Walk-in Customer"
+            # Get default values - find any active customer
+            default_customer = frappe.defaults.get_user_default("Customer") or frappe.db.get_value("Customer", {"disabled": 0}, "name")
             default_company = frappe.defaults.get_user_default("Company") or frappe.db.get_single_value("Global Defaults", "default_company")
             
             # Try to find any active POS Profile
