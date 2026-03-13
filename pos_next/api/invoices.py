@@ -1026,6 +1026,16 @@ def update_invoice(data):
         frappe.flags.ignore_account_permission = True
         invoice_doc.docstatus = 0
         invoice_doc.save()
+        
+        # Notify KDS if this is a restaurant order (has restaurant_table)
+        if invoice_doc.get("restaurant_table") and not invoice_doc.get("is_return"):
+            try:
+                from pos_next.api.restaurant import notify_kds_new_order
+                # Ensure we have the latest name if it was newly created
+                notify_kds_new_order(invoice_doc.name)
+            except Exception as kds_error:
+                # Don't fail the invoice if KDS notification fails
+                frappe.log_error(f"KDS notification failed for {invoice_doc.name}: {kds_error}")
 
         return invoice_doc.as_dict()
     except Exception as e:

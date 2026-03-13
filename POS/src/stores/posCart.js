@@ -106,6 +106,7 @@ export const usePOSCartStore = defineStore("posCart", () => {
 		applyOffersResource,
 		getItemDetailsResource,
 		resolveUomPricing,
+		updateInvoiceResource,
 		recalculateItem,
 		rebuildIncrementalCache,
 		formatItemsForSubmission,
@@ -121,6 +122,7 @@ export const usePOSCartStore = defineStore("posCart", () => {
 	const appliedCoupon = ref(null)
 	const selectionMode = ref("uom") // 'uom' or 'variant'
 	const currentDraftId = ref(null)
+	const serverInvoiceName = ref(null)
 	const targetDoctype = ref("Sales Invoice")
 
 	// Offer processing state management
@@ -261,6 +263,7 @@ export const usePOSCartStore = defineStore("posCart", () => {
 		appliedOffers.value = []
 		appliedCoupon.value = null
 		currentDraftId.value = null
+		serverInvoiceName.value = null
 		targetDoctype.value = "Sales Invoice"
 		restaurantTable.value = null
 		kdsStatus.value = "Pending"
@@ -1757,6 +1760,7 @@ export const usePOSCartStore = defineStore("posCart", () => {
 		appliedCoupon,
 		selectionMode,
 		currentDraftId,
+		serverInvoiceName,
 		offerProcessingState, // Offer processing state for UI feedback
 
 		// Computed
@@ -1788,6 +1792,7 @@ export const usePOSCartStore = defineStore("posCart", () => {
 		updateItemDetails,
 		getItemDetailsResource,
 		resolveUomPricing,
+		updateInvoiceResource,
 		recalculateItem,
 		rebuildIncrementalCache,
 		applyOffersResource,

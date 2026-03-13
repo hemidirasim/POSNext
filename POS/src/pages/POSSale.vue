@@ -1306,26 +1306,54 @@ async function handleSendToKitchen() {
 		
 		console.log('[DEBUG] orderData prepared:', orderData);
 		
-		// Send to kitchen via restaurant store
-		console.log('[DEBUG] About to call sendToKitchen...');
-		const result = await restaurantStore.sendToKitchen(orderData);
-		console.log('[DEBUG] API result:', result);
-		
-		if (result.success) {
-			// Update sent_qty for each item
-			for (const item of cartStore.invoiceItems) {
-				const sentItem = itemsToSend.find(s => s.item_code === item.item_code && s.uom === item.uom);
-				if (sentItem) {
-					item.posa_sent_qty = (item.posa_sent_qty || 0) + sentItem.quantity;
+		// Prepare and send to kitchen via backend
+		if (navigator.onLine) {
+			const invoiceData = {
+				doctype: cartStore.targetDoctype,
+				name: cartStore.serverInvoiceName,
+				pos_profile: cartStore.posProfile,
+				posa_pos_opening_shift: cartStore.posOpeningShift,
+				customer: cartStore.customer?.name || cartStore.customer,
+				restaurant_table: cartStore.restaurantTable?.name,
+				kds_status: 'Pending',
+				items: cartStore.formatItemsForSubmission(cartStore.invoiceItems),
+			};
+
+			const result = await cartStore.updateInvoiceResource.submit({ data: invoiceData });
+			
+			if (result && (result.name || result.data?.name)) {
+				const invoiceName = result.name || result.data?.name;
+				cartStore.serverInvoiceName = invoiceName;
+				
+				// Update sent_qty for each item locally
+				for (const item of cartStore.invoiceItems) {
+					const sentItem = itemsToSend.find(s => s.item_code === item.item_code && s.uom === item.uom);
+					if (sentItem) {
+						item.posa_sent_qty = (item.posa_sent_qty || 0) + sentItem.quantity;
+					}
 				}
+				
+				// Save updated draft locally
+				saveTableDraft();
+				
+				showSuccess(__('Order sent to kitchen and saved successfully'));
+			} else {
+				showError(__('Failed to save order to server'));
 			}
-			
-			// Save updated draft
-			saveTableDraft();
-			
-			showSuccess(__('Order sent to kitchen successfully'));
 		} else {
-			showError(result.message || __('Failed to send to kitchen'));
+			// Fallback to legacy volatile notification if offline (KDS might not see it later)
+			const result = await restaurantStore.sendToKitchen(orderData);
+			if (result.success) {
+				// Update sent_qty locally
+				for (const item of cartStore.invoiceItems) {
+					const sentItem = itemsToSend.find(s => s.item_code === item.item_code && s.uom === item.uom);
+					if (sentItem) {
+						item.posa_sent_qty = (item.posa_sent_qty || 0) + sentItem.quantity;
+					}
+				}
+				saveTableDraft();
+				showWarning(__('Sent to kitchen (local only - offline)'));
+			}
 		}
 	} catch (error) {
 		console.error('[DEBUG] Send to kitchen error:', error);

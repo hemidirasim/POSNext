@@ -280,12 +280,21 @@ def send_to_kitchen(order_data=None):
             "timestamp": frappe.utils.now()
         }
         
-        # Send to KDS - broadcast to all connected clients (no room)
+        # Send to KDS - try different methods
         try:
+            # Method 1: Standard publish_realtime
             frappe.publish_realtime(
                 event="kds_new_order",
-                message=message_data
+                message=message_data,
+                user="Guest"  # Explicitly set user
             )
+            
+            # Method 2: After commit
+            frappe.db.after_commit.add(lambda: frappe.publish_realtime(
+                event="kds_new_order", 
+                message=message_data
+            ))
+            
         except Exception as e:
             frappe.log_error(f"KDS publish error: {str(e)[:200]}")
         
@@ -318,10 +327,18 @@ def notify_kds_new_order(invoice_name):
             message={
                 "order_id": invoice_name,
                 "table": order.restaurant_table,
-                "items_count": len(order.items),
-                "timestamp": frappe.utils.now()
-            },
-            room="kds_room"
+                "items": [
+                    {
+                        "item_code": item.item_code,
+                        "item_name": item.item_name,
+                        "qty": item.qty,
+                        "description": item.description,
+                        "posa_special_instructions": item.get("posa_special_instructions")
+                    } for item in order.items
+                ],
+                "status": order.kds_status or "Pending",
+                "timestamp": str(order.creation)
+            }
         )
         
     except Exception as e:
