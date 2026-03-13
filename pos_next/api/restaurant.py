@@ -373,11 +373,17 @@ def send_to_kitchen(order_data=None):
             except Exception as item_error:
                 raise
         
-        # Save invoice - ignore all validations for KDS flow
-        invoice.flags.ignore_version = True
-        invoice.flags.ignore_mandatory = True
-        invoice.flags.ignore_validate = True
-        invoice.save(ignore_permissions=True, ignore_version=True)
+        # Save invoice - check POS Opening Entry first
+        try:
+            invoice.save(ignore_permissions=True)
+        except Exception as save_error:
+            error_str = str(save_error)
+            if "POS Opening Entry" in error_str or "No open POS" in error_str:
+                return {
+                    "success": False,
+                    "message": _("Please open a POS Opening Entry first. Go to POS > POS Opening Entry > New")
+                }
+            raise
         
         # Build KDS notification with item details
         kds_items = []
