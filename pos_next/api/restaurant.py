@@ -389,13 +389,22 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
                 "is_additional": True
             })
         else:
-            # Get item defaults
+            # Get item defaults (income_account is in Item Default child table, not Item)
             item_defaults = frappe.db.get_value(
                 "Item",
                 new_item.get('item_code'),
-                ["item_name", "stock_uom", "income_account"],
+                ["item_name", "stock_uom"],
                 as_dict=True
             ) or {}
+            
+            # Get income account from Item Default child table if not already set
+            item_income_account = None
+            if not income_account:
+                item_income_account = frappe.db.get_value(
+                    "Item Default",
+                    {"parent": new_item.get('item_code'), "parenttype": "Item", "company": invoice.company},
+                    "income_account"
+                )
             
             # Get warehouse from POS Profile or item
             warehouse = new_item.get('warehouse')
@@ -416,7 +425,7 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
                 "price_list_rate": flt(new_item.get('price_list_rate', new_item.get('rate', 0))),
                 "discount_percentage": flt(new_item.get('discount_percentage', 0)),
                 "discount_amount": flt(new_item.get('discount_amount', 0)),
-                "income_account": income_account or item_defaults.get('income_account'),
+                "income_account": income_account or item_income_account,
                 "allow_zero_valuation_rate": 1  # Allow items without valuation rate
             }
             
