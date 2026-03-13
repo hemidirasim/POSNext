@@ -298,6 +298,12 @@ def send_to_kitchen(order_data=None):
             
             # Get default values - find any active customer
             default_customer = frappe.defaults.get_user_default("Customer") or frappe.db.get_value("Customer", {"disabled": 0}, "name")
+            if not default_customer:
+                return {
+                    "success": False,
+                    "message": _("No active Customer found. Please create a Customer first.")
+                }
+            
             default_company = frappe.defaults.get_user_default("Company") or frappe.db.get_single_value("Global Defaults", "default_company")
             
             # Try to find any active POS Profile
@@ -307,6 +313,13 @@ def send_to_kitchen(order_data=None):
                 all_profiles = frappe.get_all("POS Profile", fields=["name", "disabled", "company"])
             
             today = frappe.utils.today()
+            
+            # Validate customer exists
+            if not default_customer:
+                return {
+                    "success": False,
+                    "message": _("No active Customer found. Please create a Customer in ERPNext.")
+                }
             
             # Set required fields - pos_profile is optional
             invoice.customer = default_customer
