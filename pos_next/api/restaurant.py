@@ -338,7 +338,8 @@ def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile
                     "price_list_rate": flt(new_item.get('price_list_rate', new_item.get('rate', 0))),
                     "discount_percentage": flt(new_item.get('discount_percentage', 0)),
                     "discount_amount": flt(new_item.get('discount_amount', 0)),
-                    "income_account": income_account or item_defaults.get('income_account')
+                    "income_account": income_account or item_defaults.get('income_account'),
+                    "allow_zero_valuation_rate": 1  # Allow items without valuation rate
                 }
                 
                 invoice.append("items", item_dict)
