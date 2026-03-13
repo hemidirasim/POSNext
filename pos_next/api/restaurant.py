@@ -414,7 +414,12 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     current_status = invoice.get('kds_status') or 'Pending'
     was_modified = current_status != 'Pending'
     if was_modified and new_items:
+        frappe.logger().info(f"[KDS] Resetting status from {current_status} to Pending for invoice {invoice.name}")
         invoice.kds_status = 'Pending'
+        # Ensure the field is marked as dirty for saving
+        invoice._doc_before_save = None
+    else:
+        frappe.logger().info(f"[KDS] No status change needed. Current: {current_status}, was_modified: {was_modified}, new_items: {len(new_items) if new_items else 0}")
     
     # Get income account from Mode of Payment or Company
     income_account = None
@@ -524,6 +529,9 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     
     # Save invoice (draft)
     invoice.save(ignore_permissions=True)
+    
+    # Verify status was saved
+    frappe.logger().info(f"[KDS] Invoice {invoice.name} saved with status: {invoice.kds_status}")
     
     # Notify KDS about new items
     if sent_items:
