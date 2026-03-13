@@ -160,6 +160,42 @@ function setupSocket() {
 		}
 	})
 	
+	// Listen for partial orders (new items added to existing order)
+	socket.on("kds_partial_order", (data) => {
+		console.log("[KDS] Partial order received:", data)
+		const index = orders.value.findIndex(o => o.name === data.order_id)
+		if (index !== -1) {
+			// Existing order - mark as recently modified and update items
+			orders.value[index].is_recently_modified = true
+			orders.value[index].kds_status = "Pending"  // Reset to pending
+			// Add new items to the order
+			if (data.items) {
+				for (const newItem of data.items) {
+					const existingItem = orders.value[index].items.find(
+						i => i.item_code === newItem.item_code
+					)
+					if (existingItem && newItem.is_additional) {
+						existingItem.qty += newItem.qty
+					} else {
+						orders.value[index].items.push({
+							item_code: newItem.item_code,
+							item_name: newItem.item_name,
+							qty: newItem.qty,
+							posa_special_instructions: newItem.instructions
+						})
+					}
+				}
+			}
+			// Play notification sound for reactivated orders
+			if (data.is_reactivated) {
+				playNotificationSound()
+			}
+		} else {
+			// New order not in list, reload from backend
+			loadOrders()
+		}
+	})
+	
 	// Listen for completed orders (remove from display)
 	socket.on("kds_order_completed", (data) => {
 		console.log("[KDS] Order completed:", data)

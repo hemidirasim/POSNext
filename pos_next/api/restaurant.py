@@ -527,24 +527,7 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     
     # Notify KDS about new items
     if sent_items:
-        notify_kds_partial_order(invoice.name, sent_items, table_name or invoice.restaurant_table)
-    
-    # If invoice was delivered and now has new items, notify KDS about status change
-    # This ensures the order reappears in the kitchen display
-    if was_delivered and sent_items:
-        try:
-            frappe.publish_realtime(
-                event="kds_status_update",
-                message={
-                    "order_id": invoice.name,
-                    "status": "Pending",
-                    "table": table_name or invoice.restaurant_table,
-                    "reason": "new_items_added"
-                },
-                room="kds_room"
-            )
-        except Exception:
-            pass  # Non-critical notification
+        notify_kds_partial_order(invoice.name, sent_items, table_name or invoice.restaurant_table, was_delivered)
     
     return {
         "success": True,
@@ -555,7 +538,7 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     }
 
 
-def notify_kds_partial_order(invoice_name, sent_items, table_name):
+def notify_kds_partial_order(invoice_name, sent_items, table_name, is_reactivated=False):
     """Notify KDS about new/additional items (not entire order)."""
     try:
         table_display = table_name
@@ -570,7 +553,8 @@ def notify_kds_partial_order(invoice_name, sent_items, table_name):
                 "order_id": invoice_name,
                 "table": table_display,
                 "items": sent_items,
-                "timestamp": str(frappe.utils.now())
+                "timestamp": str(frappe.utils.now()),
+                "is_reactivated": is_reactivated  # True if delivered order got new items
             },
             room="kds_room"
         )
@@ -613,6 +597,9 @@ def get_kds_orders():
         
         # Enrich with table name and items
         enriched_orders = []
+        now = frappe.utils.now()
+        now_dt = frappe.utils.get_datetime(now)
+        
         for order in orders:
             # Get table display name
             if order.restaurant_table:
@@ -622,6 +609,11 @@ def get_kds_orders():
                     "table_name"
                 )
                 order.table_display = table_name or order.restaurant_table
+            
+            # Check if order was modified in last 5 minutes (new items added)
+            modified_dt = frappe.utils.get_datetime(order.modified)
+            minutes_since_modified = (now_dt - modified_dt).total_seconds() / 60
+            order.is_recently_modified = minutes_since_modified < 5
             
             # Get order items
             invoice = frappe.get_doc("POS Invoice", order.name)
