@@ -71,7 +71,10 @@ async function loadOrders() {
 		const res = await call("pos_next.api.restaurant.get_kds_orders")
 		
 		if (res) {
-			orders.value = res
+			// Keep KDS-only orders (realtime orders not yet saved as POS Invoice)
+			const kdsOnlyOrders = orders.value.filter(o => o.is_kds_only)
+			// Merge backend orders with KDS-only orders
+			orders.value = [...res, ...kdsOnlyOrders]
 		}
 	} catch (error) {
 		console.error("Failed to load KDS orders:", error)
@@ -116,8 +119,18 @@ function setupSocket() {
 		console.log("New KDS order received:", data)
 		// Play notification sound
 		playNotificationSound()
-		// Reload orders
-		loadOrders()
+		// Add order to local list (don't reload from backend - order is not saved as POS Invoice)
+		const newOrder = {
+			name: data.order_id,
+			restaurant_table: data.table,
+			kds_status: data.status || "Pending",
+			items: data.items || [],
+			creation: data.timestamp,
+			is_kds_only: true  // Flag to identify KDS-only orders
+		}
+		orders.value.push(newOrder)
+		// Sort by creation time
+		orders.value.sort((a, b) => new Date(a.creation) - new Date(b.creation))
 	})
 	
 	// Listen for status updates
