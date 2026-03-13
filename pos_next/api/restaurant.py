@@ -219,163 +219,191 @@ def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile
     Returns:
         dict: { success, invoice_name, new_items_count, sent_items: [...] }
     """
-    try:
-        if isinstance(new_items, str):
-            import json
-            new_items = json.loads(new_items)
-        
-        if not invoice_name and not table_name:
-            return {"success": False, "message": _("Invoice or table required")}
-        
-        # Get or create invoice
-        if invoice_name and frappe.db.exists("POS Invoice", invoice_name):
-            invoice = frappe.get_doc("POS Invoice", invoice_name)
-        else:
-            # Create new invoice for table - get defaults from POS Profile
-            if not pos_profile:
-                # Try to get pos_profile from table or user
-                return {"success": False, "message": _("POS Profile required for new invoice")}
-            
-            # Get POS Profile defaults
-            profile = frappe.get_doc("POS Profile", pos_profile)
-            
-            # Create new invoice with required fields
-            invoice = frappe.new_doc("POS Invoice")
-            invoice.restaurant_table = table_name
-            invoice.pos_profile = pos_profile
-            invoice.is_pos = 1
-            invoice.update_stock = 1
-            
-            # Set required fields from POS Profile
-            invoice.company = profile.company
-            invoice.customer = customer or profile.customer
-            invoice.currency = profile.currency
-            invoice.conversion_rate = 1.0
-            invoice.selling_price_list = profile.selling_price_list
-            invoice.price_list_currency = profile.currency
-            invoice.plc_conversion_rate = 1.0
-            
-            # Set posting date
-            invoice.posting_date = frappe.utils.nowdate()
-            invoice.posting_time = frappe.utils.nowtime()
-            
-            # Set taxes if configured
-            if profile.taxes:
-                for tax in profile.taxes:
-                    invoice.append("taxes", {
-                        "charge_type": tax.charge_type,
-                        "account_head": tax.account_head,
-                        "rate": tax.rate,
-                        "description": tax.description
-                    })
-        
-        # Ensure customer is set
-        if not invoice.customer:
-            return {"success": False, "message": _("Customer is required")}
-        
-        # Track which items are new (for kitchen notification)
-        sent_items = []
-        existing_items = {f"{i.item_code}-{i.uom}": i for i in invoice.items}
-        
-        # Get income account from POS Profile or Company
-        income_account = None
-        if invoice.pos_profile:
-            profile_doc = frappe.get_doc("POS Profile", invoice.pos_profile)
-            if profile_doc.payments:
-                income_account = profile_doc.payments[0].default_account
-        
-        if not income_account:
-            income_account = frappe.db.get_value("Company", invoice.company, "default_income_account")
-        
-        for new_item in new_items:
-            item_key = f"{new_item.get('item_code')}-{new_item.get('uom')}"
-            qty = flt(new_item.get('quantity', 1))
-            
-            if qty <= 0:
+    import time
+    
+    if isinstance(new_items, str):
+        import json
+        new_items = json.loads(new_items)
+    
+    if not invoice_name and not table_name:
+        return {"success": False, "message": _("Invoice or table required")}
+    
+    # Retry logic for race condition handling
+    max_retries = 3
+    retry_delay = 0.5
+    
+    for attempt in range(max_retries):
+        try:
+            return _merge_items_to_invoice_impl(
+                invoice_name, new_items, table_name, pos_profile, customer
+            )
+        except frappe.exceptions.TimestampMismatchError:
+            # Document was modified by another request, retry
+            if attempt < max_retries - 1:
+                frappe.db.commit()
+                time.sleep(retry_delay)
                 continue
-            
-            if item_key in existing_items:
-                # Update existing item quantity
-                existing = existing_items[item_key]
-                old_qty = flt(existing.qty)
-                new_qty = old_qty + qty
-                existing.qty = new_qty
-                existing.amount = flt(new_qty * existing.rate)
-                
-                # Only send the additional quantity to kitchen
-                sent_items.append({
-                    "item_code": new_item.get('item_code'),
-                    "item_name": new_item.get('item_name'),
-                    "qty": qty,
-                    "instructions": new_item.get('posa_special_instructions', ''),
-                    "is_additional": True
-                })
             else:
-                # Get item defaults
-                item_defaults = frappe.db.get_value(
-                    "Item",
-                    new_item.get('item_code'),
-                    ["item_name", "stock_uom", "income_account"],
-                    as_dict=True
-                ) or {}
-                
-                # Get warehouse from POS Profile or item
-                warehouse = new_item.get('warehouse')
-                if not warehouse and invoice.pos_profile:
-                    warehouse = frappe.db.get_value("POS Profile", invoice.pos_profile, "warehouse")
-                
-                # Add new item with all required fields
-                item_dict = {
-                    "item_code": new_item.get('item_code'),
-                    "item_name": new_item.get('item_name') or item_defaults.get('item_name'),
-                    "qty": qty,
-                    "uom": new_item.get('uom') or item_defaults.get('stock_uom') or "Nos",
-                    "stock_uom": new_item.get('stock_uom') or item_defaults.get('stock_uom') or "Nos",
-                    "rate": flt(new_item.get('rate', 0)),
-                    "amount": flt(qty * flt(new_item.get('rate', 0))),
-                    "warehouse": warehouse,
-                    "posa_special_instructions": new_item.get('posa_special_instructions', ''),
-                    "price_list_rate": flt(new_item.get('price_list_rate', new_item.get('rate', 0))),
-                    "discount_percentage": flt(new_item.get('discount_percentage', 0)),
-                    "discount_amount": flt(new_item.get('discount_amount', 0)),
-                    "income_account": income_account or item_defaults.get('income_account'),
-                    "allow_zero_valuation_rate": 1  # Allow items without valuation rate
-                }
-                
-                invoice.append("items", item_dict)
-                
-                sent_items.append({
-                    "item_code": new_item.get('item_code'),
-                    "item_name": new_item.get('item_name') or item_defaults.get('item_name'),
-                    "qty": qty,
-                    "instructions": new_item.get('posa_special_instructions', ''),
-                    "is_additional": False
+                return {"success": False, "message": _("Table is busy, please try again")}
+        except Exception as e:
+            if attempt < max_retries - 1 and "Document has been modified" in str(e):
+                frappe.db.commit()
+                time.sleep(retry_delay)
+                continue
+            raise
+    
+    return {"success": False, "message": _("Failed to update table after retries")}
+
+
+def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_profile=None, customer=None):
+    """Internal implementation with retry support."""
+    
+    # Get or create invoice with lock
+    if invoice_name and frappe.db.exists("POS Invoice", invoice_name):
+        # Reload to get latest version
+        invoice = frappe.get_doc("POS Invoice", invoice_name)
+        invoice.reload()
+    else:
+        # Create new invoice for table - get defaults from POS Profile
+        if not pos_profile:
+            return {"success": False, "message": _("POS Profile required for new invoice")}
+        
+        # Get POS Profile defaults
+        profile = frappe.get_doc("POS Profile", pos_profile)
+        
+        # Create new invoice with required fields
+        invoice = frappe.new_doc("POS Invoice")
+        invoice.restaurant_table = table_name
+        invoice.pos_profile = pos_profile
+        invoice.is_pos = 1
+        invoice.update_stock = 1
+        
+        # Set required fields from POS Profile
+        invoice.company = profile.company
+        invoice.customer = customer or profile.customer
+        invoice.currency = profile.currency
+        invoice.conversion_rate = 1.0
+        invoice.selling_price_list = profile.selling_price_list
+        invoice.price_list_currency = profile.currency
+        invoice.plc_conversion_rate = 1.0
+        
+        # Set posting date
+        invoice.posting_date = frappe.utils.nowdate()
+        invoice.posting_time = frappe.utils.nowtime()
+        
+        # Set taxes if configured
+        if profile.taxes:
+            for tax in profile.taxes:
+                invoice.append("taxes", {
+                    "charge_type": tax.charge_type,
+                    "account_head": tax.account_head,
+                    "rate": tax.rate,
+                    "description": tax.description
                 })
+    
+    # Ensure customer is set
+    if not invoice.customer:
+        return {"success": False, "message": _("Customer is required")}
+    
+    # Track which items are new (for kitchen notification)
+    sent_items = []
+    existing_items = {f"{i.item_code}-{i.uom}": i for i in invoice.items}
+    
+    # Get income account from POS Profile or Company
+    income_account = None
+    if invoice.pos_profile:
+        profile_doc = frappe.get_doc("POS Profile", invoice.pos_profile)
+        if profile_doc.payments:
+            income_account = profile_doc.payments[0].default_account
+    
+    if not income_account:
+        income_account = frappe.db.get_value("Company", invoice.company, "default_income_account")
+    
+    for new_item in new_items:
+        item_key = f"{new_item.get('item_code')}-{new_item.get('uom')}"
+        qty = flt(new_item.get('quantity', 1))
         
-        if not invoice.items:
-            return {"success": False, "message": _("No items to add")}
+        if qty <= 0:
+            continue
         
-        # Set missing values and calculate totals
-        invoice.set_missing_values()
-        invoice.calculate_taxes_and_totals()
-        
-        # Save invoice (draft)
-        invoice.save(ignore_permissions=True)
-        
-        # Notify KDS about new items only
-        if sent_items:
-            notify_kds_partial_order(invoice.name, sent_items, table_name or invoice.restaurant_table)
-        
-        return {
-            "success": True,
-            "invoice_name": invoice.name,
-            "new_items_count": len(sent_items),
-            "sent_items": sent_items
-        }
-        
-    except Exception as e:
-        frappe.log_error(f"Failed to merge items: {frappe.get_traceback()}")
-        return {"success": False, "message": str(e)}
+        if item_key in existing_items:
+            # Update existing item quantity
+            existing = existing_items[item_key]
+            old_qty = flt(existing.qty)
+            new_qty = old_qty + qty
+            existing.qty = new_qty
+            existing.amount = flt(new_qty * existing.rate)
+            
+            # Only send the additional quantity to kitchen
+            sent_items.append({
+                "item_code": new_item.get('item_code'),
+                "item_name": new_item.get('item_name'),
+                "qty": qty,
+                "instructions": new_item.get('posa_special_instructions', ''),
+                "is_additional": True
+            })
+        else:
+            # Get item defaults
+            item_defaults = frappe.db.get_value(
+                "Item",
+                new_item.get('item_code'),
+                ["item_name", "stock_uom", "income_account"],
+                as_dict=True
+            ) or {}
+            
+            # Get warehouse from POS Profile or item
+            warehouse = new_item.get('warehouse')
+            if not warehouse and invoice.pos_profile:
+                warehouse = frappe.db.get_value("POS Profile", invoice.pos_profile, "warehouse")
+            
+            # Add new item with all required fields
+            item_dict = {
+                "item_code": new_item.get('item_code'),
+                "item_name": new_item.get('item_name') or item_defaults.get('item_name'),
+                "qty": qty,
+                "uom": new_item.get('uom') or item_defaults.get('stock_uom') or "Nos",
+                "stock_uom": new_item.get('stock_uom') or item_defaults.get('stock_uom') or "Nos",
+                "rate": flt(new_item.get('rate', 0)),
+                "amount": flt(qty * flt(new_item.get('rate', 0))),
+                "warehouse": warehouse,
+                "posa_special_instructions": new_item.get('posa_special_instructions', ''),
+                "price_list_rate": flt(new_item.get('price_list_rate', new_item.get('rate', 0))),
+                "discount_percentage": flt(new_item.get('discount_percentage', 0)),
+                "discount_amount": flt(new_item.get('discount_amount', 0)),
+                "income_account": income_account or item_defaults.get('income_account'),
+                "allow_zero_valuation_rate": 1  # Allow items without valuation rate
+            }
+            
+            invoice.append("items", item_dict)
+            
+            sent_items.append({
+                "item_code": new_item.get('item_code'),
+                "item_name": new_item.get('item_name') or item_defaults.get('item_name'),
+                "qty": qty,
+                "instructions": new_item.get('posa_special_instructions', ''),
+                "is_additional": False
+            })
+    
+    if not invoice.items:
+        return {"success": False, "message": _("No items to add")}
+    
+    # Set missing values and calculate totals
+    invoice.set_missing_values()
+    invoice.calculate_taxes_and_totals()
+    
+    # Save invoice (draft)
+    invoice.save(ignore_permissions=True)
+    
+    # Notify KDS about new items only
+    if sent_items:
+        notify_kds_partial_order(invoice.name, sent_items, table_name or invoice.restaurant_table)
+    
+    return {
+        "success": True,
+        "invoice_name": invoice.name,
+        "new_items_count": len(sent_items),
+        "sent_items": sent_items
+    }
 
 
 def notify_kds_partial_order(invoice_name, sent_items, table_name):
@@ -398,7 +426,7 @@ def notify_kds_partial_order(invoice_name, sent_items, table_name):
             room="kds_room"
         )
     except Exception as e:
-        frappe.log_error(f"KDS partial notify error: {str(e)}")
+        frappe.log_error(f"KDS partial notify error: {str(e)[:100]}")  # Truncate long errors
 
 
 @frappe.whitelist()
@@ -464,7 +492,7 @@ def get_kds_orders():
         return enriched_orders or []
         
     except Exception as e:
-        frappe.log_error(f"Failed to get KDS orders: {str(e)}")
+        frappe.log_error(f"Failed to get KDS orders: {str(e)[:100]}")  # Truncate long errors
         return []
 
 
@@ -525,7 +553,7 @@ def notify_kds_new_order(invoice_name):
         )
         
     except Exception as e:
-        frappe.log_error(f"Failed to notify KDS: {str(e)}")
+        frappe.log_error(f"Failed to notify KDS: {str(e)[:100]}")  # Truncate long errors
 
 
 @frappe.whitelist(allow_guest=True)
@@ -621,5 +649,5 @@ def close_table_invoice(invoice_name, payments=None, write_off_amount=0):
         }
         
     except Exception as e:
-        frappe.log_error(f"Failed to close invoice: {str(e)}")
+        frappe.log_error(f"Failed to close invoice: {str(e)[:100]}")  # Truncate long errors
         return {"success": False, "message": str(e)}
