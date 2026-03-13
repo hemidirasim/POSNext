@@ -310,13 +310,26 @@ def send_to_kitchen(order_data=None):
             invoice = frappe.get_doc("POS Invoice", existing_invoice[0].name)
             frappe.logger().info(f"[KDS DEBUG] Updating existing invoice: {invoice.name}")
         else:
-            # Create new invoice
-            frappe.logger().info(f"[KDS DEBUG] Creating new invoice")
+            # Create new invoice with required fields
+            frappe.logger().info(f"[KDS DEBUG] Creating new invoice with required fields")
             invoice = frappe.new_doc("POS Invoice")
+            
+            # Get default values
+            default_customer = frappe.defaults.get_user_default("Customer") or "Walk-in Customer"
+            default_company = frappe.defaults.get_user_default("Company") or frappe.db.get_single_value("Global Defaults", "default_company")
+            default_pos_profile = frappe.db.get_value("POS Profile", {"company": default_company, "disabled": 0}, "name")
+            today = frappe.utils.today()
+            
+            # Set required fields
+            invoice.customer = default_customer
+            invoice.company = default_company
+            invoice.pos_profile = default_pos_profile
+            invoice.posting_date = today
+            invoice.due_date = today
             invoice.restaurant_table = table_name
             invoice.kds_status = "Pending"
-            invoice.customer = frappe.defaults.get_user_default("Customer") or "Walk-in Customer"
-            frappe.logger().info(f"[KDS DEBUG] New invoice created: {invoice.name if invoice.name else 'not saved yet'}")
+            
+            frappe.logger().info(f"[KDS DEBUG] company: {default_company}, pos_profile: {default_pos_profile}")
         
         # Add items to invoice
         frappe.logger().info(f"[KDS DEBUG] Step 1: About to check items length")
