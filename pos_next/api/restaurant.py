@@ -122,6 +122,210 @@ def get_table_orders(table_name):
 
 
 @frappe.whitelist()
+def get_or_create_table_invoice(table_name, pos_profile, customer=None):
+    """
+    Get existing draft invoice for table or create new one.
+    Implements 'Running Tab' pattern - one table = one open invoice.
+    
+    Args:
+        table_name: Restaurant Table name
+        pos_profile: POS Profile name
+        customer: Customer name (optional)
+    
+    Returns:
+        dict: { invoice_name, items: [...], is_new: bool, ... }
+    """
+    try:
+        if not table_name:
+            return {"success": False, "message": _("Table name required")}
+        
+        # Look for existing draft invoice for this table
+        existing = frappe.get_all(
+            "POS Invoice",
+            filters={
+                "restaurant_table": table_name,
+                "docstatus": 0,
+                "status": ["!=", "Paid"],
+                "is_return": 0
+            },
+            fields=["name", "customer", "grand_total", "posting_time", "modified"],
+            order_by="creation desc",
+            limit=1
+        )
+        
+        if existing:
+            invoice_name = existing[0].name
+            # Get full invoice details with items
+            invoice = frappe.get_doc("POS Invoice", invoice_name)
+            
+            # Format items for frontend
+            items = []
+            for item in invoice.items:
+                items.append({
+                    "item_code": item.item_code,
+                    "item_name": item.item_name,
+                    "quantity": item.qty,
+                    "uom": item.uom,
+                    "rate": item.rate,
+                    "amount": item.amount,
+                    "stock_uom": item.stock_uom,
+                    "warehouse": item.warehouse,
+                    "posa_special_instructions": item.get("posa_special_instructions", ""),
+                    "posa_sent_qty": item.qty,  # Mark all as sent (already in kitchen)
+                    "price_list_rate": item.price_list_rate,
+                    "discount_percentage": item.discount_percentage or 0,
+                    "discount_amount": item.discount_amount or 0,
+                })
+            
+            return {
+                "success": True,
+                "invoice_name": invoice_name,
+                "items": items,
+                "customer": invoice.customer,
+                "grand_total": invoice.grand_total,
+                "is_new": False,
+                "message": _("Loaded existing tab")
+            }
+        
+        # No existing invoice - return empty to create new
+        return {
+            "success": True,
+            "invoice_name": None,
+            "items": [],
+            "customer": customer,
+            "is_new": True,
+            "message": _("Start new tab")
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to get table invoice: {str(e)}")
+        return {"success": False, "message": str(e)}
+
+
+@frappe.whitelist()
+def merge_items_to_invoice(invoice_name, new_items, table_name=None):
+    """
+    Merge new items into existing invoice (Running Tab pattern).
+    Only sends new/updated items to kitchen.
+    
+    Args:
+        invoice_name: Existing POS Invoice name
+        new_items: List of new items to add
+        table_name: Restaurant Table name (for new invoice)
+    
+    Returns:
+        dict: { success, invoice_name, new_items_count, sent_items: [...] }
+    """
+    try:
+        if isinstance(new_items, str):
+            import json
+            new_items = json.loads(new_items)
+        
+        if not invoice_name and not table_name:
+            return {"success": False, "message": _("Invoice or table required")}
+        
+        # Get or create invoice
+        if invoice_name and frappe.db.exists("POS Invoice", invoice_name):
+            invoice = frappe.get_doc("POS Invoice", invoice_name)
+        else:
+            # Create new invoice for table
+            invoice = frappe.new_doc("POS Invoice")
+            invoice.restaurant_table = table_name
+            invoice.is_pos = 1
+        
+        # Track which items are new (for kitchen notification)
+        sent_items = []
+        existing_items = {f"{i.item_code}-{i.uom}": i for i in invoice.items}
+        
+        for new_item in new_items:
+            item_key = f"{new_item.get('item_code')}-{new_item.get('uom')}"
+            qty = new_item.get('quantity', 1)
+            
+            if item_key in existing_items:
+                # Update existing item quantity
+                existing = existing_items[item_key]
+                old_qty = existing.qty
+                new_qty = old_qty + qty
+                existing.qty = new_qty
+                existing.amount = new_qty * existing.rate
+                
+                # Only send the additional quantity to kitchen
+                if qty > 0:
+                    sent_items.append({
+                        "item_code": new_item.get('item_code'),
+                        "item_name": new_item.get('item_name'),
+                        "qty": qty,  # Only new quantity
+                        "instructions": new_item.get('posa_special_instructions', ''),
+                        "is_additional": True
+                    })
+            else:
+                # Add new item
+                invoice.append("items", {
+                    "item_code": new_item.get('item_code'),
+                    "item_name": new_item.get('item_name'),
+                    "qty": qty,
+                    "uom": new_item.get('uom'),
+                    "rate": new_item.get('rate'),
+                    "amount": qty * new_item.get('rate', 0),
+                    "warehouse": new_item.get('warehouse'),
+                    "stock_uom": new_item.get('stock_uom'),
+                    "posa_special_instructions": new_item.get('posa_special_instructions', ''),
+                    "price_list_rate": new_item.get('price_list_rate', new_item.get('rate')),
+                    "discount_percentage": new_item.get('discount_percentage', 0),
+                    "discount_amount": new_item.get('discount_amount', 0),
+                })
+                
+                sent_items.append({
+                    "item_code": new_item.get('item_code'),
+                    "item_name": new_item.get('item_name'),
+                    "qty": qty,
+                    "instructions": new_item.get('posa_special_instructions', ''),
+                    "is_additional": False
+                })
+        
+        # Save invoice (draft)
+        invoice.save(ignore_permissions=True)
+        
+        # Notify KDS about new items only
+        if sent_items:
+            notify_kds_partial_order(invoice.name, sent_items, table_name or invoice.restaurant_table)
+        
+        return {
+            "success": True,
+            "invoice_name": invoice.name,
+            "new_items_count": len(sent_items),
+            "sent_items": sent_items
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Failed to merge items: {str(e)}")
+        return {"success": False, "message": str(e)}
+
+
+def notify_kds_partial_order(invoice_name, sent_items, table_name):
+    """Notify KDS about new/additional items (not entire order)."""
+    try:
+        table_display = table_name
+        if table_name:
+            tname = frappe.db.get_value("Restaurant Table", table_name, "table_name")
+            if tname:
+                table_display = tname
+        
+        frappe.publish_realtime(
+            event="kds_partial_order",
+            message={
+                "order_id": invoice_name,
+                "table": table_display,
+                "items": sent_items,
+                "timestamp": str(frappe.utils.now())
+            },
+            room="kds_room"
+        )
+    except Exception as e:
+        frappe.log_error(f"KDS partial notify error: {str(e)}")
+
+
+@frappe.whitelist()
 def get_kds_orders():
     """
     Get active kitchen display orders (KDS).
@@ -148,27 +352,40 @@ def get_kds_orders():
             ],
             filters={
                 "docstatus": 0,  # Draft invoices only
-                "restaurant_table": ["is", "set"],  # Must have a table
-                "kds_status": ["in", ["Pending", "Preparing", "Ready"]]  # Active KDS statuses
+                "restaurant_table": ["is", "set"],
+                "kds_status": ["not in", ["Completed", "Cancelled"]]
             },
-            order_by="creation asc"  # Oldest first
+            order_by="creation desc"
         )
         
-        
-        # Get items for each order
+        # Enrich with table name and items
+        enriched_orders = []
         for order in orders:
-            order.items = frappe.get_all(
-                "POS Invoice Item",
-                fields=["item_code", "item_name", "qty", "description", "posa_special_instructions"],
-                filters={"parent": order.name}
-            )
-            # Get table name
+            # Get table display name
             if order.restaurant_table:
-                table = frappe.db.get_value("Restaurant Table", order.restaurant_table, "table_name", as_dict=True)
-                if table:
-                    order.restaurant_table = table.table_name
+                table_name = frappe.db.get_value(
+                    "Restaurant Table", 
+                    order.restaurant_table, 
+                    "table_name"
+                )
+                order.table_display = table_name or order.restaurant_table
+            
+            # Get order items
+            invoice = frappe.get_doc("POS Invoice", order.name)
+            order.items = [
+                {
+                    "item_code": item.item_code,
+                    "item_name": item.item_name,
+                    "qty": item.qty,
+                    "description": item.description,
+                    "posa_special_instructions": item.get("posa_special_instructions")
+                }
+                for item in invoice.items
+            ]
+            
+            enriched_orders.append(order)
         
-        return orders or []
+        return enriched_orders or []
         
     except Exception as e:
         frappe.log_error(f"Failed to get KDS orders: {str(e)}")
@@ -176,132 +393,14 @@ def get_kds_orders():
 
 
 @frappe.whitelist()
-def update_kds_status(invoice_name, status):
-    """
-    Update KDS status of a POS Invoice.
-    
-    Args:
-        invoice_name: POS Invoice name
-        status: New KDS status (Pending, Preparing, Ready, Delivered)
-    
-    Returns:
-        dict: { success: bool, message: str }
-    """
-    try:
-        if not invoice_name:
-            frappe.throw(_("Invoice name is required"))
-        
-        valid_statuses = ["Pending", "Preparing", "Ready", "Delivered"]
-        if status not in valid_statuses:
-            frappe.throw(_("Invalid KDS status. Must be one of: {0}").format(", ".join(valid_statuses)))
-        
-        # Check if user has permission
-        if not frappe.has_permission("POS Invoice", "write", invoice_name):
-            frappe.throw(_("You don't have permission to update this invoice"))
-        
-        # Update KDS status
-        frappe.db.set_value("POS Invoice", invoice_name, "kds_status", status)
-        
-        # Emit realtime event to all connected KDS displays
-        frappe.publish_realtime(
-            event="kds_status_update",
-            message={
-                "order_id": invoice_name,
-                "status": status,
-                "timestamp": frappe.utils.now()
-            },
-            room="kds_room"
-        )
-        
-        # If status is Delivered, emit completion event
-        if status == "Delivered":
-            frappe.publish_realtime(
-                event="kds_order_completed",
-                message={
-                    "order_id": invoice_name,
-                    "timestamp": frappe.utils.now()
-                },
-                room="kds_room"
-            )
-        
-        return {
-            "success": True,
-            "message": _("Order status updated to {0}").format(status)
-        }
-        
-    except Exception as e:
-        frappe.log_error(f"Failed to update KDS status: {str(e)}")
-        return {
-            "success": False,
-            "message": str(e)
-        }
-
-
-@frappe.whitelist()
-@frappe.whitelist()
 def send_to_kitchen(order_data=None):
     """
-    Send order items to kitchen (KDS).
-    Only sends notification to KDS, does NOT create POS Invoice.
-    Invoice will be created at checkout.
+    DEPRECATED: Use merge_items_to_invoice instead.
+    Kept for backward compatibility.
     """
-    try:
-        if not order_data:
-            return {"success": False, "message": "Order data required"}
-        
-        if isinstance(order_data, str):
-            import json
-            order_data = json.loads(order_data)
-        
-        table_name = order_data.get("table_id")
-        items = order_data.get("items", [])
-        
-        if not table_name or not items:
-            return {"success": False, "message": "Table and items required"}
-        
-        # Build KDS items
-        kds_items = []
-        for item in items:
-            kds_items.append({
-                "item_code": item.get("item_code"),
-                "item_name": item.get("item_name"),
-                "qty": item.get("quantity"),
-                "instructions": item.get("special_instructions", "")
-            })
-        
-        # Generate order ID
-        order_id = f"KDS-{table_name}-{frappe.utils.now_datetime().strftime('%H%M%S')}"
-        
-        # Send to KDS
-        message_data = {
-            "order_id": order_id,
-            "table": order_data.get("table_name", table_name),
-            "items": kds_items,
-            "timestamp": frappe.utils.now()
-        }
-        
-        # Send to KDS - try different methods
-        try:
-            # Method 1: Standard publish_realtime
-            frappe.publish_realtime(
-                event="kds_new_order",
-                message=message_data,
-                user="Guest"  # Explicitly set user
-            )
-            
-            # Method 2: After commit
-            frappe.db.after_commit.add(lambda: frappe.publish_realtime(
-                event="kds_new_order", 
-                message=message_data
-            ))
-            
-        except Exception as e:
-            frappe.log_error(f"KDS publish error: {str(e)[:200]}")
-        
-        return {"success": True, "message": "Order sent to kitchen"}
-        
-    except Exception as e:
-        return {"success": False, "message": str(e)[:200]}
+    return {"success": True, "message": _("Use merge_items_to_invoice API")}
+
+
 def notify_kds_new_order(invoice_name):
     """
     Notify KDS displays about a new order.
@@ -357,79 +456,94 @@ def notify_kds_new_order(invoice_name):
 def get_cfd_order(order_id):
     """
     Get order status for Customer Facing Display (CFD).
-    This endpoint allows guest access for customer displays.
     
     Args:
         order_id: POS Invoice name
     
     Returns:
-        dict: Order details with status
+        dict: Order details with items and status
     """
     try:
         if not order_id:
-            return None
+            return {"success": False, "message": _("Order ID required")}
         
-        # Get order details
-        order = frappe.get_all(
-            "POS Invoice",
-            fields=[
-                "name", "customer_name", "restaurant_table", "kds_status",
-                "creation", "modified", "grand_total"
+        # Get order
+        order = frappe.get_doc("POS Invoice", order_id)
+        
+        return {
+            "success": True,
+            "order_id": order.name,
+            "table": order.restaurant_table,
+            "status": order.kds_status or "Pending",
+            "items": [
+                {
+                    "item_code": item.item_code,
+                    "item_name": item.item_name,
+                    "qty": item.qty,
+                    "status": item.get("kds_status") or "Pending"
+                }
+                for item in order.items
             ],
-            filters={
-                "name": order_id,
-                "docstatus": 0  # Only draft invoices
-            },
-            limit=1
-        )
-        
-        if not order:
-            return None
-        
-        order = order[0]
-        
-        # Get order items
-        order.items = frappe.get_all(
-            "POS Invoice Item",
-            fields=["item_code", "item_name", "qty"],
-            filters={"parent": order_id}
-        )
-        
-        # Get table name
-        if order.restaurant_table:
-            table = frappe.db.get_value("Restaurant Table", order.restaurant_table, "table_name", as_dict=True)
-            if table:
-                order.restaurant_table = table.table_name
-        
-        return order
+            "grand_total": order.grand_total
+        }
         
     except Exception as e:
-        frappe.log_error(f"Failed to get CFD order: {str(e)}")
-        return None
+        return {"success": False, "message": str(e)}
 
 
-@frappe.whitelist(allow_guest=True)
-def join_kds_room():
-    """KDS səhifəsini 'kds_room' otağına əlavə et"""
+@frappe.whitelist()
+def close_table_invoice(invoice_name, payments=None, write_off_amount=0):
+    """
+    Close (submit) table invoice and process payment.
+    
+    Args:
+        invoice_name: POS Invoice name
+        payments: Payment details
+        write_off_amount: Amount to write off
+    
+    Returns:
+        dict: { success, message, invoice_name }
+    """
     try:
-        if frappe.local.session.sid:
-            frappe.realtime.join_room("kds_room")
-            return {"success": True}
+        if not invoice_name:
+            return {"success": False, "message": _("Invoice name required")}
+        
+        invoice = frappe.get_doc("POS Invoice", invoice_name)
+        
+        if invoice.docstatus != 0:
+            return {"success": False, "message": _("Invoice already processed")}
+        
+        # Add payments if provided
+        if payments:
+            if isinstance(payments, str):
+                import json
+                payments = json.loads(payments)
+            invoice.payments = []
+            for payment in payments:
+                invoice.append("payments", payment)
+        
+        # Set write off
+        if write_off_amount:
+            invoice.write_off_amount = write_off_amount
+        
+        # Submit invoice
+        invoice.submit()
+        
+        # Update table status to Empty
+        if invoice.restaurant_table:
+            frappe.db.set_value(
+                "Restaurant Table", 
+                invoice.restaurant_table, 
+                "status", 
+                "Empty"
+            )
+        
+        return {
+            "success": True,
+            "message": _("Invoice closed successfully"),
+            "invoice_name": invoice.name
+        }
+        
     except Exception as e:
-        frappe.log_error(f"Failed to join KDS room: {str(e)}")
-        return {"success": False, "error": str(e)}
-    return {"success": False, "error": "No session ID found"}
-
-@frappe.whitelist(allow_guest=True)  
-def leave_kds_room():
-    """KDS səhifəsini 'kds_room' otağından çıxar"""
-    try:
-        if frappe.local.session.sid:
-            frappe.realtime.leave_room("kds_room")
-            return {"success": True}
-    except Exception as e:
-        frappe.log_error(f"Failed to leave KDS room: {str(e)}")
-        return {"success": False, "error": str(e)}
-    return {"success": False, "error": "No session ID found"}
-
-
+        frappe.log_error(f"Failed to close invoice: {str(e)}")
+        return {"success": False, "message": str(e)}

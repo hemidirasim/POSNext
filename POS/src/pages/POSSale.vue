@@ -1149,27 +1149,50 @@ function closeTableSelector() {
 	}
 }
 
-// Handle table selection
+// Handle table selection - Running Tab pattern
 async function onTableSelected(newTable, oldTable) {
 	console.log('[DEBUG] === TABLE SELECTED ===');
-	console.log('[DEBUG] New table:', newTable.name, 'Old table:', oldTable?.name, 'Current items:', cartStore.invoiceItems.length);
+	console.log('[DEBUG] New table:', newTable.name, 'Old table:', oldTable?.name);
 	
-	// Save current cart if has items (using OLD table name)
-	if (cartStore.invoiceItems.length > 0 && oldTable) {
-		console.log('[DEBUG] Saving current cart for old table:', oldTable.name);
-		saveTableDraftForTable(oldTable.name);
-	} else {
-		console.log('[DEBUG] No items to save or no old table');
-	}
-	
-	// Set new table
-	console.log('[DEBUG] Setting new table:', newTable.name);
+	// Clear cart for new table
+	cartStore.clearCart();
 	cartStore.setRestaurantTable(newTable);
 	localStorage.setItem('pos_last_table', JSON.stringify(newTable));
 	
-	// Load draft for this table
-	console.log('[DEBUG] Loading draft for:', newTable.name);
-	await loadTableDraft(newTable.name);
+	// Load running tab from server (not localStorage)
+	if (navigator.onLine) {
+		try {
+			const tableInvoice = await restaurantStore.getOrCreateTableInvoice(
+				newTable.name,
+				shiftStore.currentProfile?.name,
+				cartStore.customer?.name
+			);
+			
+			if (tableInvoice && !tableInvoice.isNew) {
+				// Load existing items into cart
+				console.log('[DEBUG] Loading existing tab with', tableInvoice.items.length, 'items');
+				for (const item of tableInvoice.items) {
+					cartStore.invoiceItems.push({ ...item });
+				}
+				if (tableInvoice.customer) {
+					cartStore.setCustomer(tableInvoice.customer);
+				}
+				cartStore.serverInvoiceName = tableInvoice.name;
+				cartStore.rebuildIncrementalCache();
+				showSuccess(__('Loaded existing tab for {0}', [newTable.table_name || newTable.name]));
+			} else {
+				console.log('[DEBUG] Starting new tab for table');
+				cartStore.serverInvoiceName = null;
+			}
+		} catch (error) {
+			console.error('[DEBUG] Error loading table invoice:', error);
+			showError(__('Failed to load table tab'));
+		}
+	} else {
+		// Offline: use localStorage fallback
+		await loadTableDraft(newTable.name);
+	}
+	
 	console.log('[DEBUG] === END TABLE SELECTED ===');
 }
 
@@ -1251,124 +1274,77 @@ function clearTableDraft(tableName) {
 	}
 }
 
-// Send order to kitchen (KDS)
+// Send order to kitchen (Running Tab pattern)
 async function handleSendToKitchen() {
 	console.log('[DEBUG] ========================================');
-	console.log('[DEBUG] handleSendToKitchen START');
+	console.log('[DEBUG] handleSendToKitchen START (Running Tab)');
 	console.log('[DEBUG] ========================================');
 	
 	try {
 		if (!cartStore.restaurantTable) {
-			console.log('[DEBUG] No table selected, returning');
 			showError(__('No table selected'));
 			return;
 		}
-	
-	// Calculate pending quantities for each item
-	// posa_sent_qty = already sent to kitchen
-	// quantity = total quantity in cart
-	// pending = quantity - posa_sent_qty
-	const itemsToSend = [];
-	
-	for (const item of cartStore.invoiceItems) {
-		const sentQty = item.posa_sent_qty || 0;
-		const pendingQty = item.quantity - sentQty;
 		
-		if (pendingQty > 0) {
-			itemsToSend.push({
-				item_code: item.item_code,
-				item_name: item.item_name,
-				quantity: pendingQty,  // Only send the pending amount
-				total_quantity: item.quantity,  // For reference
-				uom: item.uom,
-				special_instructions: item.posa_special_instructions || '',
-			});
-		}
-	}
-	
-	console.log('[DEBUG] Items to send:', itemsToSend);
-	console.log('[DEBUG] itemsToSend.length:', itemsToSend.length);
-	
-	if (itemsToSend.length === 0) {
-		console.log('[DEBUG] itemsToSend is empty, showing warning');
-		showWarning(__('All items already sent to kitchen'));
-		return;
-	}
-	
-	console.log('[DEBUG] itemsToSend has items, will call API...');
-	console.log('[DEBUG] restaurantStore:', restaurantStore);
-	console.log('[DEBUG] sendToKitchen function:', typeof restaurantStore.sendToKitchen);
-	
-	try {
-		// Prepare order data for KDS
-		const orderData = {
-			table_name: cartStore.restaurantTable.table_name,
-			table_id: cartStore.restaurantTable.name,
-			items: itemsToSend,
-			timestamp: new Date().toISOString(),
-			status: 'Pending'
-		};
-		
-		console.log('[DEBUG] orderData prepared:', orderData);
-		
-		// Prepare and send to kitchen via backend
-		if (navigator.onLine) {
-			const invoiceData = {
-				doctype: cartStore.targetDoctype,
-				name: cartStore.serverInvoiceName,
-				pos_profile: cartStore.posProfile,
-				posa_pos_opening_shift: cartStore.posOpeningShift,
-				customer: cartStore.customer?.name || cartStore.customer,
-				restaurant_table: cartStore.restaurantTable?.name,
-				kds_status: 'Pending',
-				items: cartStore.formatItemsForSubmission(cartStore.invoiceItems),
-			};
-
-			const result = await cartStore.updateInvoiceResource.submit({ data: invoiceData });
+		// Get unsent items (items with quantity > posa_sent_qty)
+		const unsentItems = [];
+		for (const item of cartStore.invoiceItems) {
+			const sentQty = item.posa_sent_qty || 0;
+			const pendingQty = item.quantity - sentQty;
 			
-			if (result && (result.name || result.data?.name)) {
-				const invoiceName = result.name || result.data?.name;
-				cartStore.serverInvoiceName = invoiceName;
-				
-				// Update sent_qty for each item locally
-				for (const item of cartStore.invoiceItems) {
-					const sentItem = itemsToSend.find(s => s.item_code === item.item_code && s.uom === item.uom);
-					if (sentItem) {
-						item.posa_sent_qty = (item.posa_sent_qty || 0) + sentItem.quantity;
-					}
-				}
-				
-				// Save updated draft locally
-				saveTableDraft();
-				
-				showSuccess(__('Order sent to kitchen and saved successfully'));
-			} else {
-				showError(__('Failed to save order to server'));
-			}
-		} else {
-			// Fallback to legacy volatile notification if offline (KDS might not see it later)
-			const result = await restaurantStore.sendToKitchen(orderData);
-			if (result.success) {
-				// Update sent_qty locally
-				for (const item of cartStore.invoiceItems) {
-					const sentItem = itemsToSend.find(s => s.item_code === item.item_code && s.uom === item.uom);
-					if (sentItem) {
-						item.posa_sent_qty = (item.posa_sent_qty || 0) + sentItem.quantity;
-					}
-				}
-				saveTableDraft();
-				showWarning(__('Sent to kitchen (local only - offline)'));
+			if (pendingQty > 0) {
+				unsentItems.push({
+					...item,
+					quantity: pendingQty,  // Only send pending amount
+					total_quantity: item.quantity  // Keep reference
+				});
 			}
 		}
+		
+		if (unsentItems.length === 0) {
+			showWarning(__('All items already sent to kitchen'));
+			return;
+		}
+		
+		console.log('[DEBUG] Unsent items:', unsentItems.length);
+		
+		// Use Running Tab API - merge items to existing invoice
+		const result = await restaurantStore.mergeItemsToInvoice(
+			cartStore.serverInvoiceName,
+			unsentItems,
+			cartStore.restaurantTable.name
+		);
+		
+		if (result && result.success) {
+			// Update server invoice name
+			cartStore.serverInvoiceName = result.invoiceName;
+			
+			// Mark all items as fully sent
+			for (const item of cartStore.invoiceItems) {
+				item.posa_sent_qty = item.quantity;
+			}
+			
+			// Update table status to Occupied
+			await restaurantStore.updateTableStatus(
+				cartStore.restaurantTable.name, 
+				'Occupied'
+			);
+			
+			showSuccess(
+				__('Added {0} items to tab. Total: {1}', [
+					result.newItemsCount, 
+					cartStore.invoiceItems.length
+				])
+			);
+		} else {
+			showError(result?.message || __('Failed to add items to tab'));
+		}
+		
 	} catch (error) {
 		console.error('[DEBUG] Send to kitchen error:', error);
-		console.error('[DEBUG] Error details:', error.message, error.stack);
-		showError(__('Error sending to kitchen: {0}', [error.message]));
+		showError(__('Error: {0}', [error.message]));
 	}
-	} catch (outerError) {
-		console.error('[DEBUG] CRITICAL ERROR in handleSendToKitchen:', outerError);
-		showError(__('Critical error: {0}', [outerError.message]));
-	}
+	
 	console.log('[DEBUG] ========================================');
 	console.log('[DEBUG] handleSendToKitchen END');
 	console.log('[DEBUG] ========================================');
@@ -2344,9 +2320,13 @@ async function handlePaymentCompleted(paymentData) {
 
 				uiStore.showPaymentDialog = false;
 				
-				// Clear table draft if restaurant mode
-				if (cartStore.restaurantTable) {
-					clearTableDraft(cartStore.restaurantTable.name);
+				// Close table tab if restaurant mode (using Running Tab API)
+				if (cartStore.restaurantTable && cartStore.serverInvoiceName) {
+					await restaurantStore.closeTableInvoice(
+						cartStore.serverInvoiceName,
+						paymentData.payments,
+						paymentData.write_off_amount || 0
+					);
 				}
 				
 				cartStore.clearCart();

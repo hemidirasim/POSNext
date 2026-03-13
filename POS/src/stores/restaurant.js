@@ -13,6 +13,8 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 	// State
 	const tables = ref([])
 	const areas = ref([])
+	const currentTableInvoice = ref(null)  // Running tab for selected table
+	const isLoadingTable = ref(false)
 	const isEnabled = computed(() => posSettingsStore.settings.enable_restaurant_mode)
 	const defaultArea = computed(() => posSettingsStore.settings.default_restaurant_area)
 
@@ -78,29 +80,132 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 		}
 	}
 
-	// Send order to kitchen (KDS)
-	async function sendToKitchen(orderData) {
+	/**
+	 * Get or create running tab (invoice) for table
+	 * This implements the "Running Tab" pattern - one table = one open invoice
+	 */
+	async function getOrCreateTableInvoice(tableName, posProfile, customer = null) {
+		if (!tableName) return null
+		
+		isLoadingTable.value = true
 		try {
-			log.info("Sending order to kitchen:", orderData)
-			console.log('[RestaurantStore] sendToKitchen called:', orderData)
+			log.info(`Getting running tab for table: ${tableName}`)
 			
-			// Send to backend API
-			if (navigator.onLine) {
-				console.log('[RestaurantStore] Calling API...')
-				const result = await call("pos_next.api.restaurant.send_to_kitchen", {
-					order_data: orderData
-				})
-				console.log('[RestaurantStore] API response:', result)
-				return result  // Return result directly (backend already returns success field)
+			const result = await call("pos_next.api.restaurant.get_or_create_table_invoice", {
+				table_name: tableName,
+				pos_profile: posProfile,
+				customer: customer
+			})
+			
+			if (result && result.success) {
+				currentTableInvoice.value = {
+					name: result.invoice_name,
+					items: result.items || [],
+					customer: result.customer,
+					grandTotal: result.grand_total,
+					isNew: result.is_new
+				}
+				log.info(`Table invoice loaded: ${result.invoice_name || 'NEW'}, items: ${result.items?.length || 0}`)
+				return currentTableInvoice.value
 			} else {
-				// Queue for later if offline
-				log.warn("Offline - order queued for kitchen")
-				return { success: false, message: __('You are offline. Order will be sent when connection is restored.') }
+				log.error("Failed to get table invoice:", result?.message)
+				return null
 			}
 		} catch (error) {
-			log.error("Failed to send order to kitchen:", error)
-			console.error('[RestaurantStore] Error:', error)
-			return { success: false, message: error.message || __('Failed to send to kitchen') }
+			log.error("Error getting table invoice:", error)
+			return null
+		} finally {
+			isLoadingTable.value = false
+		}
+	}
+
+	/**
+	 * Merge new items to running tab
+	 * Returns which items were actually sent to kitchen (new/additional)
+	 */
+	async function mergeItemsToInvoice(invoiceName, items, tableName) {
+		if (!items?.length) return { success: true, sentItems: [] }
+		
+		try {
+			log.info(`Merging ${items.length} items to invoice: ${invoiceName || 'NEW'}`)
+			
+			const result = await call("pos_next.api.restaurant.merge_items_to_invoice", {
+				invoice_name: invoiceName,
+				new_items: JSON.stringify(items),
+				table_name: tableName
+			})
+			
+			if (result && result.success) {
+				// Update current invoice reference
+				if (result.invoice_name) {
+					currentTableInvoice.value = {
+						...currentTableInvoice.value,
+						name: result.invoice_name
+					}
+				}
+				log.info(`Items merged successfully. New items sent: ${result.new_items_count}`)
+				return {
+					success: true,
+					invoiceName: result.invoice_name,
+					sentItems: result.sent_items || [],
+					newItemsCount: result.new_items_count
+				}
+			} else {
+				log.error("Failed to merge items:", result?.message)
+				return { success: false, message: result?.message }
+			}
+		} catch (error) {
+			log.error("Error merging items:", error)
+			return { success: false, message: error.message }
+		}
+	}
+
+	/**
+	 * Close table invoice (process payment)
+	 */
+	async function closeTableInvoice(invoiceName, payments, writeOffAmount = 0) {
+		try {
+			log.info(`Closing table invoice: ${invoiceName}`)
+			
+			const result = await call("pos_next.api.restaurant.close_table_invoice", {
+				invoice_name: invoiceName,
+				payments: JSON.stringify(payments),
+				write_off_amount: writeOffAmount
+			})
+			
+			if (result && result.success) {
+				// Clear current invoice
+				currentTableInvoice.value = null
+				log.info("Table invoice closed successfully")
+			}
+			
+			return result
+		} catch (error) {
+			log.error("Error closing table invoice:", error)
+			return { success: false, message: error.message }
+		}
+	}
+
+	/**
+	 * Clear current table invoice (when switching tables)
+	 */
+	function clearCurrentTableInvoice() {
+		currentTableInvoice.value = null
+	}
+
+	/**
+	 * Get table orders (legacy - for compatibility)
+	 */
+	async function getTableOrders(tableName) {
+		try {
+			if (!tableName) return []
+			
+			return await call("pos_next.api.restaurant.get_table_orders", {
+				table_name: tableName
+			})
+		} catch (error) {
+			log.error("Failed to get table orders:", error)
+			return []
 		}
 	}
 
@@ -109,9 +214,15 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 		areas,
 		isEnabled,
 		defaultArea,
+		currentTableInvoice,
+		isLoadingTable,
 		loadTablesAndAreas,
 		fetchFromNetwork,
 		updateTableStatus,
-		sendToKitchen
+		getOrCreateTableInvoice,
+		mergeItemsToInvoice,
+		closeTableInvoice,
+		clearCurrentTableInvoice,
+		getTableOrders
 	}
 })
