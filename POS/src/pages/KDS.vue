@@ -191,8 +191,8 @@ function setupSocket() {
 					}
 				}
 			}
-			// Play notification sound for reactivated orders
-			if (data.is_reactivated) {
+			// Play notification sound for modified orders (any status change)
+			if (data.is_modified) {
 				playNotificationSound()
 			}
 		} else {

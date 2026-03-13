@@ -538,7 +538,7 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     }
 
 
-def notify_kds_partial_order(invoice_name, sent_items, table_name, is_reactivated=False):
+def notify_kds_partial_order(invoice_name, sent_items, table_name, is_modified=False):
     """Notify KDS about new/additional items (not entire order)."""
     try:
         table_display = table_name
@@ -554,7 +554,7 @@ def notify_kds_partial_order(invoice_name, sent_items, table_name, is_reactivate
                 "table": table_display,
                 "items": sent_items,
                 "timestamp": str(frappe.utils.now()),
-                "is_reactivated": is_reactivated  # True if delivered order got new items
+                "is_modified": is_modified  # True if order was modified (status changed to Pending)
             },
             room="kds_room"
         )
