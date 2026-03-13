@@ -1184,6 +1184,7 @@ function saveTableDraftForTable(tableName) {
 	tableDrafts[tableName] = {
 		items: JSON.parse(JSON.stringify(cartStore.invoiceItems)),
 		customer: cartStore.customer,
+		serverInvoiceName: cartStore.serverInvoiceName,
 		timestamp: new Date().toISOString()
 	};
 	localStorage.setItem('pos_table_drafts', JSON.stringify(tableDrafts));
@@ -1215,6 +1216,10 @@ async function loadTableDraft(tableName) {
 		// Set customer
 		if (draft.customer) {
 			cartStore.setCustomer(draft.customer);
+		}
+		
+		if (draft.serverInvoiceName) {
+			cartStore.serverInvoiceName = draft.serverInvoiceName;
 		}
 		
 		// Add items directly to invoice (preserving saved state)
