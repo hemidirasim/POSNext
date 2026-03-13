@@ -1346,7 +1346,7 @@ function handleProceedToPayment() {
 
 function sendToKitchen() {
 	cartStore.setKdsStatus("Pending");
-	emit("save-draft");
+	emit("send-to-kitchen");
 }
 
 /**

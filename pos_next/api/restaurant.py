@@ -280,30 +280,14 @@ def send_to_kitchen(order_data=None):
             "timestamp": frappe.utils.now()
         }
         
-        # Send to KDS
+        # Send to KDS - broadcast to all connected clients (no room)
         try:
-            # Ensure redis connection is active
-            frappe.db.commit()
-            
-            frappe.publish_realtime(
-                event="kds_new_order",
-                message=message_data,
-                room="kds_room"
-            )
-            
-            # Also try without room (broadcast to all)
             frappe.publish_realtime(
                 event="kds_new_order",
                 message=message_data
             )
-            
-        except Exception as pub_error:
-            # Log to Error Log doctype
-            frappe.get_doc({
-                "doctype": "Error Log",
-                "method": "send_to_kitchen",
-                "error": str(pub_error)[:1000]
-            }).insert(ignore_permissions=True)
+        except Exception as e:
+            frappe.log_error(f"KDS publish error: {str(e)[:200]}")
         
         return {"success": True, "message": "Order sent to kitchen"}
         

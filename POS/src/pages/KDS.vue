@@ -109,10 +109,8 @@ function setupSocket() {
 		console.log("[KDS] ✅ Socket connected! ID:", socket.id)
 		socketConnected.value = true
 		
-		// Join KDS room for updates
-		console.log("[KDS] Joining kds_room...")
-		socket.emit("join_kds_room")
-		console.log("[KDS] join_kds_room emitted")
+		// Broadcast - no room needed
+		console.log("[KDS] Socket ready for broadcast events")
 	})
 	
 	socket.on("connect_error", (error) => {
@@ -122,6 +120,11 @@ function setupSocket() {
 	socket.on("disconnect", (reason) => {
 		console.log("[KDS] Socket disconnected, reason:", reason)
 		socketConnected.value = false
+	})
+	
+	// Listen for ALL socket events (for debugging)
+	socket.onAny((eventName, data) => {
+		console.log(`[KDS] 📨 Socket event '${eventName}':`, data)
 	})
 	
 	// Listen for new orders
