@@ -1332,12 +1332,21 @@ async function handleSendToKitchen() {
 				'Occupied'
 			);
 			
-			showSuccess(
-				__('Added {0} items to tab. Total: {1}', [
-					result.newItemsCount, 
-					cartStore.invoiceItems.length
-				])
-			);
+			// Show appropriate message based on status reset
+			if (result.status_reset) {
+				showSuccess(
+					__('Order reactivated! Added {0} items. Kitchen notified.', [
+						result.newItemsCount
+					])
+				);
+			} else {
+				showSuccess(
+					__('Added {0} items to tab. Total: {1}', [
+						result.newItemsCount, 
+						cartStore.invoiceItems.length
+					])
+				);
+			}
 		} else {
 			showError(result?.message || __('Failed to add items to tab'));
 		}

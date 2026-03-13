@@ -409,6 +409,13 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     sent_items = []
     existing_items = {f"{i.item_code}-{i.uom}": i for i in invoice.items}
     
+    # Check if invoice was previously delivered - reset status for new items
+    # This ensures that when customers add more items to a delivered order,
+    # the kitchen sees it as a new/active order again
+    was_delivered = invoice.get('kds_status') in ['Delivered', 'Served', 'Completed']
+    if was_delivered and new_items:
+        invoice.kds_status = 'Pending'
+    
     # Get income account from Mode of Payment or Company
     income_account = None
     if invoice.pos_profile:
@@ -518,15 +525,33 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     # Save invoice (draft)
     invoice.save(ignore_permissions=True)
     
-    # Notify KDS about new items only
+    # Notify KDS about new items
     if sent_items:
         notify_kds_partial_order(invoice.name, sent_items, table_name or invoice.restaurant_table)
+    
+    # If invoice was delivered and now has new items, notify KDS about status change
+    # This ensures the order reappears in the kitchen display
+    if was_delivered and sent_items:
+        try:
+            frappe.publish_realtime(
+                event="kds_status_update",
+                message={
+                    "order_id": invoice.name,
+                    "status": "Pending",
+                    "table": table_name or invoice.restaurant_table,
+                    "reason": "new_items_added"
+                },
+                room="kds_room"
+            )
+        except Exception:
+            pass  # Non-critical notification
     
     return {
         "success": True,
         "invoice_name": invoice.name,
         "new_items_count": len(sent_items),
-        "sent_items": sent_items
+        "sent_items": sent_items,
+        "status_reset": was_delivered  # Tell frontend if status was reset
     }
 
 
