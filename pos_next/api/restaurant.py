@@ -280,14 +280,18 @@ def send_to_kitchen(order_data=None):
             "timestamp": frappe.utils.now()
         }
         
-        # Log for debugging
-        frappe.logger().info(f"[KDS] Publishing to kds_room: {message_data}")
+        # Send to KDS - use log_error to ensure it shows up
+        frappe.log_error(f"[KDS DEBUG] Publishing to kds_room: {order_id}, items: {len(kds_items)}")
         
-        frappe.publish_realtime(
-            event="kds_new_order",
-            message=message_data,
-            room="kds_room"
-        )
+        try:
+            frappe.publish_realtime(
+                event="kds_new_order",
+                message=message_data,
+                room="kds_room"
+            )
+            frappe.log_error(f"[KDS DEBUG] publish_realtime SUCCESS")
+        except Exception as pub_error:
+            frappe.log_error(f"[KDS DEBUG] publish_realtime FAILED: {str(pub_error)}")
         
         return {"success": True, "message": "Order sent to kitchen"}
         
