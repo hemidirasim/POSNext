@@ -300,6 +300,18 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
                     "rate": tax.rate,
                     "description": tax.description
                 })
+        
+        # Add payment methods from POS Profile (required for set_missing_values)
+        if profile.payments:
+            for payment_method in profile.payments:
+                if payment_method.default_account:
+                    invoice.append("payments", {
+                        "mode_of_payment": payment_method.mode_of_payment,
+                        "account": payment_method.default_account,
+                        "amount": 0  # Will be set later during checkout
+                    })
+        else:
+            return {"success": False, "message": _("POS Profile has no payment methods configured. Please add payment methods with default accounts.")}
     
     # Ensure customer is set
     if not invoice.customer:
@@ -387,9 +399,22 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     if not invoice.items:
         return {"success": False, "message": _("No items to add")}
     
-    # Set missing values and calculate totals
-    invoice.set_missing_values()
-    invoice.calculate_taxes_and_totals()
+    # Set missing values and calculate totals with error handling
+    try:
+        invoice.set_missing_values()
+        invoice.calculate_taxes_and_totals()
+    except AttributeError as e:
+        error_msg = str(e)
+        if "default_account" in error_msg or "account" in error_msg:
+            return {"success": False, "message": _("POS Profile payment methods missing default account. Please configure POS Profile with valid payment methods and accounts.")}
+        elif "income_account" in error_msg:
+            return {"success": False, "message": _("Items missing income account. Please check item configurations or company default income account.")}
+        else:
+            frappe.log_error(f"set_missing_values error: {error_msg[:100]}")
+            return {"success": False, "message": _("Configuration error: {0}").format(error_msg[:100])}
+    except Exception as e:
+        frappe.log_error(f"Invoice calculation error: {str(e)[:100]}")
+        return {"success": False, "message": _("Error calculating invoice totals. Please check POS Profile and item configurations.")}
     
     # Save invoice (draft)
     invoice.save(ignore_permissions=True)
