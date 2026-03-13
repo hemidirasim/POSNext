@@ -319,36 +319,48 @@ def send_to_kitchen(order_data=None):
             frappe.logger().info(f"[KDS DEBUG] New invoice created: {invoice.name if invoice.name else 'not saved yet'}")
         
         # Add items to invoice
+        frappe.logger().info(f"[KDS DEBUG] Starting to add items, count: {len(items)}")
+        
         # Ensure invoice.items is a list (not None)
         if invoice.items is None:
             invoice.items = []
+            frappe.logger().info(f"[KDS DEBUG] Initialized invoice.items to empty list")
             
-        for item_data in items:
-            item_code = item_data.get("item_code")
-            qty = item_data.get("quantity", 1)
-            
-            # Check if item already exists in invoice
-            existing_item = None
-            for item in invoice.items:
-                if item.item_code == item_code:
-                    existing_item = item
-                    break
-            
-            if existing_item:
-                # Update quantity
-                existing_item.qty += qty
-            else:
-                # Add new item
-                item_doc = frappe.get_doc("Item", item_code)
+        for idx, item_data in enumerate(items):
+            try:
+                frappe.logger().info(f"[KDS DEBUG] Processing item {idx}: {item_data.get('item_code')}")
+                item_code = item_data.get("item_code")
+                qty = item_data.get("quantity", 1)
                 
-                invoice.append("items", {
-                    "item_code": item_code,
-                    "item_name": item_data.get("item_name") or item_doc.item_name,
-                    "qty": qty,
-                    "uom": item_data.get("uom") or item_doc.stock_uom,
-                    "rate": item_doc.standard_rate or 0,
-                    "posa_special_instructions": item_data.get("special_instructions", "")
-                })
+                # Check if item already exists in invoice
+                existing_item = None
+                frappe.logger().info(f"[KDS DEBUG] Checking existing items, count: {len(invoice.items)}")
+                for item in invoice.items:
+                    if item.item_code == item_code:
+                        existing_item = item
+                        break
+                
+                if existing_item:
+                    frappe.logger().info(f"[KDS DEBUG] Updating existing item qty: {existing_item.qty} + {qty}")
+                    existing_item.qty += qty
+                else:
+                    frappe.logger().info(f"[KDS DEBUG] Adding new item: {item_code}")
+                    # Add new item
+                    item_doc = frappe.get_doc("Item", item_code)
+                    frappe.logger().info(f"[KDS DEBUG] Got item_doc: {item_doc.name if item_doc else 'None'}")
+                    
+                    invoice.append("items", {
+                        "item_code": item_code,
+                        "item_name": item_data.get("item_name") or item_doc.item_name,
+                        "qty": qty,
+                        "uom": item_data.get("uom") or item_doc.stock_uom,
+                        "rate": item_doc.standard_rate or 0,
+                        "posa_special_instructions": item_data.get("special_instructions", "")
+                    })
+                    frappe.logger().info(f"[KDS DEBUG] Item appended successfully")
+            except Exception as item_error:
+                frappe.logger().error(f"[KDS DEBUG] Error processing item {idx}: {str(item_error)}")
+                raise
         
         # Save invoice
         invoice.save(ignore_permissions=True)
