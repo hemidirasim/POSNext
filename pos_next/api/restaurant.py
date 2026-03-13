@@ -317,9 +317,10 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         invoice.posting_date = frappe.utils.nowdate()
         invoice.posting_time = frappe.utils.nowtime()
         
-        # Set taxes if configured
-        if profile.taxes:
-            for tax in profile.taxes:
+        # Set taxes from Sales Taxes and Charges Template
+        if profile.taxes_and_charges:
+            tax_template = frappe.get_doc("Sales Taxes and Charges Template", profile.taxes_and_charges)
+            for tax in tax_template.taxes:
                 invoice.append("taxes", {
                     "charge_type": tax.charge_type,
                     "account_head": tax.account_head,
