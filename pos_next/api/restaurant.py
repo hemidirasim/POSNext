@@ -319,6 +319,10 @@ def send_to_kitchen(order_data=None):
             frappe.logger().info(f"[KDS DEBUG] New invoice created: {invoice.name if invoice.name else 'not saved yet'}")
         
         # Add items to invoice
+        # Ensure invoice.items is a list (not None)
+        if invoice.items is None:
+            invoice.items = []
+            
         for item_data in items:
             item_code = item_data.get("item_code")
             qty = item_data.get("quantity", 1)
@@ -387,13 +391,20 @@ def send_to_kitchen(order_data=None):
         
     except Exception as e:
         error_msg = str(e)
-        stack_trace = traceback.format_exc()[:1000]  # Truncate stack trace
+        stack_trace = traceback.format_exc()
+        # Log only the most relevant part of stack trace
+        relevant_lines = []
+        for line in stack_trace.split('\n'):
+            if 'restaurant.py' in line or 'Error' in line or 'line' in line:
+                relevant_lines.append(line)
+        short_stack = '\n'.join(relevant_lines[-10:])  # Last 10 relevant lines
+        
         frappe.logger().error(f"[KDS DEBUG] ERROR: {error_msg}")
-        frappe.logger().error(f"[KDS DEBUG] STACK: {stack_trace}...")
+        frappe.logger().error(f"[KDS DEBUG] STACK: {short_stack}")
         frappe.log_error(f"KDS Error: {error_msg}")
         return {
             "success": False,
-            "message": error_msg
+            "message": f"{error_msg} (check logs for details)"
         }
 
 
