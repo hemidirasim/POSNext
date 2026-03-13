@@ -12,6 +12,27 @@ from frappe import _
 from frappe.utils import flt
 
 
+def get_mode_of_payment_account(mode_of_payment, company):
+    """
+    Get default account for Mode of Payment from Mode of Payment doctype.
+    
+    Args:
+        mode_of_payment: Mode of Payment name
+        company: Company name
+    
+    Returns:
+        str: Account name or None
+    """
+    try:
+        mop_doc = frappe.get_doc("Mode of Payment", mode_of_payment)
+        for acc in mop_doc.accounts:
+            if acc.company == company:
+                return acc.default_account
+        return None
+    except Exception:
+        return None
+
+
 @frappe.whitelist()
 def get_tables():
     """
@@ -304,14 +325,19 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         # Add payment methods from POS Profile (required for set_missing_values)
         if profile.payments:
             for payment_method in profile.payments:
-                if payment_method.default_account:
+                # Get account from Mode of Payment (not from POS Payment Method)
+                mop_account = get_mode_of_payment_account(
+                    payment_method.mode_of_payment, 
+                    profile.company
+                )
+                if mop_account:
                     invoice.append("payments", {
                         "mode_of_payment": payment_method.mode_of_payment,
-                        "account": payment_method.default_account,
+                        "account": mop_account,
                         "amount": 0  # Will be set later during checkout
                     })
         else:
-            return {"success": False, "message": _("POS Profile has no payment methods configured. Please add payment methods with default accounts.")}
+            return {"success": False, "message": _("POS Profile has no payment methods configured. Please add payment methods.")}
     
     # Ensure customer is set
     if not invoice.customer:
@@ -321,12 +347,14 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     sent_items = []
     existing_items = {f"{i.item_code}-{i.uom}": i for i in invoice.items}
     
-    # Get income account from POS Profile or Company
+    # Get income account from Mode of Payment or Company
     income_account = None
     if invoice.pos_profile:
         profile_doc = frappe.get_doc("POS Profile", invoice.pos_profile)
         if profile_doc.payments:
-            income_account = profile_doc.payments[0].default_account
+            # Get account from first payment method's Mode of Payment
+            first_mop = profile_doc.payments[0].mode_of_payment
+            income_account = get_mode_of_payment_account(first_mop, invoice.company)
     
     if not income_account:
         income_account = frappe.db.get_value("Company", invoice.company, "default_income_account")
