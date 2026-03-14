@@ -504,6 +504,7 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     # Save critical fields BEFORE set_missing_values() - they may get cleared
     saved_restaurant_table = invoice.restaurant_table
     saved_kds_status = invoice.get('kds_status') or 'Pending'
+    was_modified = saved_kds_status != 'Pending'
     
     # Set missing values and calculate totals with error handling
     try:
