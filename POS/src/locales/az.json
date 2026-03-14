@@ -3186,6 +3186,21 @@
     "{0} left": "{0} qalıb",
     "{0} days ago": "{0} gün əvvəl",
     "{0} months ago": "{0} ay əvvəl",
-    "{0} years ago": "{0} il əvvəl"
+    "{0} years ago": "{0} il əvvəl",
+    "2. Click &lt;strong&gt;\"Make Variants\"&lt;/strong&gt; button": "2. &lt;strong&gt;\"Variant yarat\"&lt;/strong&gt; düyməsini klikləyin",
+    "4. Click &lt;strong&gt;\"Create\"&lt;/strong&gt;": "4. &lt;strong&gt;\"Yarat\"&lt;/strong&gt; düyməsini klikləyin",
+    "Are you sure you want to delete &lt;strong&gt;\"{0}\"&lt;/strong&gt;?": "&lt;strong&gt;\"{0}\"&lt;/strong&gt;-ni silmək istədiyinizə əminsiniz?",
+    "{0} returns": "{0} qaytarma",
+    "{0} transactions • {1}": "{0} əməliyyat • {1}",
+    "{0} units available in": "{0} vahid mövcuddur",
+    "{0} updated": "{0} yeniləndi",
+    "{0} {1} {2}h {3}m": "{0} {1} {2}s {3}d",
+    "{0}% OFF": "{0}% ENDİRİM",
+    "{0}% off {1}": "{1}-də {0}% endirim",
+    "{0}h {1}m": "{0}s {1}d",
+    "{0}m": "{0}d",
+    "{0}m ago": "{0}d əvvəl",
+    "{0}s ago": "{0}s əvvəl",
+    "{0}h {1}m ago": "{0}s {1}d əvvəl"
   }
 }
