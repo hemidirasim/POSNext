@@ -54,6 +54,12 @@ export const SUPPORTED_LOCALES = {
 		nativeName: "Portugues (Brasil)",
 		countryCode: "br",
 		dir: "ltr",
+	},
+	az: {
+		name: "Azerbaijani",
+		nativeName: "Azərbaycan",
+		countryCode: "az",
+		dir: "ltr",
 	}
 }
 
