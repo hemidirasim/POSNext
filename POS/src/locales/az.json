@@ -3206,6 +3206,19 @@
     "4. Click &lt;strong&gt;&quot;Create&quot;&lt;strong&gt;": "4. &lt;strong&gt;\"Yarat\"&lt;/strong&gt; düyməsini klikləyin",
     "Are you sure you want to delete &lt;strong&gt;&quot;{0}&quot;&lt;strong&gt;?": "&lt;strong&gt;\"{0}\"&lt;/strong&gt;-ni silmək istədiyinizə əminsiniz?",
     "Expected: &lt;span class=&quot;font-medium&quot;&gt;{0}&lt;/span&gt;": "Gözlənilən: &lt;span class=\"font-medium\"&gt;{0}&lt;/span&gt;",
-    "Choose a table to begin the order": "Sifarişə başlamaq üçün masa seçin"
+    "Choose a table to begin the order": "Sifarişə başlamaq üçün masa seçin",
+    "select_table": "Masa seç",
+    "choose_a_table_to_begin_the_order": "Sifarişə başlamaq üçün masa seçin",
+    "x_report": "X Hesabatı",
+    "z_report": "Z Hesabatı",
+    "stock_lookup": "Stok axtarışı",
+    "kds": "KDS",
+    "kitchen_display": "Mətbəx ekranı",
+    "table_management": "Masa idarəsi",
+    "running_tab": "Açıq hesab",
+    "merge_invoices": "Fakturaları birləşdir",
+    "transfer_items": "Məhsulları köçür",
+    "order_status": "Sifariş statusu",
+    "waiting_time": "Gözləmə vaxtı"
   }
 }
