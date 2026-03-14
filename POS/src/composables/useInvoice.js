@@ -1036,49 +1036,15 @@ export function useInvoice() {
 	}
 
 	/**
-	 * Sets the default customer from POS Profile if available.
-	 * This is called when resetting/clearing the cart to auto-select
-	 * the default customer configured in the POS Profile.
-	 * If no default customer is configured, falls back to "Walking Customer".
+	 * Sets the default customer to "Walking Customer".
+	 * This is always used as default, user can change via customer selection.
 	 */
-	async function setDefaultCustomer() {
-		// Reset to null first
-		customer.value = null
-
-		// Only fetch default customer if we have a POS Profile
-		if (!posProfile.value) {
-			return
-		}
-
-		try {
-			const result = await getDefaultCustomerResource.submit({
-				pos_profile: posProfile.value,
-			})
-
-			// Set the default customer if one is configured
-			if (result && result.customer) {
-				// Create customer object matching the structure from customer selection
-				customer.value = {
-					name: result.customer,
-					customer_name: result.customer_name || result.customer,
-					customer_group: result.customer_group,
-				}
-			} else {
-				// Fallback to Walking Customer if no default customer is configured
-				customer.value = {
-					name: "Walking Customer",
-					customer_name: "Walking Customer",
-					customer_group: "Individual",
-				}
-			}
-		} catch (error) {
-			// Fallback to Walking Customer on error
-			console.log("No default customer set in POS Profile, using Walking Customer")
-			customer.value = {
-				name: "Walking Customer",
-				customer_name: "Walking Customer",
-				customer_group: "Individual",
-			}
+	function setDefaultCustomer() {
+		// Always set Walking Customer as default
+		customer.value = {
+			name: "Walking Customer",
+			customer_name: "Walking Customer",
+			customer_group: "Individual",
 		}
 	}
 
