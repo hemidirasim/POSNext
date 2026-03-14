@@ -3205,6 +3205,7 @@
     "2. Click &lt;strong&gt;&quot;Make Variants&quot;&lt;strong&gt; button": "2. &lt;strong&gt;\"Variant yarat\"&lt;/strong&gt; düyməsini klikləyin",
     "4. Click &lt;strong&gt;&quot;Create&quot;&lt;strong&gt;": "4. &lt;strong&gt;\"Yarat\"&lt;/strong&gt; düyməsini klikləyin",
     "Are you sure you want to delete &lt;strong&gt;&quot;{0}&quot;&lt;strong&gt;?": "&lt;strong&gt;\"{0}\"&lt;/strong&gt;-ni silmək istədiyinizə əminsiniz?",
-    "Expected: &lt;span class=&quot;font-medium&quot;&gt;{0}&lt;/span&gt;": "Gözlənilən: &lt;span class=\"font-medium\"&gt;{0}&lt;/span&gt;"
+    "Expected: &lt;span class=&quot;font-medium&quot;&gt;{0}&lt;/span&gt;": "Gözlənilən: &lt;span class=\"font-medium\"&gt;{0}&lt;/span&gt;",
+    "Choose a table to begin the order": "Sifarişə başlamaq üçün masa seçin"
   }
 }
