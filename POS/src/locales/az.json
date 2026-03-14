@@ -216,7 +216,25 @@
   "invoices": {
     "draft_invoices": "Qaralama fakturalar",
     "invoice_history": "Faktura tarixçəsi",
-    "return_invoice": "Qaytarma fakturası"
+    "return_invoice": "Qaytarma fakturası",
+    "invoice_management": "Faktura İdarəsi",
+    "manage_invoices": "Bütün fakturalarınızı bir yerdə idarə edin",
+    "drafts": "Qaralamalar",
+    "all": "Hamısı",
+    "partially_paid": "Qismən ödənilib",
+    "unpaid": "Ödənilməyib",
+    "overdue": "Gecikmiş",
+    "no_unpaid_invoices": "Ödənilməmiş faktura yoxdur",
+    "no_draft_invoices": "Qaralama faktura yoxdur",
+    "save_drafts_later": "Fakturaları qaralama olaraq saxlayın və sonra davam edin",
+    "no_return_invoices": "Qaytarma fakturası yoxdur",
+    "no_remarks": "Qeyd yoxdur",
+    "background_stock_sync": "Fon stok sinxronizasiyası",
+    "stock_validation_policy": "Stok təsdiqləmə siyasəti",
+    "enable_auto_stock_sync": "Avtomatik stok sinxronizasiyasını aktivləşdir",
+    "stock_sync_description": "Fon rejimində serverdən stok miqdarlarını dövri sinxronlaşdırın (Web Worker-də işləyir)",
+    "return_invoices_here": "Qaytarma fakturaları burada görünəcək",
+    "all_invoices_paid": "Bütün fakturalar tam ödənilib"
   },
   "promotions": {
     "promotion_coupon_management": "Aksiya və Kupon İdarəsi",
