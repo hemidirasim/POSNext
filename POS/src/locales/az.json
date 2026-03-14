@@ -135,6 +135,7 @@
     "shift": "Směna",
     "open_shift": "Směna aç",
     "close_shift": "Směna bağla",
+    "view_shift": "Směna ətraflı",
     "shift_opened": "Směna açıldı",
     "shift_closed": "Směna bağlandı",
     "no_shift": "Açıq směna yoxdur",
@@ -211,6 +212,11 @@
     "export_excel": "Excel-ə ixrac",
     "export_pdf": "PDF-ə ixrac",
     "print_report": "Hesabatı çap et"
+  },
+  "invoices": {
+    "draft_invoices": "Qaralama fakturalar",
+    "invoice_history": "Faktura tarixçəsi",
+    "return_invoice": "Qaytarma fakturası"
   },
   "settings": {
     "settings": "Ayarlar",
