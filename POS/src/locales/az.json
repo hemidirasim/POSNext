@@ -3221,6 +3221,19 @@
     "order_status": "Sifariş statusu",
     "waiting_time": "Gözləmə vaxtı",
     "Invoice Management": "Faktura İdarəsi",
-    "Manage all your invoices in one place": "Bütün fakturalarınızı bir yerdə idarə edin"
+    "Manage all your invoices in one place": "Bütün fakturalarınızı bir yerdə idarə edin",
+    "Promotion & Coupon Management": "Aksiya və Kupon İdarəsi",
+    "Promotional Schemes": "Aksiya sxemləri",
+    "Coupons": "Kuponlar",
+    "Search promotions...": "Aksiya axtar...",
+    "All Status": "Bütün statuslar",
+    "Create New Promotion": "Yeni aksiya yarat",
+    "No promotions found": "Aksiya tapılmadı",
+    "Select a Promotion": "Aksiya seç",
+    "Choose a promotion from the list to view and edit or create a new one to get started": "Baxmaq və redaktə etmək üçün siyahıdan aksiya seçin və ya başlamaq üçün yeni yaradın",
+    "Promotion Name": "Aksiya adı",
+    "Promotion Details": "Aksiya detalları",
+    "Promotion Type": "Aksiya növü",
+    "Promotion Status": "Aksiya statusu"
   }
 }
