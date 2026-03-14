@@ -851,3 +851,30 @@ total_outstanding,total_outstanding
 total_qty,total_qty
 total_returned_qty,total_returned_qty
 type,type
+Promotion & Coupon Management,Aksiya və Kupon İdarəsi
+Manage promotional schemes and coupons,Təqvim sxemlərini və kuponları idarə edin
+Promotional Schemes,Aksiya sxemləri
+Coupons,Kuponlar
+Search promotions...,Aksiya axtar...
+All Status,Bütün statuslar
+Create New Promotion,Yeni aksiya yarat
+Refresh,Yenilə
+No promotions found,Aksiya tapılmadı
+Select a Promotion,Aksiya seç
+Choose a promotion from the list to view and edit or create a new one to get started,Baxmaq və redaktə etmək üçün siyahıdan aksiya seçin və ya başlamaq üçün yeni yaradın
+Fill in the details to create a new promotional scheme,Yeni aksiya sxemi yaratmaq üçün detalları doldurun
+Promotion Name (required),Aksiya adı (məcburi)
+Select Item Group,Məhsul qrupu seç
+Discount Details,Endirim detalları
+Minimum Quantity,Minimum miqdar
+Search coupons...,Kupon axtar...
+All Types,Bütün növlər
+Create New Coupon,Yeni kupon yarat
+Select a Coupon,Kupon seç
+Choose a coupon from the list to view and edit or create a new one to get started,Baxmaq və redaktə etmək üçün siyahıdan kupon seçin və ya başlamaq üçün yeni yaradın
+Create New Coupon,Yeni kupon yarat
+No coupons found,Kupon tapılmadı
+Fixed Amount,Sabit məbləğ
+Maximum Quantity,Maksimum miqdar
+Select Table,Masa seç
+Choose a table to begin the order,Sifarişə başlamaq üçün masa seçin
