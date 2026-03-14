@@ -1,494 +1,853 @@
-source_text,target_text,context
-customer,Müştəri,
-item,Məhsul,
-quantity,Miqdar,
-price,Qiymət,
-total,Cəm,
-discount,Endirim,
-tax,Vergi,
-payment,Ödəniş,
-change,Qalıq,
-submit,Göndər,
-cancel,İmtina,
-save,Saxla,
-edit,Dəyiş,
-delete,Sil,
-add,Əlavə et,
-remove,Çıxar,
-search,Axtar,
-filter,Filtr,
-refresh,Yenilə,
-loading,Yüklənir...,
-error,Xəta,
-success,Uğurlu,
-warning,Xəbərdarlıq,
-info,Məlumat,
-confirm,Təsdiqlə,
-close,Bağla,
-back,Geri,
-next,Növbəti,
-previous,Əvvəlki,
-print,Çap et,
-download,Yüklə,
-upload,Yüklə,
-export,İxrac,
-import, idxal,
-settings,Ayarlar,
-profile,Profil,
-logout,Çıxış,
-login,Daxil ol,
-username,İstifadəçi adı,
-password,Şifrə,
-email,E-poçt,
-phone,Telefon,
-address,Ünvan,
-date,Tarix,
-time,Vaxt,
-status,Status,
-active,Aktiv,
-inactive,Deaktiv,
-pending,Gözləyir,
-processing,Emal edilir,
-completed,Tamamlandı,
-cancelled,Ləğv edildi,
-delivered,Çatdırıldı,
-ready,Hazırdır,
-preparing,Hazırlanır,
-served,Servis edildi,
-paid,Ödənildi,
-unpaid,Ödənilməyib,
-partial,Qismən,
-full,Tam,
-cash,Nağd,
-card,Kart,
-credit,Kredit,
-wallet,Pulqabı,
-coupon,Kupon,
-discount_amount,Endirim məbləği,
-tax_amount,Vergi məbləği,
-grand_total,Yekun cəm,
-net_total,Xalis cəm,
-paid_amount,Ödənilən məbləğ,
-remaining_amount,Qalıq məbləğ,
-change_amount,Qalıq (pulu),
-subtotal,Aralıq cəm,
-items_count,Məhsul sayı,
-item_name,Məhsul adı,
-item_code,Məhsul kodu,
-barcode,Barkod,
-category,Kateqoriya,
-warehouse,Anbar,
-stock,Qalıq,
-available,Mövcud,
-out_of_stock,Stokda yoxdur,
-low_stock,Az qalıb,
-uom,Vahid,
-rate,Qiymət,
-amount,Məbləğ,
-description,Təsvir,
-note,Qeyd,
-reference,Referans,
-invoice,Faktura,
-invoice_no,Faktura nömrəsi,
-invoice_date,Faktura tarixi,
-due_date,Bitmə tarixi,
-customer_name,Müştəri adı,
-customer_group,Müştəri qrupu,
-POS,POS,
-POS Profile,POS Profili,
-shift,Směna,
-open_shift,Směna aç,
-close_shift,Směna bağla,
-shift_opened,Směna açıldı,
-shift_closed,Směna bağlandı,
-no_shift,Açıq směna yoxdur,
-current_shift,Cari směna,
-shift_start,Směna başlanğıc,
-shift_end,Směna sonu,
-cashier,Kassir,
-register,Kassa,
-order,Sifariş,
-order_no,Sifariş nömrəsi,
-table,Masa,
-table_name,Masa adı,
-area,Sahə,
-restaurant,Restoran,
-kitchen,Mətbəx,
-kds,Mətbəx ekranı,
-send_to_kitchen,Mətbəxə göndər,
-prepare,Hazırla,
-serve,Servis et,
-modify,Dəyişdir,
-additional,Əlavə,
-new,Yeni,
-existing,Mövcud,
-draft,Qaralama,
-submitting,Göndərilir...,
-processing_payment,Ödəniş emal edilir...,
-printing,Çap edilir...,
-print_receipt,Çek çap et,
-email_receipt,Çek göndər,
-sms_receipt,SMS göndər,
-receipt,Çek,
-thank_you,Təşəkkür edirik,
-visit_again,Yenidən görüşənədək,
-powered_by,İstifadə edilir,
-brainwise_tech,BrainWise Technologies,
-settings_saved,Ayarlar saxlandı,
-settings_error,Ayarlar saxlanarkən xəta,
-sync,Sinxronizasiya,
-syncing,Sinxronizasiya edilir...,
-synced,Sinxronizasiya tamamlandı,
-offline,Oflayn,
-online,Onlayn,
-cache,Keş,
-clear_cache,Keşi təmizlə,
-cache_cleared,Keş təmizləndi,
-language,Dil,
-english,İngilis,
-azerbaijani,Azərbaycan,
-turkish,Türk,
-arabic,Ərəb,
-currency,Pul vahidi,
-date_format,Tarix formatı,
-time_format,Vaxt formatı,
-timezone,Saat qurşağı,
-tax_inclusive,Vergi daxildir,
-tax_exclusive,Vergi xaricdir,
-round_off,Yuvarlaqlaşdırma,
-allow_discount,Endirimə icazə ver,
-allow_credit,Kreditə icazə ver,
-allow_return,Qaytarmağa icazə ver,
-allow_partial,Qismən ödənişə icazə ver,
-minimum_amount,Minimum məbləğ,
-maximum_amount,Maksimum məbləğ,
-hold,Askıya al,
-hold_order,Sifarişi askıya al,
-hold_note,Askı qeydi,
-retrieve,Bərpa et,
-retrieve_order,Sifarişi bərpa et,
-split,Böl,
-split_order,Sifarişi böl,
-merge,Birləşdir,
-merge_order,Sifarişləri birləşdir,
-transfer,Köçür,
-transfer_order,Sifarişi köçür,
-transfer_table,Masanı köçür,
-from_table,From masa,
-to_table,To masa,
-select_table,Masa seç,
-select_customer,Müştəri seç,
-select_item,Məhsul seç,
-select_payment,Ödəniş üsulu seç,
-apply_tender,Təklif tətbiq et,
-tender_amount,Təklif məbləği,
-tendered,Ödənilən,
-select,Seç,
-add_new,Yeni əlavə et,
-create_customer,Yeni müştəri yarat,
-edit_customer,Müştərini redaktə et,
-customer_details,Müştəri məlumatları,
-loyalty_points,Loyalty xalları,
-referral_code,Referal kodu,
-apply_referral,Referal kodu tətbiq et,
-apply_promotion,Aksiya tətbiq et,
-promotion,Aksiya,
-coupon_code,Kupon kodu,
-apply_coupon,Kupon tətbiq et,
-invalid_coupon,Yanlış kupon kodu,
-expired_coupon,Vaxtı keçmiş kupon,
-applied_coupon,Kupon tətbiq edildi,
-remove_coupon,Kuponu sil,
-serial_no,Seriya nömrəsi,
-batch_no,Partiya nömrəsi,
-has_serial,Seriyalıdır,
-has_batch,Partiyalıdır,
-expiry_date,Bitmə tarixi,
-manufacturing_date,İstehsal tarixi,
-walk_in,Walking Customer,
-Walk In Customer,Walking Customer,
-default_customer,Default müştəri,
-quick_cash,Sürətli nağd,
-exact_amount,Dəqiq məbləğ,
-custom_amount,Xüsusi məbləğ,
-pay,Ödə,
-paying,Ödənilir...,
-paid_successfully,Uğurla ödənildi,
-payment_failed,Ödəniş uğursuz oldu,
-retry,Yenidən cəhd et,
-skip,Keç,
-continue,Davam et,
-finish,Bitir,
-start,Başla,
-stop,Dayan,
-resume,Davam et,
-pause,Fasilə,
-inventory,İnventar,
-stock_adjustment,Stok tənzimləməsi,
-stock_entry,Stok daxilolması,
-stock_transfer,Stok köçürməsi,
-opening_stock,Açılış stoku,
-closing_stock,Bağlanış stoku,
-stock_value,Stok dəyəri,
-valuation,Qiymətləndirmə,
-average_cost,Ortalama maya dəyəri,
-moving_average,Hərəkətli orta,
-fifo,FIFO,
-lifo,LIFO,
-weighted_average,Çəkili orta,
-reports,Hesabatlar,
-sales_report,Satış hesabatı,
-item_report,Məhsul hesabatı,
-customer_report,Müştəri hesabatı,
-payment_report,Ödəniş hesabatı,
-shift_report,Směna hesabatı,
-daily_report,Günlük hesabat,
-monthly_report,Aylıq hesabat,
-yearly_report,İllik hesabat,
-custom_report,Xüsusi hesabat,
-export_to_excel,Excel-ə ixrac et,
-export_to_pdf,PDF-ə ixrac et,
-print_report,Hesabatı çap et,
-filter_by,Filterlə,
-group_by,Qrupla,
-sort_by,Sırala,
-ascending,Artan,
-descending,Azalan,
-show,Göstər,
-hide,Gizlət,
-all,Hamsı,
-none,Yoxdur,
-select_all,Hamsını seç,
-deselect_all,Hamsını ləğv et,
-actions,Əməliyyatlar,
-bulk_actions,Kütləvi əməliyyatlar,
-apply,Tətbiq et,
-reset,Sıfırla,
-clear,Təmizlə,
-search_placeholder,Axtar...,
-no_results,Nəticə tapılmadı,
-loading_results,Nəticələr yüklənir...,
-more,Daha çox,
-less,Daha az,
-show_more,Daha çox göstər,
-show_less,Daha az göstər,
-expand,Genişləndir,
-collapse,Yığ,
-details,Detallar,
-overview,Ümumi baxış,
-summary,Xülasə,
-history,Tarixçə,
-activity,Aktivlik,
-log,Giriş,
-version,Versiya,
-help,Kömək,
-support,Dəstək,
-documentation,Sənədləşmə,
-feedback,Rəy,
-feature_request,Funksiya tələbi,
-bug_report,Xəta bildirişi,
-about,Haqqında,
-terms,Şərtlər,
-privacy,Gizlilik,
-copyright,Müəllif hüququ,
-all_rights_reserved,Bütün hüquqlar qorunur,
-session,Sessiya,
-session_timeout,Sessiya vaxtı bitdi,
-relogin,Yenidən daxil ol,
-auto_logout,Avtomatik çıxış,
-idle_time,Boş vaxt,
-last_activity,Son aktivlik,
-last_sync,Son sinxronizasiya,
-last_backup,Son ehtiyat nüsxəsi,
-backup,Ehtiyat nüsxəsi,
-restore,Bərpa et,
-maintenance,Təmir,
-update,Yeniləmə,
-version_available,yeni versiya mövcuddur,
-update_available,Yeniləmə mövcuddur,
-install,Quraşdır,
-reinstall,Yenidən quraşdır,
-uninstall,Sil,
-enable,Aktivləşdir,
-disable,Deaktivləşdir,
-active_users,Aktiv istifadəçilər,
-total_users,Cəmi istifadəçilər,
-new_users,Yeni istifadəçilər,
-returning_users,Qayıdan istifadəçilər,
-top_items,Ən çox satılanlar,
-top_customers,Ən çox alan müştərilər,
-top_categories,Ən çox satılan kateqoriyalar,
-low_stock_items,Az qalan məhsullar,
-expired_items,Vaxtı keçmiş məhsullar,
-expiring_soon,Yaxında bitənlər,
-out_of_stock_items,Stokda olmayanlar,
-fast_movers,Sürətli satılanlar,
-slow_movers,Yavaş satılanlar,
-most_profitable,Ən çox gətirənlər,
-least_profitable,Ən az gətirənlər,
-customer_acquisition,Müştəri əldə etmə,
-customer_retention,Müştəri saxlama,
-churn_rate,Churn dərəcəsi,
-conversion_rate,Konversiya dərəcəsi,
-average_order_value,Ortalama sifariş dəyəri,
-average_transaction_value,Ortalama əməliyyat dəyəri,
-revenue,Gəlir,
-profit,Mənfəət,
-loss,Zərər,
-margin,Marja,
-markup,Markup,
-cost,Mayə,
-expense,Xərc,
-income,Gəlir,
-gross_profit,Xalis mənfəət,
-net_profit,Xalis mənfəət,
-operating_cost,Əməliyyat xərci,
-fixed_cost,Sabit xərc,
-variable_cost,Dəyişən xərc,
-break_even,Break-even,
-roi,ROI,
-roi_percentage,ROI %,
-payback_period,Geri ödəmə müddəti,
-cash_flow,Pul axını,
-liquidity,Likvidlik,
-solvency,Solventlik,
-assets,Aktivlər,
-liabilities,Öhdəliklər,
-equity,Kapital,
-debt,Borc,
-credit_limit,Kredit limiti,
-credit_period,Kredit müddəti,
-due_amount,Borc məbləği,
-overdue,Gecikmiş,
-partially_paid,Qismən ödənilib,
-fully_paid,Tam ödənilib,
-write_off,Yazılmaq,
-bad_debt,Şübhəli borc,
-collection,Tahsilat,
-deposit,Depozit,
-withdrawal,Çıxarış,
-transfer_in,Daxil olan köçürmə,
-transfer_out,Xaricə köçürmə,
-beginning_balance,Başlanğıc balans,
-ending_balance,Son balans,
-difference,Fərq,
-variance,Variance,
-adjustment,Tənzimləmə,
-reconciliation,Razılaşdırma,
-confirmation,Təsdiq,
-verification,Təsviq,
-approval,Təsdiqləmə,
-rejection,Rədd etmə,
-pending_approval,Gözləyən təsdiq,
-approved,Təsdiqləndi,
-rejected,Rədd edildi,
-revision,Düzəliş,
-draft_mode,Qaralama rejimi,
-final_mode,Son rejim,
-submitted_mode,Göndərilmiş rejim,
-cancelled_mode,Ləğv edilmiş rejim,
-amended_mode,Düzəliş edilmiş rejim,
-View Shift,Směna ətraflı,
-Draft Invoices,Qaralama fakturalar,
-Invoice History,Faktura tarixçəsi,
-Return Invoice,Qaytarma fakturası,
-Close Shift,Směna bağla,
-Promotion & Coupon Management,Aksiya və Kupon İdarəsi,
-Coupons,Kuponlar,
-Promotional Schemes,Aksiya sxemləri,
-Choose a promotion from the list to view and edit\, or create a new one to get started,Siyahıdan aksiya seçib baxın və redaktə edin\, və ya yeni yaradın,
-No promotions found,Aksiya tapılmadı,
-Search promotions...,Aksiya axtar...,
-Create New Promotion,Yeni aksiya yarat,
-Promotion Name,Aksiya adı,
-Discount Details,Endirim detalları,
-Fixed Amount,Sabit məbləğ,
-Select a Coupon,Kupon seç,
-No coupons found,Kupon tapılmadı,
-Validity & Usage,Keçərlilik və istifadə,
-Discount Configuration,Endirim konfiqurasiyası,
-Minimum Cart Amount,Minimum səbət məbləği,
-Discount Percentage (%),Endirim faizi (%),
-Maximum Discount Amount,Maksimum endirim məbləği,
-Only One Use Per Customer,Hər müştəri yalnız bir dəfə,
-Select Item Group,Məhsul qrupu seç,
-All Status,Bütün statuslar,
-Select a Promotion,Aksiya seç,
-Invoice Management,Faktura İdarəsi,
-Manage all your invoices in one place,Bütün fakturalarınızı bir yerdə idarə edin,
-Invoice History,Faktura tarixçəsi,
-Drafts,Qaralamalar,
-All,Hamısı,
-Partially Paid,Qismən ödənilib,
-Unpaid,Ödənilməyib,
-Overdue,Gecikmiş,
-No Unpaid Invoices,Ödənilməmiş faktura yoxdur,
-No draft invoices,Qaralama faktura yoxdur,
-Save invoices as drafts to continue later,Fakturaları qaralama olaraq saxlayın və sonra davam edin,
-No return invoices,Qaytarma fakturası yoxdur,
-No Remarks,Qeyd yoxdur,
-Background Stock Sync,Fon stok sinxronizasiyası,
-Stock Validation Policy,Stok təsdiqləmə siyasəti,
-Enable Automatic Stock Sync,Avtomatik stok sinxronizasiyasını aktivləşdir,
-Periodically sync stock quantities from server in the background (runs in Web Worker),Fon rejimində serverdən stok miqdarlarını dövri sinxronlaşdırın (Web Worker-də işləyir),
-Return invoices will appear here,Qaytarma fakturaları burada görünəcək,
-All invoices are fully paid,Bütün fakturalar tam ödənilib,
-POS Profile,POS Profili,
-POS Opening Shift,POS Açılış Směnası,
-POS Closing Shift,POS Bağlanış Směnası,
-POS Invoice,POS Fakturası,
-POS Invoice Item,POS Faktura Məhsulu,
-POS Settings,POS Ayarları,
-POS Offer,POS Təklifi,
-POS Coupon,POS Kuponu,
-POS Promotional Scheme,POS Aksiya Sxemi,
-POS Opening Entry,POS Açılış Girişi,
-POS Closing Entry,POS Bağlanış Girişi,
-Mode of Payment,Ödəniş Rejimi,
-Mode of Payment Account,Ödəniş Rejimi Hesabı,
-Print Format,Çap Formatı,
-Letter Head,Məktub Başlığı,
-Terms and Conditions,Şərtlər və Qaydalar,
-Tax Category,Vergi Kateqoriyası,
-Tax Template,Vergi Şablonu,
-Sales Taxes and Charges Template,Satış Vergi və Ödənişləri Şablonu,
-Purchase Taxes and Charges Template,Alış Vergi və Ödənişləri Şablonu,
-Item Group,Məhsul Qrupu,
-Item Price,Məhsul Qiyməti,
-Price List,Qiymət Siyahısı,
-Currency Exchange,Valyuta Mübadiləsi,
-Accounting Dimension,Mühasibatlıq Ölçüsü,
-Cost Center,Xərc Mərkəzi,
-Project,Layihə,
-Territory,Ərazi,
-Customer Group,Müştəri Qrupu,
-Supplier Group,Təchizatçı Qrupu,
-Campaign,Kampaniya,
-Source,Mənbə,
-Sales Partner,Satış Tərəfdaşı,
-Sales Person,Satış Nümayəndəsi,
-Loyalty Program,Loyalty Proqramı,
-Loyalty Point Entry,Loyalty Xalı Girişi,
-Promotional Scheme,Aksiya Sxemi,
-Pricing Rule,Qiymət Qaydası,
-Brand,Brend,
-Warehouse,Anbar,
-Stock Entry,Stok Girişi,
-Stock Reconciliation,Stok Razılaşdırması,
-Stock Ledger,Stok Çıxarışı,
-Batch,Partiya,
-Serial No,Seriya Nömrəsi,
-UOM,Ölçü Vahidi,
-UOM Conversion Factor,Ölçü Vahidi Çevirmə Əmsalı,
-Item Alternative,Məhsul Alternativi,
-Item Barcode,Məhsul Barkodu,
-Item Supplier,Məhsul Təchizatçısı,
-Item Customer,Məhsul Müştərisi,
-Item Tax,Məhsul Vergisi,
-Item Default,Məhsul Varsayilanı,
-Reorder Level,Yenidən Sifariş Səviyyəsi,
-Quick Stock Balance,Sürətli Stok Balansı,
-Picking List,Yığma Siyahısı,
-Putaway Rule,Yerqoyma Qaydası,
-Reservation Entry,Rezerv Girişi,
-Stock Reservation,Stok Rezervi,
+source_text,target_text
+customer,Müştəri
+item,Məhsul
+quantity,Miqdar
+price,Qiymət
+total,Cəm
+discount,Endirim
+tax,Vergi
+payment,Ödəniş
+change,Qalıq
+submit,Göndər
+cancel,İmtina
+save,Saxla
+edit,Dəyiş
+delete,Sil
+add,Əlavə et
+remove,Çıxar
+search,Axtar
+filter,Filtr
+refresh,Yenilə
+loading,Yüklənir...
+error,Xəta
+success,Uğurlu
+warning,Xəbərdarlıq
+info,Məlumat
+confirm,Təsdiqlə
+close,Bağla
+back,Geri
+next,Növbəti
+previous,Əvvəlki
+print,Çap et
+download,Yüklə
+upload,Yüklə
+export,İxrac
+import, idxal
+settings,Ayarlar
+profile,Profil
+logout,Çıxış
+login,Daxil ol
+username,İstifadəçi adı
+password,Şifrə
+email,E-poçt
+phone,Telefon
+address,Ünvan
+date,Tarix
+time,Vaxt
+status,Status
+active,Aktiv
+inactive,Deaktiv
+pending,Gözləyir
+processing,Emal edilir
+completed,Tamamlandı
+cancelled,Ləğv edildi
+delivered,Çatdırıldı
+ready,Hazırdır
+preparing,Hazırlanır
+served,Servis edildi
+paid,Ödənildi
+unpaid,Ödənilməyib
+partial,Qismən
+full,Tam
+cash,Nağd
+card,Kart
+credit,Kredit
+wallet,Pulqabı
+coupon,Kupon
+discount_amount,Endirim məbləği
+tax_amount,Vergi məbləği
+grand_total,Yekun cəm
+net_total,Xalis cəm
+paid_amount,Ödənilən məbləğ
+remaining_amount,Qalıq məbləğ
+change_amount,Qalıq (pulu)
+subtotal,Aralıq cəm
+items_count,Məhsul sayı
+item_name,Məhsul adı
+item_code,Məhsul kodu
+barcode,Barkod
+category,Kateqoriya
+warehouse,Anbar
+stock,Qalıq
+available,Mövcud
+out_of_stock,Stokda yoxdur
+low_stock,Az qalıb
+uom,Vahid
+rate,Qiymət
+amount,Məbləğ
+description,Təsvir
+note,Qeyd
+reference,Referans
+invoice,Faktura
+invoice_no,Faktura nömrəsi
+invoice_date,Faktura tarixi
+due_date,Bitmə tarixi
+customer_name,Müştəri adı
+customer_group,Müştəri qrupu
+POS,POS
+POS Profile,POS Profili
+shift,Směna
+open_shift,Směna aç
+close_shift,Směna bağla
+shift_opened,Směna açıldı
+shift_closed,Směna bağlandı
+no_shift,Açıq směna yoxdur
+current_shift,Cari směna
+shift_start,Směna başlanğıc
+shift_end,Směna sonu
+cashier,Kassir
+register,Kassa
+order,Sifariş
+order_no,Sifariş nömrəsi
+table,Masa
+table_name,Masa adı
+area,Sahə
+restaurant,Restoran
+kitchen,Mətbəx
+kds,Mətbəx ekranı
+send_to_kitchen,Mətbəxə göndər
+prepare,Hazırla
+serve,Servis et
+modify,Dəyişdir
+additional,Əlavə
+new,Yeni
+existing,Mövcud
+draft,Qaralama
+submitting,Göndərilir...
+processing_payment,Ödəniş emal edilir...
+printing,Çap edilir...
+print_receipt,Çek çap et
+email_receipt,Çek göndər
+sms_receipt,SMS göndər
+receipt,Çek
+thank_you,Təşəkkür edirik
+visit_again,Yenidən görüşənədək
+powered_by,İstifadə edilir
+brainwise_tech,BrainWise Technologies
+settings_saved,Ayarlar saxlandı
+settings_error,Ayarlar saxlanarkən xəta
+sync,Sinxronizasiya
+syncing,Sinxronizasiya edilir...
+synced,Sinxronizasiya tamamlandı
+offline,Oflayn
+online,Onlayn
+cache,Keş
+clear_cache,Keşi təmizlə
+cache_cleared,Keş təmizləndi
+language,Dil
+english,İngilis
+azerbaijani,Azərbaycan
+turkish,Türk
+arabic,Ərəb
+currency,Pul vahidi
+date_format,Tarix formatı
+time_format,Vaxt formatı
+timezone,Saat qurşağı
+tax_inclusive,Vergi daxildir
+tax_exclusive,Vergi xaricdir
+round_off,Yuvarlaqlaşdırma
+allow_discount,Endirimə icazə ver
+allow_credit,Kreditə icazə ver
+allow_return,Qaytarmağa icazə ver
+allow_partial,Qismən ödənişə icazə ver
+minimum_amount,Minimum məbləğ
+maximum_amount,Maksimum məbləğ
+hold,Askıya al
+hold_order,Sifarişi askıya al
+hold_note,Askı qeydi
+retrieve,Bərpa et
+retrieve_order,Sifarişi bərpa et
+split,Böl
+split_order,Sifarişi böl
+merge,Birləşdir
+merge_order,Sifarişləri birləşdir
+transfer,Köçür
+transfer_order,Sifarişi köçür
+transfer_table,Masanı köçür
+from_table,From masa
+to_table,To masa
+select_table,Masa seç
+select_customer,Müştəri seç
+select_item,Məhsul seç
+select_payment,Ödəniş üsulu seç
+apply_tender,Təklif tətbiq et
+tender_amount,Təklif məbləği
+tendered,Ödənilən
+select,Seç
+add_new,Yeni əlavə et
+create_customer,Yeni müştəri yarat
+edit_customer,Müştərini redaktə et
+customer_details,Müştəri məlumatları
+loyalty_points,Loyalty xalları
+referral_code,Referal kodu
+apply_referral,Referal kodu tətbiq et
+apply_promotion,Aksiya tətbiq et
+promotion,Aksiya
+coupon_code,Kupon kodu
+apply_coupon,Kupon tətbiq et
+invalid_coupon,Yanlış kupon kodu
+expired_coupon,Vaxtı keçmiş kupon
+applied_coupon,Kupon tətbiq edildi
+remove_coupon,Kuponu sil
+serial_no,Seriya nömrəsi
+batch_no,Partiya nömrəsi
+has_serial,Seriyalıdır
+has_batch,Partiyalıdır
+expiry_date,Bitmə tarixi
+manufacturing_date,İstehsal tarixi
+walk_in,Walking Customer
+Walk In Customer,Walking Customer
+default_customer,Default müştəri
+quick_cash,Sürətli nağd
+exact_amount,Dəqiq məbləğ
+custom_amount,Xüsusi məbləğ
+pay,Ödə
+paying,Ödənilir...
+paid_successfully,Uğurla ödənildi
+payment_failed,Ödəniş uğursuz oldu
+retry,Yenidən cəhd et
+skip,Keç
+continue,Davam et
+finish,Bitir
+start,Başla
+stop,Dayan
+resume,Davam et
+pause,Fasilə
+inventory,İnventar
+stock_adjustment,Stok tənzimləməsi
+stock_entry,Stok daxilolması
+stock_transfer,Stok köçürməsi
+opening_stock,Açılış stoku
+closing_stock,Bağlanış stoku
+stock_value,Stok dəyəri
+valuation,Qiymətləndirmə
+average_cost,Ortalama maya dəyəri
+moving_average,Hərəkətli orta
+fifo,FIFO
+lifo,LIFO
+weighted_average,Çəkili orta
+reports,Hesabatlar
+sales_report,Satış hesabatı
+item_report,Məhsul hesabatı
+customer_report,Müştəri hesabatı
+payment_report,Ödəniş hesabatı
+shift_report,Směna hesabatı
+daily_report,Günlük hesabat
+monthly_report,Aylıq hesabat
+yearly_report,İllik hesabat
+custom_report,Xüsusi hesabat
+export_to_excel,Excel-ə ixrac et
+export_to_pdf,PDF-ə ixrac et
+print_report,Hesabatı çap et
+filter_by,Filterlə
+group_by,Qrupla
+sort_by,Sırala
+ascending,Artan
+descending,Azalan
+show,Göstər
+hide,Gizlət
+all,Hamsı
+none,Yoxdur
+select_all,Hamsını seç
+deselect_all,Hamsını ləğv et
+actions,Əməliyyatlar
+bulk_actions,Kütləvi əməliyyatlar
+apply,Tətbiq et
+reset,Sıfırla
+clear,Təmizlə
+search_placeholder,Axtar...
+no_results,Nəticə tapılmadı
+loading_results,Nəticələr yüklənir...
+more,Daha çox
+less,Daha az
+show_more,Daha çox göstər
+show_less,Daha az göstər
+expand,Genişləndir
+collapse,Yığ
+details,Detallar
+overview,Ümumi baxış
+summary,Xülasə
+history,Tarixçə
+activity,Aktivlik
+log,Giriş
+version,Versiya
+help,Kömək
+support,Dəstək
+documentation,Sənədləşmə
+feedback,Rəy
+feature_request,Funksiya tələbi
+bug_report,Xəta bildirişi
+about,Haqqında
+terms,Şərtlər
+privacy,Gizlilik
+copyright,Müəllif hüququ
+all_rights_reserved,Bütün hüquqlar qorunur
+session,Sessiya
+session_timeout,Sessiya vaxtı bitdi
+relogin,Yenidən daxil ol
+auto_logout,Avtomatik çıxış
+idle_time,Boş vaxt
+last_activity,Son aktivlik
+last_sync,Son sinxronizasiya
+last_backup,Son ehtiyat nüsxəsi
+backup,Ehtiyat nüsxəsi
+restore,Bərpa et
+maintenance,Təmir
+update,Yeniləmə
+version_available,yeni versiya mövcuddur
+update_available,Yeniləmə mövcuddur
+install,Quraşdır
+reinstall,Yenidən quraşdır
+uninstall,Sil
+enable,Aktivləşdir
+disable,Deaktivləşdir
+active_users,Aktiv istifadəçilər
+total_users,Cəmi istifadəçilər
+new_users,Yeni istifadəçilər
+returning_users,Qayıdan istifadəçilər
+top_items,Ən çox satılanlar
+top_customers,Ən çox alan müştərilər
+top_categories,Ən çox satılan kateqoriyalar
+low_stock_items,Az qalan məhsullar
+expired_items,Vaxtı keçmiş məhsullar
+expiring_soon,Yaxında bitənlər
+out_of_stock_items,Stokda olmayanlar
+fast_movers,Sürətli satılanlar
+slow_movers,Yavaş satılanlar
+most_profitable,Ən çox gətirənlər
+least_profitable,Ən az gətirənlər
+customer_acquisition,Müştəri əldə etmə
+customer_retention,Müştəri saxlama
+churn_rate,Churn dərəcəsi
+conversion_rate,Konversiya dərəcəsi
+average_order_value,Ortalama sifariş dəyəri
+average_transaction_value,Ortalama əməliyyat dəyəri
+revenue,Gəlir
+profit,Mənfəət
+loss,Zərər
+margin,Marja
+markup,Markup
+cost,Mayə
+expense,Xərc
+income,Gəlir
+gross_profit,Xalis mənfəət
+net_profit,Xalis mənfəət
+operating_cost,Əməliyyat xərci
+fixed_cost,Sabit xərc
+variable_cost,Dəyişən xərc
+break_even,Break-even
+roi,ROI
+roi_percentage,ROI %
+payback_period,Geri ödəmə müddəti
+cash_flow,Pul axını
+liquidity,Likvidlik
+solvency,Solventlik
+assets,Aktivlər
+liabilities,Öhdəliklər
+equity,Kapital
+debt,Borc
+credit_limit,Kredit limiti
+credit_period,Kredit müddəti
+due_amount,Borc məbləği
+overdue,Gecikmiş
+partially_paid,Qismən ödənilib
+fully_paid,Tam ödənilib
+write_off,Yazılmaq
+bad_debt,Şübhəli borc
+collection,Tahsilat
+deposit,Depozit
+withdrawal,Çıxarış
+transfer_in,Daxil olan köçürmə
+transfer_out,Xaricə köçürmə
+beginning_balance,Başlanğıc balans
+ending_balance,Son balans
+difference,Fərq
+variance,Variance
+adjustment,Tənzimləmə
+reconciliation,Razılaşdırma
+confirmation,Təsdiq
+verification,Təsviq
+approval,Təsdiqləmə
+rejection,Rədd etmə
+pending_approval,Gözləyən təsdiq
+approved,Təsdiqləndi
+rejected,Rədd edildi
+revision,Düzəliş
+draft_mode,Qaralama rejimi
+final_mode,Son rejim
+submitted_mode,Göndərilmiş rejim
+cancelled_mode,Ləğv edilmiş rejim
+amended_mode,Düzəliş edilmiş rejim
+View Shift,Směna ətraflı
+Draft Invoices,Qaralama fakturalar
+Invoice History,Faktura tarixçəsi
+Return Invoice,Qaytarma fakturası
+Close Shift,Směna bağla
+Promotion & Coupon Management,Aksiya və Kupon İdarəsi
+Coupons,Kuponlar
+Promotional Schemes,Aksiya sxemləri
+Choose a promotion from the list to view and edit\, or create a new one to get started
+No promotions found,Aksiya tapılmadı
+Search promotions...,Aksiya axtar...
+Create New Promotion,Yeni aksiya yarat
+Promotion Name,Aksiya adı
+Discount Details,Endirim detalları
+Fixed Amount,Sabit məbləğ
+Select a Coupon,Kupon seç
+No coupons found,Kupon tapılmadı
+Validity & Usage,Keçərlilik və istifadə
+Discount Configuration,Endirim konfiqurasiyası
+Minimum Cart Amount,Minimum səbət məbləği
+Discount Percentage (%),Endirim faizi (%)
+Maximum Discount Amount,Maksimum endirim məbləği
+Only One Use Per Customer,Hər müştəri yalnız bir dəfə
+Select Item Group,Məhsul qrupu seç
+All Status,Bütün statuslar
+Select a Promotion,Aksiya seç
+Invoice Management,Faktura İdarəsi
+Manage all your invoices in one place,Bütün fakturalarınızı bir yerdə idarə edin
+Drafts,Qaralamalar
+All,Hamısı
+Partially Paid,Qismən ödənilib
+Unpaid,Ödənilməyib
+Overdue,Gecikmiş
+No Unpaid Invoices,Ödənilməmiş faktura yoxdur
+No draft invoices,Qaralama faktura yoxdur
+Save invoices as drafts to continue later,Fakturaları qaralama olaraq saxlayın və sonra davam edin
+No return invoices,Qaytarma fakturası yoxdur
+No Remarks,Qeyd yoxdur
+Background Stock Sync,Fon stok sinxronizasiyası
+Stock Validation Policy,Stok təsdiqləmə siyasəti
+Enable Automatic Stock Sync,Avtomatik stok sinxronizasiyasını aktivləşdir
+Periodically sync stock quantities from server in the background (runs in Web Worker),Fon rejimində serverdən stok miqdarlarını dövri sinxronlaşdırın (Web Worker-də işləyir)
+Return invoices will appear here,Qaytarma fakturaları burada görünəcək
+All invoices are fully paid,Bütün fakturalar tam ödənilib
+POS Opening Shift,POS Açılış Směnası
+POS Closing Shift,POS Bağlanış Směnası
+POS Invoice,POS Fakturası
+POS Invoice Item,POS Faktura Məhsulu
+POS Settings,POS Ayarları
+POS Offer,POS Təklifi
+POS Coupon,POS Kuponu
+POS Promotional Scheme,POS Aksiya Sxemi
+POS Opening Entry,POS Açılış Girişi
+POS Closing Entry,POS Bağlanış Girişi
+Mode of Payment,Ödəniş Rejimi
+Mode of Payment Account,Ödəniş Rejimi Hesabı
+Print Format,Çap Formatı
+Letter Head,Məktub Başlığı
+Terms and Conditions,Şərtlər və Qaydalar
+Tax Category,Vergi Kateqoriyası
+Tax Template,Vergi Şablonu
+Sales Taxes and Charges Template,Satış Vergi və Ödənişləri Şablonu
+Purchase Taxes and Charges Template,Alış Vergi və Ödənişləri Şablonu
+Item Group,Məhsul Qrupu
+Item Price,Məhsul Qiyməti
+Price List,Qiymət Siyahısı
+Currency Exchange,Valyuta Mübadiləsi
+Accounting Dimension,Mühasibatlıq Ölçüsü
+Cost Center,Xərc Mərkəzi
+Project,Layihə
+Territory,Ərazi
+Customer Group,Müştəri Qrupu
+Supplier Group,Təchizatçı Qrupu
+Campaign,Kampaniya
+Source,Mənbə
+Sales Partner,Satış Tərəfdaşı
+Sales Person,Satış Nümayəndəsi
+Loyalty Program,Loyalty Proqramı
+Loyalty Point Entry,Loyalty Xalı Girişi
+Promotional Scheme,Aksiya Sxemi
+Pricing Rule,Qiymət Qaydası
+Brand,Brend
+Warehouse,Anbar
+Stock Entry,Stok Girişi
+Stock Reconciliation,Stok Razılaşdırması
+Stock Ledger,Stok Çıxarışı
+Batch,Partiya
+Serial No,Seriya Nömrəsi
+UOM,Ölçü Vahidi
+UOM Conversion Factor,Ölçü Vahidi Çevirmə Əmsalı
+Item Alternative,Məhsul Alternativi
+Item Barcode,Məhsul Barkodu
+Item Supplier,Məhsul Təchizatçısı
+Item Customer,Məhsul Müştərisi
+Item Tax,Məhsul Vergisi
+Item Default,Məhsul Varsayilanı
+Reorder Level,Yenidən Sifariş Səviyyəsi
+Quick Stock Balance,Sürətli Stok Balansı
+Picking List,Yığma Siyahısı
+Putaway Rule,Yerqoyma Qaydası
+Reservation Entry,Rezerv Girişi
+Stock Reservation,Stok Rezervi
+A wallet already exists for customer {0} in company {1},{1} şirkətində {0} müştərisi üçün pulqabı artıq mövcuddur
+Address created successfully,Ünvan uğurla yaradıldı
+All items from this invoice have already been returned,Bu fakturadakı bütün məhsullar artıq qaytarılıb
+Amount must be greater than zero,Məbləğ sıfırdan böyük olmalıdır
+Apply On is required,Tətbiq ediləcək sahə tələb olunur
+Apply Referral Code Failed,Referans kodu tətbiqi uğursuz oldu
+At least one payment is required,Ən azı bir ödəniş tələb olunur
+At least one payment method is required,Ən azı bir ödəniş metodu tələb olunur
+Authentication required,Autentifikasiya tələb olunur
+Avg Efficiency,Orta Səmərəlilik
+Avg Invoice Value,Orta Faktura Dəyəri
+Avg Rate,Orta Qiymət
+Avg Sales/Shift,Orta Satış/Směna
+Avg Ticket,Orta Çek
+Both invoice and data parameters are missing,"Həm faktura, həm də məlumat parametrləri əksikdir"
+Cancelled Wallet Transaction {0} due to full return,Tam qaytarma səbəbindən {0} pulqabı əməliyyatı ləğv edildi
+Cancelled {0} credit redemption journal entries,{0} kredit bərpa jurnal yazıları ləğv edildi
+Cannot add payment to cancelled invoice,Ləğv edilmiş fakturaya ödəniş əlavə edilə bilməz
+Cannot create return against a return invoice,Qaytarma fakturasına qarşı qaytarma yaradıla bilməz
+Cannot delete coupon {0} as it has been used {1} times,{0} kuponu {1} dəfə istifadə edildiyinə görə silinə bilməz
+Cannot delete submitted invoice {0},Təqdim edilmiş {0} fakturası silinə bilməz
+Cash,Nağd
+Cashier,Kassir
+Cashier Name,Kassir Adı
+Closing,Bağlanış
+Company is required,Şirkət tələb olunur
+Company not set in POS Profile {0},POS Profilində {0} şirkəti təyin edilməyib
+Configuration error: {0},Konfiqurasiya xətası: {0}
+Could not create wallet for customer {0},{0} müştərisi üçün pulqabı yaradıla bilmədi
+Could not determine payment account for {0}. Please specify payment_account parameter.,"{0} üçün ödəniş hesabı müəyyən edilə bilmədi. Zəhmət olmasa, payment_account parametrini göstərin."
+Could not determine payment account. Please specify payment_account parameter.,Could not determine payment account. Please specify payment_account parameter.
+Could not parse '{0}' as JSON: {1},Could not parse '{0}' as JSON: {1}
+Coupon Creation Failed,Coupon Creation Failed
+Coupon Deletion Failed,Coupon Deletion Failed
+Coupon Toggle Failed,Coupon Toggle Failed
+Coupon Update Failed,Coupon Update Failed
+Coupon deleted successfully,Coupon deleted successfully
+Coupon name is required,Coupon name is required
+Coupon type is required,Coupon type is required
+Coupon {0} created successfully,Coupon {0} created successfully
+Coupon {0} not found,Coupon {0} not found
+Coupon {0} updated successfully,Coupon {0} updated successfully
+Coupon {0} {1},Coupon {0} {1}
+Coupons are not enabled,Coupons are not enabled
+Created wallet debit of {0} for partial return {1},Created wallet debit of {0} for partial return {1}
+Credit source invoice {0} not found or not submitted,Credit source invoice {0} not found or not submitted
+Current Stock,Current Stock
+Customer,Customer
+Customer is required,Customer is required
+Customer is required for Gift Card coupons,Customer is required for Gift Card coupons
+Customer name is required,Customer name is required
+Customers,Customers
+Date,Date
+Days to Stockout,Days to Stockout
+Delivery charge: {0},Delivery charge: {0}
+Delivery charges not enabled,Delivery charges not enabled
+Delivery configured correctly,Delivery configured correctly
+Delivery item '{0}' not found,Delivery item '{0}' not found
+Delivery item not configured in POS Settings,Delivery item not configured in POS Settings
+Delivery not enabled,Delivery not enabled
+Depletion Rate/Day,Depletion Rate/Day
+Difference,Difference
+Disc %,Disc %
+Discount %,Discount %
+Discount Amount is required,Discount Amount is required
+Discount Amount must be greater than 0,Discount Amount must be greater than 0
+Discount Percentage is required,Discount Percentage is required
+Discount Percentage must be between 0 and 100,Discount Percentage must be between 0 and 100
+Discount Rule,Discount Rule
+Discount Type is required,Discount Type is required
+Discount amount is required when discount type is Amount,Discount amount is required when discount type is Amount
+Discount amount must be greater than 0,Discount amount must be greater than 0
+Discount percentage is required when discount type is Percentage,Discount percentage is required when discount type is Percentage
+Discount percentage must be between 0 and 100,Discount percentage must be between 0 and 100
+Discount type is required,Discount type is required
+Discounts,Discounts
+Discounts Given,Discounts Given
+Efficiency,Efficiency
+Either item_code or item_codes must be provided,Either item_code or item_codes must be provided
+End,End
+Error Message,Error Message
+Error applying offers: {0},Error applying offers: {0}
+Error calculating invoice totals. Please check POS Profile and item configurations.,Error calculating invoice totals. Please check POS Profile and item configurations.
+Error creating address: {0},Error creating address: {0}
+Error fetching batch/serial details: {0},Error fetching batch/serial details: {0}
+Error fetching bundle availability for {0}: {1},Error fetching bundle availability for {0}: {1}
+Error fetching customers: {0},Error fetching customers: {0}
+Error fetching item details: {0},Error fetching item details: {0}
+Error fetching item groups: {0},Error fetching item groups: {0}
+Error fetching item stock: {0},Error fetching item stock: {0}
+Error fetching item variants: {0},Error fetching item variants: {0}
+Error fetching items count: {0},Error fetching items count: {0}
+Error fetching items: {0},Error fetching items: {0}
+Error fetching payment methods: {0},Error fetching payment methods: {0}
+Error fetching stock quantities: {0},Error fetching stock quantities: {0}
+Error fetching warehouse availability: {0},Error fetching warehouse availability: {0}
+Error getting closing shift data: {0},Error getting closing shift data: {0}
+Error getting create POS profile: {0},Error getting create POS profile: {0}
+Error searching by barcode: {0},Error searching by barcode: {0}
+Error submitting closing shift: {0},Error submitting closing shift: {0}
+Error updating warehouse: {0},Error updating warehouse: {0}
+Expected,Expected
+Failed to apply referral code: {0},Failed to apply referral code: {0}
+Failed to create coupon: {0},Failed to create coupon: {0}
+Failed to create invoice draft,Failed to create invoice draft
+Failed to create payment entry: {0},Failed to create payment entry: {0}
+Failed to create payment entry: {0}. All changes have been rolled back.,Failed to create payment entry: {0}. All changes have been rolled back.
+Failed to create promotion: {0},Failed to create promotion: {0}
+Failed to delete coupon: {0},Failed to delete coupon: {0}
+Failed to delete promotion: {0},Failed to delete promotion: {0}
+Failed to generate CSRF token,Failed to generate CSRF token
+Failed to generate your welcome coupon,Failed to generate your welcome coupon
+Failed to get invoice name from draft,Failed to get invoice name from draft
+Failed to toggle coupon: {0},Failed to toggle coupon: {0}
+Failed to toggle promotion: {0},Failed to toggle promotion: {0}
+Failed to update coupon: {0},Failed to update coupon: {0}
+Failed to update promotion: {0},Failed to update promotion: {0}
+Failed to update table after retries,Failed to update table after retries
+Free Item Rule,Free Item Rule
+Free delivery,Free delivery
+Free delivery (order above {0}),Free delivery (order above {0})
+Gross Sales,Gross Sales
+Health Status,Health Status
+High Performers,High Performers
+Hours,Hours
+Incorrect password,Incorrect password
+"Insufficient credit available from {0}. Available: {1}, Requested: {2}","Insufficient credit available from {0}. Available: {1}, Requested: {2}"
+Insufficient permissions,Insufficient permissions
+"Insufficient unallocated amount in {0}. Available: {1}, Requested: {2}","Insufficient unallocated amount in {0}. Available: {1}, Requested: {2}"
+"Insufficient wallet balance. Available: {0}, Requested: {1}","Insufficient wallet balance. Available: {0}, Requested: {1}"
+Inv/Hr,Inv/Hr
+Invalid Opening Entry,Invalid Opening Entry
+Invalid Period,Invalid Period
+Invalid coupon code,Etibarsız kupon kodu
+Invalid invoice format,Invalid invoice format
+Invalid invoice name provided,Invalid invoice name provided
+Invalid payments payload: malformed JSON,Invalid payments payload: malformed JSON
+Invalid referral code,Etibarsız referans kodu
+Invalid session,Invalid session
+Invalid status,Invalid status
+Invoice Created,Invoice Created
+Invoice already processed,Invoice already processed
+Invoice closed successfully,Invoice closed successfully
+Invoice must be submitted before adding payments,Invoice must be submitted before adding payments
+Invoice must be submitted to create a return,Invoice must be submitted to create a return
+Invoice must be submitted to redeem credit,Invoice must be submitted to redeem credit
+Invoice name is required,Invoice name is required
+Invoice name required,Invoice name required
+Invoice not found: {0},Invoice not found: {0}
+Invoice or table required,Invoice or table required
+Invoice submitted successfully but credit redemption failed. Please contact administrator.,Invoice submitted successfully but credit redemption failed. Please contact administrator.
+Invoice {0} Deleted,Invoice {0} Deleted
+Invoice {0} does not exist,Invoice {0} does not exist
+Invoice {0} not found,{0} fakturası tapılmadı
+Invoices,Invoices
+Item Code,Məhsul Kodu
+Item Name,Məhsul Adı
+Item with barcode {0} not found,Item with barcode {0} not found
+Item {0} is not allowed for sales,Item {0} is not allowed for sales
+Items,Items
+Items Sold,Items Sold
+Items missing income account. Please check item configurations or company default income account.,Items missing income account. Please check item configurations or company default income account.
+Journal Entry {0} created for credit redemption,Journal Entry {0} created for credit redemption
+Loaded existing tab,Loaded existing tab
+Loyalty points conversion from {0}: {1} points = {2},Loyalty points conversion from {0}: {1} points = {2}
+Loyalty points conversion: {0} points = {1},Loyalty points conversion: {0} points = {1}
+Loyalty points converted to wallet: {0} points = {1},Loyalty points converted to wallet: {0} points = {1}
+Manual rate edit by {user}: Item {item_code} rate changed from {original} to {new} ({change_pct}% {change_type}),Manual rate edit by {user}: Item {item_code} rate changed from {original} to {new} ({change_pct}% {change_type})
+Manual wallet credit,Manual wallet credit
+Maximum Discount Amount must be greater than 0,Maximum Discount Amount must be greater than 0
+Minimum Amount cannot be negative,Minimum Amount cannot be negative
+Minimum cart amount of {0} is required,Minimum cart amount of {0} is required
+Missing Account,Missing Account
+Missing invoice parameter,Missing invoice parameter
+Missing invoice parameter. Received data: {0},Missing invoice parameter. Received data: {0}
+Mode of Payment {0} does not exist,Mode of Payment {0} does not exist
+Net Sales,Net Sales
+No active Customer found. Please create a Customer first.,No active Customer found. Please create a Customer first.
+No active Customer found. Please create a Customer in ERPNext.,No active Customer found. Please create a Customer in ERPNext.
+No batches available in {0} for {1}.,No batches available in {0} for {1}.
+No items to add,No items to add
+No items to send to kitchen,No items to send to kitchen
+Non-Cash,Non-Cash
+Offline ID,Offline ID
+Only System Managers can set up QZ certificates.,Only System Managers can set up QZ certificates.
+Opening,Açılış
+Order ID required,Order ID required
+Order data is required,Order data is required
+Order sent to kitchen successfully,Order sent to kitchen successfully
+POS Profile has no payment methods configured. Please add payment methods.,POS Profile has no payment methods configured. Please add payment methods.
+POS Profile is required,POS Profili tələb olunur
+POS Profile is required to validate rate edit for item {0},POS Profile is required to validate rate edit for item {0}
+POS Profile payment methods missing default account. Please configure POS Profile with valid payment methods and accounts.,POS Profile payment methods missing default account. Please configure POS Profile with valid payment methods and accounts.
+POS Profile required for new invoice,POS Profile required for new invoice
+POS Profile {0} does not exist,POS Profile {0} does not exist
+POS Profile {} does not belongs to company {},POS Profile {} does not belongs to company {}
+POS Settings not found,POS Settings not found
+POS Settings not found for profile {0}. Cannot validate rate edit.,POS Settings not found for profile {0}. Cannot validate rate edit.
+Password is required,Password is required
+Payment Entry {0} allocated to invoice,Payment Entry {0} allocated to invoice
+Payment Entry {0} has insufficient unallocated amount,Payment Entry {0} has insufficient unallocated amount
+Payment Entry {0} not found or not submitted,Payment Entry {0} not found or not submitted
+Payment account {0} does not exist,Payment account {0} does not exist
+Payment amount must be greater than zero,Payment amount must be greater than zero
+Payment amount {0} exceeds outstanding amount {1},Payment amount {0} exceeds outstanding amount {1}
+Payment date {0} cannot be before invoice date {1},Payment date {0} cannot be before invoice date {1}
+Payments must be a list,Payments must be a list
+Peak Hour,Peak Hour
+Performance Rating,Performance Rating
+Please configure a default wallet account for company {0},Please configure a default wallet account for company {0}
+Please open a POS Opening Entry first. Go to POS > POS Opening Entry > New,Please open a POS Opening Entry first. Go to POS > POS Opening Entry > New
+Please select the customer for Gift Card.,Please select the customer for Gift Card.
+Promotion Creation Failed,Promotion Creation Failed
+Promotion Deletion Failed,Promotion Deletion Failed
+Promotion Toggle Failed,Promotion Toggle Failed
+Promotion Update Failed,Promotion Update Failed
+Promotion name is required,Promotion name is required
+Promotion or Pricing Rule {0} not found,Promotion or Pricing Rule {0} not found
+Promotion {0} created successfully,Promotion {0} created successfully
+Promotion {0} deleted successfully,Promotion {0} deleted successfully
+Promotion {0} updated successfully,Promotion {0} updated successfully
+Promotion {0} {1},Promotion {0} {1}
+Promotional Scheme {0} not found,Promotional Scheme {0} not found
+QZ Certificate Missing,QZ Certificate Missing
+QZ Certificate Ready,QZ Certificate Ready
+QZ Key Missing,QZ Key Missing
+QZ Tray certificate generated successfully.<br><br>,QZ Tray certificate generated successfully.<br><br>
+QZ Tray certificate not found. Ask an administrator to run Setup QZ Certificate.,QZ Tray certificate not found. Ask an administrator to run Setup QZ Certificate.
+QZ Tray private key not found. Ask an administrator to run Setup QZ Certificate.,QZ Tray private key not found. Ask an administrator to run Setup QZ Certificate.
+QZ certificate already exists.,QZ certificate already exists.
+QZ certificate generated successfully.,QZ certificate generated successfully.
+Qty Sold,Qty Sold
+Rate editing is not allowed for this POS Profile,Rate editing is not allowed for this POS Profile
+Rate for item {0} must be greater than zero,Rate for item {0} must be greater than zero
+Rate reduction for item {0} is {1}% which exceeds the maximum allowed discount of {2}%,Rate reduction for item {0} is {1}% which exceeds the maximum allowed discount of {2}%
+Rating,Rating
+Real-time Customer Update Event Error,Real-time Customer Update Event Error
+Real-time Invoice Created Event Error,Real-time Invoice Created Event Error
+Real-time POS Profile Update Event Error,Real-time POS Profile Update Event Error
+Real-time Stock Update Event Error,Real-time Stock Update Event Error
+Referee Discount Amount is required,Referee Discount Amount is required
+Referee Discount Amount must be greater than 0,Referee Discount Amount must be greater than 0
+Referee Discount Percentage is required,Referee Discount Percentage is required
+Referee Discount Percentage must be between 0 and 100,Referee Discount Percentage must be between 0 and 100
+Referee Discount Type is required,Referee Discount Type is required
+Referral Code {0} not found,Referral Code {0} not found
+Referral code applied successfully! You've received a welcome coupon.,Referral code applied successfully! You've received a welcome coupon.
+Referrer Discount Amount is required,Referrer Discount Amount is required
+Referrer Discount Amount must be greater than 0,Referrer Discount Amount must be greater than 0
+Referrer Discount Percentage is required,Referrer Discount Percentage is required
+Referrer Discount Percentage must be between 0 and 100,Referrer Discount Percentage must be between 0 and 100
+Referrer Discount Type is required,Referrer Discount Type is required
+Return %,Return %
+Return Amount,Return Amount
+Return period has expired,Return period has expired
+Return period has expired. Invoice {0} was created {1} days ago.,Return period has expired. Invoice {0} was created {1} days ago.
+Return submitted but wallet reversal failed. Please check manually.,Return submitted but wallet reversal failed. Please check manually.
+Returns,Returns
+Rolled back Payment Entry {0},Rolled back Payment Entry {0}
+Sales Invoice,Satış Fakturası
+Sales Value,Sales Value
+Sales/Hr,Sales/Hr
+Selected POS Opening Shift should be open.,Selected POS Opening Shift should be open.
+Selling Price List not set in POS Profile {0},Selling Price List not set in POS Profile {0}
+Shift,Shift
+Shift End,Shift End
+Shift Hours,Shift Hours
+Shift ID,Shift ID
+Shift Start,Shift Start
+Shifts,Shifts
+Shifts Worked,Shifts Worked
+"Sorry, this coupon code does not exist","Sorry, this coupon code does not exist"
+"Sorry, this coupon code has been fully redeemed","Sorry, this coupon code has been fully redeemed"
+"Sorry, this coupon code has expired","Sorry, this coupon code has expired"
+"Sorry, this coupon code's validity has not started","Sorry, this coupon code's validity has not started"
+"Sorry, this coupon has been disabled","Sorry, this coupon has been disabled"
+"Sorry, this coupon is not valid for this company","Sorry, this coupon is not valid for this company"
+"Sorry, this gift card is assigned to a specific customer","Sorry, this gift card is assigned to a specific customer"
+"Sorry, you have already used this coupon code","Sorry, you have already used this coupon code"
+Source account is required for wallet transaction,Source account is required for wallet transaction
+Start,Start
+Start new tab,Start new tab
+Status,Status
+Status required,Status required
+Status updated to {0},Status updated to {0}
+Stock Status,Stock Status
+Sync Delay (Hours),Sync Delay (Hours)
+Sync Status,Sync Status
+Synced At,Synced At
+"Table is busy, please try again","Table is busy, please try again"
+Table is required,Table is required
+Table name is required,Table name is required
+Table name required,Table name required
+Table status updated to {0},Table status updated to {0}
+This coupon has expired,This coupon has expired
+This coupon has reached its usage limit,This coupon has reached its usage limit
+This coupon is disabled,This coupon is disabled
+This coupon is not valid for this customer,This coupon is not valid for this customer
+This coupon is not yet valid,This coupon is not yet valid
+This gift card has already been used,This gift card has already been used
+This invoice is currently being processed. Please wait.,This invoice is currently being processed. Please wait.
+This referral code has been disabled,This referral code has been disabled
+Too many search requests. Please wait a moment.,Too many search requests. Please wait a moment.
+Total Closing,Total Closing
+Total Difference,Total Difference
+Total Expected,Total Expected
+Total Opening,Total Opening
+Total Sales,Ümumi Satışlar
+Total payment amount {0} exceeds outstanding amount {1},Total payment amount {0} exceeds outstanding amount {1}
+Transactions,Transactions
+Unable to load POS Profile {0},Unable to load POS Profile {0}
+Use merge_items_to_invoice API,Use merge_items_to_invoice API
+User is disabled,User is disabled
+User must have a company assigned,User must have a company assigned
+User {} has been disabled. Please select valid user/cashier,User {} has been disabled. Please select valid user/cashier
+Valid From date cannot be after Valid Until date,Valid From date cannot be after Valid Until date
+Velocity Rank,Velocity Rank
+Wallet Account must be a Receivable type account,Wallet Account must be a Receivable type account
+Wallet Balance Error,Wallet Balance Error
+Wallet Credit: {0},Wallet Credit: {0}
+Wallet Debit: {0},Wallet Debit: {0}
+Wallet is required,Wallet is required
+Wallet reversal for return {0} against {1} (ratio: {2}%),Wallet reversal for return {0} against {1} (ratio: {2}%)
+Wallet {0} does not have an account configured,Wallet {0} does not have an account configured
+Wallet {0} is not active,Wallet {0} is not active
+Warehouse is required,Warehouse is required
+Warehouse not set in POS Profile {0},Warehouse not set in POS Profile {0}
+Warehouse updated successfully,Warehouse updated successfully
+Warehouse {0} is disabled,Warehouse {0} is disabled
+Warning: Some credit journal entries may not have been cancelled. Please check manually.,Warning: Some credit journal entries may not have been cancelled. Please check manually.
+Write-off amount {0} exceeds limit {1},Write-off amount {0} exceeds limit {1}
+You already have an open shift: {0},You already have an open shift: {0}
+You don't have access to this POS Profile,You don't have access to this POS Profile
+You don't have permission to add payments to this invoice,You don't have permission to add payments to this invoice
+You don't have permission to create customers,You don't have permission to create customers
+You don't have permission to create or modify promotions,You don't have permission to create or modify promotions
+You don't have permission to delete promotions,You don't have permission to delete promotions
+You don't have permission to update this POS Profile,You don't have permission to update this POS Profile
+You don't have permission to update this table,You don't have permission to update this table
+You don't have permission to view promotions,You don't have permission to view promotions
+You don't have permission to view this invoice,You don't have permission to view this invoice
+You have already used this referral code,You have already used this referral code
+account_type,account_type
+actual_qty,actual_qty
+available_qty,available_qty
+bundle_code,bundle_code
+component_code,component_code
+invoice_name,invoice_name
+item_group,item_group
+key_field,key_field
+min_price,min_price
+qty,qty
+required_qty,required_qty
+reserved_qty,reserved_qty
+return_credit,return_credit
+returned_qty,returned_qty
+total_original_qty,total_original_qty
+total_outstanding,total_outstanding
+total_qty,total_qty
+total_returned_qty,total_returned_qty
+type,type
