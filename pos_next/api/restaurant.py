@@ -501,6 +501,10 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     if not invoice.items:
         return {"success": False, "message": _("No items to add")}
     
+    # Save critical fields BEFORE set_missing_values() - they may get cleared
+    saved_restaurant_table = invoice.restaurant_table
+    saved_kds_status = invoice.get('kds_status') or 'Pending'
+    
     # Set missing values and calculate totals with error handling
     try:
         invoice.set_missing_values()
@@ -518,11 +522,18 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         frappe.log_error(f"Invoice calculation error: {str(e)[:100]}")
         return {"success": False, "message": _("Error calculating invoice totals. Please check POS Profile and item configurations.")}
     
-    # Check if status needs to be reset to Pending (AFTER set_missing_values)
-    # This ensures new items added to any non-Pending order bring it back to Pending
-    current_status = invoice.get('kds_status') or 'Pending'
-    was_modified = current_status != 'Pending'
-    if was_modified:
+    # Restore critical fields that set_missing_values may have cleared
+    if saved_restaurant_table and not invoice.restaurant_table:
+        invoice.restaurant_table = saved_restaurant_table
+    
+    # Reset kds_status to Pending for modified orders (or ensure it's set)
+    if saved_kds_status != 'Pending':
+        invoice.kds_status = 'Pending'
+    else:
+        invoice.kds_status = 'Pending'  # Ensure new orders also have Pending status
+    
+    # Ensure kds_status is never null/empty
+    if not invoice.kds_status:
         invoice.kds_status = 'Pending'
     
     # Save invoice (draft)
