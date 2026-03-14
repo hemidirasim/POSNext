@@ -1176,12 +1176,17 @@ async function onTableSelected(newTable, oldTable) {
 				}
 				if (tableInvoice.customer) {
 					cartStore.setCustomer(tableInvoice.customer);
+				} else {
+					// No customer from server - set Walking Customer as default
+					cartStore.setDefaultCustomer();
 				}
 				cartStore.serverInvoiceName = tableInvoice.name;
 				cartStore.rebuildIncrementalCache();
 				showSuccess(__('Loaded existing tab for {0}', [newTable.table_name || newTable.name]));
 			} else {
 				console.log('[DEBUG] Starting new tab for table');
+				// New tab - ensure Walking Customer is set
+				cartStore.setDefaultCustomer();
 				cartStore.serverInvoiceName = null;
 			}
 		} catch (error) {
