@@ -889,3 +889,15 @@ Merge Invoices,Fakturaları birləşdir
 Transfer Items,Məhsulları köçür
 Order Status,Sifariş statusu
 Waiting Time,Gözləmə vaxtı
+All,Hamısı
+Partially Paid,Qismən ödənilib
+Unpaid,Ödənilməyib
+Overdue,Gecikmiş
+No Unpaid Invoices,Ödənilməmiş faktura yoxdur
+All invoices are fully paid,Bütün fakturalar tam ödənilib
+Invoice Management,Faktura İdarəsi
+Manage all your invoices in one place,Bütün fakturalarınızı bir yerdə idarə edin
+Search invoices...,Faktura axtar...
+Drafts,Qaralamalar
+No return invoices,Qaytarma fakturası yoxdur
+Return invoices will appear here,Qaytarma fakturaları burada görünəcək

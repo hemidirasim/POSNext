@@ -3219,6 +3219,8 @@
     "merge_invoices": "Fakturaları birləşdir",
     "transfer_items": "Məhsulları köçür",
     "order_status": "Sifariş statusu",
-    "waiting_time": "Gözləmə vaxtı"
+    "waiting_time": "Gözləmə vaxtı",
+    "Invoice Management": "Faktura İdarəsi",
+    "Manage all your invoices in one place": "Bütün fakturalarınızı bir yerdə idarə edin"
   }
 }
