@@ -1036,21 +1036,23 @@ export function useInvoice() {
 	}
 
 	/**
-	 * Sets the default customer to "Walking Customer".
-	 * This is always used as default, user can change via customer selection.
+	 * Sets the default customer to "Walking Customer" only if no customer is selected.
+	 * This preserves user-selected customers when switching contexts (e.g., restaurant tables).
 	 */
 	function setDefaultCustomer() {
-		// Always set Walking Customer as default
-		customer.value = {
-			name: "Walking Customer",
-			customer_name: "Walking Customer",
-			customer_group: "Individual",
+		// Only set default if no customer is currently selected
+		if (!customer.value) {
+			customer.value = {
+				name: "Walking Customer",
+				customer_name: "Walking Customer",
+				customer_group: "Individual",
+			}
 		}
 	}
 
 	/**
 	 * Resets the invoice to a clean state.
-	 * If a POS Profile is active and has a default customer, it will be pre-selected.
+	 * Preserves the selected customer (does not reset to default).
 	 */
 	function resetInvoice() {
 		invoiceItems.value = []
@@ -1064,13 +1066,12 @@ export function useInvoice() {
 		_cachedTotalDiscount.value = 0
 		_cachedTotalPaid.value = 0
 
-		// Set default customer from POS Profile if available
-		setDefaultCustomer()
+		// Note: We do NOT reset the customer here - preserve user's selection
 	}
 
 	/**
 	 * Clears the cart and resets to default state.
-	 * If a POS Profile is active and has a default customer, it will be pre-selected.
+	 * Preserves the selected customer (does not reset to default).
 	 */
 	async function clearCart() {
 		// Return all serial numbers back to cache before clearing
@@ -1091,8 +1092,8 @@ export function useInvoice() {
 		_cachedTotalDiscount.value = 0
 		_cachedTotalPaid.value = 0
 
-		// Set default customer from POS Profile if available
-		setDefaultCustomer()
+		// Note: We do NOT reset the customer here - preserve user's selection
+		// Walking Customer is only set once during initial POS load
 
 		// Cleanup old draft invoices (older than 1 hour) in background
 		// Skip if offline to avoid network errors
