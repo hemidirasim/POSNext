@@ -1,11 +1,12 @@
 {
 	"name": "pos-next-frontend",
 	"private": true,
-	"version": "1.15.0",
+	"version": "1.16.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build --base=/assets/pos_next/pos/",
+		"build:clean": "rm -rf node_modules/.cache && rm -rf node_modules/.vite && rm -rf ../pos_next/public/pos && npm run build",
 		"preview": "vite preview",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
@@ -13,7 +14,8 @@
 		"test": "vitest",
 		"test:run": "vitest run",
 		"test:coverage": "vitest run --coverage",
-		"copy-html-entry": "cp ../pos_next/public/pos/index.html ../pos_next/www/pos.html"
+		"copy-html-entry": "cp ../pos_next/public/pos/index.html ../pos_next/www/pos.html",
+		"clean": "rm -rf node_modules/.cache && rm -rf node_modules/.vite && rm -rf ../pos_next/public/pos"
 	},
 	"dependencies": {
 		"@abdulrysr/saudi-riyal-new-symbol-font": "^1.0.8",

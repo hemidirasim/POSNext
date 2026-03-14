@@ -22,6 +22,10 @@ const log = logger.create("TranslationCache")
 /** @constant {number} Cache time-to-live in milliseconds (24 hours) */
 const CACHE_TTL = 24 * 60 * 60 * 1000
 
+/** @constant {string} Cache version - change on each deployment to bust cache */
+const CACHE_VERSION = __BUILD_VERSION__ || Date.now().toString()
+const CACHE_KEY_PREFIX = `pos_translations_v${CACHE_VERSION}_`
+
 /** @type {Map<string, TranslationEntry>} In-memory cache for fast lookups */
 const memoryCache = new Map()
 
@@ -37,10 +41,15 @@ const pendingRefreshes = new Map()
 
 /**
  * Normalizes locale codes to lowercase, defaulting to "en".
+ * Adds cache version prefix to bust cache on new deployments.
  * @param {string|null|undefined} locale - Raw locale code
- * @returns {string} Normalized lowercase locale
+ * @returns {string} Normalized lowercase locale with version prefix
  */
-const normalizeLocale = (locale) => (locale || "en").toLowerCase()
+const normalizeLocale = (locale) => {
+	const raw = (locale || "en").toLowerCase()
+	// Add version prefix to cache key for cache busting on new deployments
+	return `${CACHE_KEY_PREFIX}${raw}`
+}
 
 /**
  * Persists translation entry to both memory and IndexedDB.

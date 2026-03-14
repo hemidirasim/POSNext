@@ -117,7 +117,7 @@ export default defineConfig({
 						urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
 						handler: "CacheFirst",
 						options: {
-							cacheName: "google-fonts-cache",
+							cacheName: `google-fonts-cache-v${buildVersion}`,
 							expiration: {
 								maxEntries: 10,
 								maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
@@ -131,7 +131,7 @@ export default defineConfig({
 						urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
 						handler: "CacheFirst",
 						options: {
-							cacheName: "gstatic-fonts-cache",
+							cacheName: `gstatic-fonts-cache-v${buildVersion}`,
 							expiration: {
 								maxEntries: 10,
 								maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
@@ -145,7 +145,7 @@ export default defineConfig({
 						urlPattern: /\/assets\/pos_next\/pos\/.*/i,
 						handler: "CacheFirst",
 						options: {
-							cacheName: "pos-assets-cache",
+							cacheName: `pos-assets-cache-v${buildVersion}`,
 							expiration: {
 								maxEntries: 500,
 								maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
@@ -157,7 +157,7 @@ export default defineConfig({
 						urlPattern: /\/files\/.*\.(jpg|jpeg|png|gif|webp|svg)$/i,
 						handler: "StaleWhileRevalidate",
 						options: {
-							cacheName: "product-images-cache",
+							cacheName: `product-images-cache-v${buildVersion}`,
 							expiration: {
 								maxEntries: 200, // Cache up to 200 product images
 								maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
@@ -171,7 +171,7 @@ export default defineConfig({
 						urlPattern: /\/api\/.*/i,
 						handler: "NetworkFirst",
 						options: {
-							cacheName: "api-cache",
+							cacheName: `api-cache-v${buildVersion}`,
 							networkTimeoutSeconds: 10,
 							expiration: {
 								maxEntries: 100,
@@ -187,7 +187,7 @@ export default defineConfig({
 							request.mode === "navigate" && url.pathname.startsWith("/pos"),
 						handler: "NetworkFirst",
 						options: {
-							cacheName: "pos-page-cache",
+							cacheName: `pos-page-cache-v${buildVersion}`,
 							networkTimeoutSeconds: 3,
 							expiration: {
 								maxEntries: 1,
@@ -212,6 +212,24 @@ export default defineConfig({
 		emptyOutDir: true,
 		target: "es2015",
 		sourcemap: enableSourceMap,
+		rollupOptions: {
+			output: {
+				// Add version to chunk names for cache busting
+				entryFileNames: `js/[name]-v${buildVersion}-[hash].js`,
+				chunkFileNames: `js/[name]-v${buildVersion}-[hash].js`,
+				assetFileNames: (assetInfo) => {
+					const info = assetInfo.name.split('.')
+					const ext = info[info.length - 1]
+					if (/\.(png|jpe?g|gif|svg|webp|ico)$/i.test(assetInfo.name)) {
+						return `images/[name]-v${buildVersion}-[hash][extname]`
+					}
+					if (/\.css$/i.test(assetInfo.name)) {
+						return `css/[name]-v${buildVersion}-[hash][extname]`
+					}
+					return `assets/[name]-v${buildVersion}-[hash][extname]`
+				},
+			},
+		},
 	},
 	worker: {
 		format: "es",
