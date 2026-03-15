@@ -72,6 +72,7 @@ def cancel_cart_items(items, reason, reason_text=None, custom_note=None,
     """
     Cancel items from cart (before creating invoice)
     Logs cancellation without creating invoice (no POS Opening Entry required)
+    Also deletes/cancels any existing draft invoice for the table
     """
     try:
         if not items:
@@ -81,8 +82,52 @@ def cancel_cart_items(items, reason, reason_text=None, custom_note=None,
         total_qty = sum(item.get("quantity", 1) for item in items)
         total_amount = sum(item.get("amount", 0) for item in items)
         
+        # If table provided, find and delete/cancel any existing draft invoice
+        cancelled_invoice = None
+        if table:
+            draft_invoices = frappe.get_all(
+                "POS Invoice",
+                filters={
+                    "restaurant_table": table,
+                    "docstatus": 0,  # Draft invoices only
+                    "status": ["!=", "Paid"]
+                },
+                fields=["name"],
+                order_by="creation desc",
+                limit=1
+            )
+            
+            if draft_invoices:
+                try:
+                    invoice_name = draft_invoices[0].name
+                    invoice = frappe.get_doc("POS Invoice", invoice_name)
+                    
+                    # Add cancellation comment before deleting
+                    comment = f"""
+<b>Order Cancelled via Cart</b><br>
+Reason: {reason_text or get_reason_label(reason)}<br>
+Cancelled By: {frappe.session.user}<br>
+Time: {datetime.now().strftime('%Y-%m-%d %H:%M')}
+                    """.strip()
+                    if custom_note:
+                        comment += f"<br>Note: {custom_note}"
+                    invoice.add_comment("Comment", comment)
+                    
+                    # Delete the draft invoice
+                    frappe.delete_doc("POS Invoice", invoice_name, ignore_permissions=True)
+                    cancelled_invoice = invoice_name
+                    
+                except Exception as invoice_error:
+                    frappe.log_error(f"Failed to delete draft invoice: {str(invoice_error)}", "POS Cancellation")
+                    # Continue with cancellation even if invoice deletion fails
+        
         # Create activity log for tracking (no invoice needed)
         # Note: Activity Log operation field is limited to specific values
+        notes = f"OPERATION: CANCEL\nReason: {reason_text or get_reason_label(reason)}\nReason Code: {reason}\nItems: {len(items)}\nQty: {total_qty}\nAmount: {total_amount}\nCustomer: {customer or 'Walking Customer'}\nTable: {table or 'N/A'}\nPOS: {pos_profile or 'N/A'}\nBy: {frappe.session.user}"
+        
+        if cancelled_invoice:
+            notes += f"\nDeleted Invoice: {cancelled_invoice}"
+        
         log_doc = frappe.get_doc({
             "doctype": "Activity Log",
             "subject": f"Cart Cancelled - {len(items)} items",
@@ -91,7 +136,7 @@ def cancel_cart_items(items, reason, reason_text=None, custom_note=None,
             "communication_date": datetime.now(),
             "user": frappe.session.user,
             "full_name": frappe.get_value("User", frappe.session.user, "full_name") or frappe.session.user,
-            "notes": f"OPERATION: CANCEL\nReason: {reason_text or get_reason_label(reason)}\nReason Code: {reason}\nItems: {len(items)}\nQty: {total_qty}\nAmount: {total_amount}\nCustomer: {customer or 'Walking Customer'}\nTable: {table or 'N/A'}\nPOS: {pos_profile or 'N/A'}\nBy: {frappe.session.user}"
+            "notes": notes
         })
         log_doc.insert(ignore_permissions=True)
         
@@ -107,6 +152,8 @@ By: {frappe.session.user} at {datetime.now().strftime('%Y-%m-%d %H:%M')}
                 """.strip()
                 if custom_note:
                     comment += f"<br>Note: {custom_note}"
+                if cancelled_invoice:
+                    comment += f"<br>Deleted Invoice: {cancelled_invoice}"
                 pos_doc.add_comment("Comment", comment)
             except:
                 pass  # If comment fails, log is still created
@@ -116,7 +163,8 @@ By: {frappe.session.user} at {datetime.now().strftime('%Y-%m-%d %H:%M')}
         return {
             "success": True,
             "message": "Cart cancelled successfully",
-            "log_id": log_doc.name
+            "log_id": log_doc.name,
+            "cancelled_invoice": cancelled_invoice
         }
         
     except Exception as e:
