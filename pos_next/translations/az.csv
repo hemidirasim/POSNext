@@ -3675,3 +3675,23 @@ Enter customer name,Müştəri adı daxil edin
 Current Table,Cari Masa
 ENTER-CODE-HERE,KODU-BURAYA-DAXIL-EDIN
 Code is case-insensitive,Kod böyük-kiçik hərfə həssas deyil
+Shift,Növbə
+Open Shift,Növbə aç
+Close Shift,Növbə bağla
+Shift Opened,Növbə açıldı
+Shift Closed,Növbə bağlandı
+Shift Summary,Növbə xülasəsi
+Shift Report,Növbə hesabatı
+Resume Shift,Növbəni davam et
+Active Shift,Aktiv növbə
+No active shift,Aktiv növbə yoxdur
+Please open a shift first,Zəhmət olmasa əvvəlcə növbə açın
+Opening Shift,Açılış növbəsi
+Closing Shift,Bağlanış növbəsi
+Shift closed successfully,Növbə uğurla bağlandı
+Shift opened successfully,Növbə uğurla açıldı
+Your Shift is Still Open!,Sizin növbəniz hələ açıqdır
+Existing Shift Found,Mövcud növbə tapıldı
+You have an open shift. Would you like to resume it or close it and open a new one?,Açıq növbəniz var. Onu davam etdirmək və ya bağlayıb yenisini açmaq istəyirsiniz?
+Close & Open New,Bağla və yeni aç
+Open POS Shift,POS Növbəsi Aç
