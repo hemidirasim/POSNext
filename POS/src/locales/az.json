@@ -3604,6 +3604,26 @@
     "You don't have permission to void this invoice": "Bu fakturanı ləğv etmək üçün icazəniz yoxdur",
     "You have unsaved changes. Are you sure you want to leave?": "Saxlanmamış dəyişiklikləriniz var. Çıxmaq istədiyinizə əminsiniz?",
     "Your cart has been cleared": "Səbətiniz təmizləndi",
-    "Your session has expired. Please login again.": "Sessiya vaxtınız bitdi. Zəhmət olmasa yenidən daxil olun."
+    "Your session has expired. Please login again.": "Sessiya vaxtınız bitdi. Zəhmət olmasa yenidən daxil olun.",
+    "No redeemable points available": "Bərpa edilə biləcək xal yoxdur",
+    "No results for ": "Nəticə yoxdur ",
+    "No tables found in this area": "Bu ərazidə masa tapılmadı",
+    "Non-cash payment must equal {0} exactly": "Nağd olmayan ödəniş dəqiq {0}-ə bərabər olmalıdır",
+    "Not Found": "Tapılmadı",
+    "Not enough stock available in the warehouse.\n\nPlease reduce the quantity or check stock availability.": "Anbarda kifayət qədər stok yoxdur.\n\nZəhmət olmasa miqdarı azaldın və ya stok mövcudluğunu yoxlayın.",
+    "Offer has been removed from cart": "Təklif səbətdən silindi",
+    "Offers": "Təkliflər",
+    "Offline invoice deleted successfully": "Oflayn faktura uğurla silindi",
+    "Only {0} units of ": "Yalnız {0} vahid ",
+    "Open a shift before creating a return invoice.": "Qaytarma fakturası yaratmazdan əvvəl směna açın.",
+    "Order #": "Sifariş #",
+    "Order Ready!": "Sifariş Hazırdır!",
+    "Order Received": "Sifariş Qəbul Edildi",
+    "Order status updated": "Sifariş statusu yeniləndi",
+    "Our chefs are cooking your meal": "Aşbazlarımız yeməyinizi bişirir",
+    "PARTIAL PAYMENT": "QİSMƏN ÖDƏNİŞ",
+    "POS Profile not found": "POS Profili tapılmadı",
+    "POS is offline without cached data. Please connect to sync.": "POS keşlənmiş məlumat olmadan oflayndır. Zəhmət olmasa sinxronizasiya üçün qoşulun.",
+    "Payment Error": "Ödəniş Xətası"
   }
 }
