@@ -82,27 +82,16 @@ def cancel_cart_items(items, reason, reason_text=None, custom_note=None,
         total_amount = sum(item.get("amount", 0) for item in items)
         
         # Create activity log for tracking (no invoice needed)
+        # Note: Activity Log operation field is limited to specific values
         log_doc = frappe.get_doc({
             "doctype": "Activity Log",
             "subject": f"Cart Cancelled - {len(items)} items",
-            "operation": "Cancel",
+            "operation": "",  # Leave empty or use "Login" if required
             "status": "Success",
             "communication_date": datetime.now(),
             "user": frappe.session.user,
             "full_name": frappe.get_value("User", frappe.session.user, "full_name") or frappe.session.user,
-            "notes": f"""
-Cart Cancelled (Before Checkout)
-Reason: {reason_text or get_reason_label(reason)}
-Reason Code: {reason}
-Items Count: {len(items)}
-Total Quantity: {total_qty}
-Total Amount: {total_amount}
-Customer: {customer or 'Walking Customer'}
-Table: {table or 'N/A'}
-POS Profile: {pos_profile or 'N/A'}
-Cancelled By: {frappe.session.user}
-Note: {custom_note or 'N/A'}
-            """.strip()
+            "notes": f"OPERATION: CANCEL\nReason: {reason_text or get_reason_label(reason)}\nReason Code: {reason}\nItems: {len(items)}\nQty: {total_qty}\nAmount: {total_amount}\nCustomer: {customer or 'Walking Customer'}\nTable: {table or 'N/A'}\nPOS: {pos_profile or 'N/A'}\nBy: {frappe.session.user}"
         })
         log_doc.insert(ignore_permissions=True)
         
