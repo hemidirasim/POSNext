@@ -1080,3 +1080,10 @@ Allow Credit Sale,Kredit Satışına İcazə Ver
 Allow Return,Qaytarma İcazə Ver
 Allow Write Off Change,Qalıq Silinməsinə İcazə Ver
 Silent Print,Səssiz Çap
+Show discounts as percentages,Endirimləri faiz olaraq göstər
+Show exact totals without rounding,Yuvarlaqlaşdırma olmadan dəqiq cəmləri göstər
+Write off small change amounts,Kiçik qalıq məbləğlərini sil
+Enable product returns,Məhsul qaytarmaqlarını aktivləşdir
+Enable item-level discount in edit dialog,Redaktə dialoqunda məhsul səviyyəsində endirimi aktivləşdir
+Enable invoice-level discount,Faktura səviyyəsində endirimi aktivləşdir
+Configure warehouse and inventory settings,Anbar və inventar ayarlarını konfiqurasiya edin
