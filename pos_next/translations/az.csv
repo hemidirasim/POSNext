@@ -1087,3 +1087,13 @@ Enable product returns,Məhsul qaytarmaqlarını aktivləşdir
 Enable item-level discount in edit dialog,Redaktə dialoqunda məhsul səviyyəsində endirimi aktivləşdir
 Enable invoice-level discount,Faktura səviyyəsində endirimi aktivləşdir
 Configure warehouse and inventory settings,Anbar və inventar ayarlarını konfiqurasiya edin
+All ({0}),Hamısı ({0})
+Partially Paid ({0}),Qismən ödənilib ({0})
+Unpaid ({0}),Ödənilməyib ({0})
+Overdue ({0}),Gecikmiş ({0})
+Returns,Qaytarmalar
+Create Return,Qaytarma yarat
+Process Return,Qaytarma emal et
+Return Items,Məhsulları qaytar
+Return Amount,Qaytarma məbləği
+Return Reason,Qaytarma səbəbi
