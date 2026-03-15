@@ -87,37 +87,40 @@ def cancel_cart_items(items, reason, reason_text=None, custom_note=None,
             "subject": f"Cart Cancelled - {len(items)} items",
             "operation": "Cancel",
             "status": "Success",
-            "reference_type": "POS Profile",
-            "reference_name": pos_profile or "General",
             "communication_date": datetime.now(),
             "user": frappe.session.user,
+            "full_name": frappe.get_value("User", frappe.session.user, "full_name") or frappe.session.user,
             "notes": f"""
-                <b>Cart Cancelled (Before Checkout)</b><br>
-                Reason: {reason_text or get_reason_label(reason)}<br>
-                Reason Code: {reason}<br>
-                Items Count: {len(items)}<br>
-                Total Quantity: {total_qty}<br>
-                Total Amount: {total_amount}<br>
-                Customer: {customer or 'Walking Customer'}<br>
-                Table: {table or 'N/A'}<br>
-                Cancelled By: {frappe.session.user}<br>
-                Note: {custom_note or 'N/A'}
-            """
+Cart Cancelled (Before Checkout)
+Reason: {reason_text or get_reason_label(reason)}
+Reason Code: {reason}
+Items Count: {len(items)}
+Total Quantity: {total_qty}
+Total Amount: {total_amount}
+Customer: {customer or 'Walking Customer'}
+Table: {table or 'N/A'}
+POS Profile: {pos_profile or 'N/A'}
+Cancelled By: {frappe.session.user}
+Note: {custom_note or 'N/A'}
+            """.strip()
         })
         log_doc.insert(ignore_permissions=True)
         
-        # Also create a comment on POS Profile for quick reference
+        # Also create a comment on POS Profile for quick reference (if provided)
         if pos_profile and frappe.db.exists("POS Profile", pos_profile):
-            pos_doc = frappe.get_doc("POS Profile", pos_profile)
-            comment = f"""
-            <b>Cart Cancelled</b><br>
-            Reason: {reason_text or get_reason_label(reason)}<br>
-            Items: {len(items)} | Qty: {total_qty} | Amount: {total_amount}<br>
-            By: {frappe.session.user} at {datetime.now().strftime('%Y-%m-%d %H:%M')}
-            """
-            if custom_note:
-                comment += f"<br>Note: {custom_note}"
-            pos_doc.add_comment("Comment", comment)
+            try:
+                pos_doc = frappe.get_doc("POS Profile", pos_profile)
+                comment = f"""
+<b>Cart Cancelled</b><br>
+Reason: {reason_text or get_reason_label(reason)}<br>
+Items: {len(items)} | Qty: {total_qty} | Amount: {total_amount}<br>
+By: {frappe.session.user} at {datetime.now().strftime('%Y-%m-%d %H:%M')}
+                """.strip()
+                if custom_note:
+                    comment += f"<br>Note: {custom_note}"
+                pos_doc.add_comment("Comment", comment)
+            except:
+                pass  # If comment fails, log is still created
         
         frappe.db.commit()
         
