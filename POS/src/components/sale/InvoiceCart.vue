@@ -1406,14 +1406,14 @@ async function handleCancelOrder(cancelData) {
 			showWarning(__('Order cancelled successfully'))
 			
 			log.info('Order cancelled', {
-				invoice: result.invoice,
+				log_id: result.log_id,
 				reason: cancelData.reason,
 				reason_text: cancelData.reasonText
 			})
 			
 			// Emit event
 			emit('order-cancelled', {
-				invoice: result.invoice,
+				log_id: result.log_id,
 				reason: cancelData.reason,
 				reason_text: cancelData.reasonText
 			})

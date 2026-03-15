@@ -71,68 +71,60 @@ def cancel_cart_items(items, reason, reason_text=None, custom_note=None,
                        pos_profile=None, customer=None, table=None):
     """
     Cancel items from cart (before creating invoice)
-    Creates a Draft invoice with Cancelled status for tracking
+    Logs cancellation without creating invoice (no POS Opening Entry required)
     """
     try:
         if not items:
             return {"success": False, "error": "No items to cancel"}
         
-        # Create cancelled draft invoice for tracking
-        invoice = frappe.get_doc({
-            "doctype": "POS Invoice",
-            "docstatus": 0,  # Draft
-            "status": "Cancelled",
-            "is_pos": 1,
-            "pos_profile": pos_profile,
-            "customer": customer or "Walking Customer",
-            "restaurant_table": table,
-            "cancel_reason": reason,
-            "cancel_reason_text": reason_text or get_reason_label(reason),
-            "cancel_note": custom_note,
-            "cancelled_by": frappe.session.user,
-            "cancelled_at": datetime.now(),
-            "posting_date": datetime.now().date(),
-            "due_date": datetime.now().date(),
-            "items": []
-        })
-        
-        # Add cancelled items
-        for item in items:
-            invoice.append("items", {
-                "item_code": item.get("item_code"),
-                "item_name": item.get("item_name"),
-                "qty": item.get("quantity", 1),
-                "rate": item.get("rate", 0),
-                "amount": item.get("amount", 0),
-                "warehouse": item.get("warehouse"),
-                "uom": item.get("uom", "Nos")
-            })
-        
         # Calculate totals
-        invoice.set_missing_values()
+        total_qty = sum(item.get("quantity", 1) for item in items)
+        total_amount = sum(item.get("amount", 0) for item in items)
         
-        # Insert as draft (not submitted)
-        invoice.insert(ignore_permissions=True)
+        # Create activity log for tracking (no invoice needed)
+        log_doc = frappe.get_doc({
+            "doctype": "Activity Log",
+            "subject": f"Cart Cancelled - {len(items)} items",
+            "operation": "Cancel",
+            "status": "Success",
+            "reference_type": "POS Profile",
+            "reference_name": pos_profile or "General",
+            "communication_date": datetime.now(),
+            "user": frappe.session.user,
+            "notes": f"""
+                <b>Cart Cancelled (Before Checkout)</b><br>
+                Reason: {reason_text or get_reason_label(reason)}<br>
+                Reason Code: {reason}<br>
+                Items Count: {len(items)}<br>
+                Total Quantity: {total_qty}<br>
+                Total Amount: {total_amount}<br>
+                Customer: {customer or 'Walking Customer'}<br>
+                Table: {table or 'N/A'}<br>
+                Cancelled By: {frappe.session.user}<br>
+                Note: {custom_note or 'N/A'}
+            """
+        })
+        log_doc.insert(ignore_permissions=True)
         
-        # Add comment
-        comment_text = f"""
-        <b>Cart Cancelled (Before Checkout)</b><br>
-        Reason: {invoice.cancel_reason_text}<br>
-        Items: {len(items)}<br>
-        Total: {invoice.grand_total}<br>
-        Cancelled By: {frappe.session.user}<br>
-        """
-        if custom_note:
-            comment_text += f"Note: {custom_note}<br>"
-        
-        invoice.add_comment("Comment", comment_text)
+        # Also create a comment on POS Profile for quick reference
+        if pos_profile and frappe.db.exists("POS Profile", pos_profile):
+            pos_doc = frappe.get_doc("POS Profile", pos_profile)
+            comment = f"""
+            <b>Cart Cancelled</b><br>
+            Reason: {reason_text or get_reason_label(reason)}<br>
+            Items: {len(items)} | Qty: {total_qty} | Amount: {total_amount}<br>
+            By: {frappe.session.user} at {datetime.now().strftime('%Y-%m-%d %H:%M')}
+            """
+            if custom_note:
+                comment += f"<br>Note: {custom_note}"
+            pos_doc.add_comment("Comment", comment)
         
         frappe.db.commit()
         
         return {
             "success": True,
             "message": "Cart cancelled successfully",
-            "invoice": invoice.name
+            "log_id": log_doc.name
         }
         
     except Exception as e:
