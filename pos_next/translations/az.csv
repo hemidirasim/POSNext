@@ -96,15 +96,15 @@ customer_name,Müştəri adı
 customer_group,Müştəri qrupu
 POS,POS
 POS Profile,POS Profili
-shift,Smena
-open_shift,Smena aç
-close_shift,Smena bağla
-shift_opened,Smena açıldı
-shift_closed,Smena bağlandı
+shift,Növbə
+open_shift,Növbə aç
+close_shift,Növbə bağla
+shift_opened,Növbə açıldı
+shift_closed,Növbə bağlandı
 no_shift,Açıq směna yoxdur
 current_shift,Cari směna
-shift_start,Smena başlanğıc
-shift_end,Smena sonu
+shift_start,Növbə başlanğıc
+shift_end,Növbə sonu
 cashier,Kassir
 register,Kassa
 order,Sifariş
@@ -241,7 +241,7 @@ sales_report,Satış hesabatı
 item_report,Məhsul hesabatı
 customer_report,Müştəri hesabatı
 payment_report,Ödəniş hesabatı
-shift_report,Smena hesabatı
+shift_report,Növbə hesabatı
 daily_report,Günlük hesabat
 monthly_report,Aylıq hesabat
 yearly_report,İllik hesabat
@@ -388,11 +388,11 @@ final_mode,Son rejim
 submitted_mode,Göndərilmiş rejim
 cancelled_mode,Ləğv edilmiş rejim
 amended_mode,Düzəliş edilmiş rejim
-View Shift,Smena ətraflı
+View Shift,Növbə ətraflı
 Draft Invoices,Qaralama fakturalar
 Invoice History,Faktura tarixçəsi
 Return Invoice,Qaytarma fakturası
-Close Shift,Smena bağla
+Close Shift,Növbə bağla
 Promotion & Coupon Management,Aksiya və Kupon İdarəsi
 Coupons,Kuponlar
 Promotional Schemes,Aksiya sxemləri
@@ -432,8 +432,8 @@ Enable Automatic Stock Sync,Avtomatik stok sinxronizasiyasını aktivləşdir
 Periodically sync stock quantities from server in the background (runs in Web Worker),Fon rejimində serverdən stok miqdarlarını dövri sinxronlaşdırın (Web Worker-də işləyir)
 Return invoices will appear here,Qaytarma fakturaları burada görünəcək
 All invoices are fully paid,Bütün fakturalar tam ödənilib
-POS Opening Shift,POS Açılış Smenası
-POS Closing Shift,POS Bağlanış Smenası
+POS Opening Shift,POS Açılış Növbəsı
+POS Closing Shift,POS Bağlanış Növbəsı
 POS Invoice,POS Fakturası
 POS Invoice Item,POS Faktura Məhsulu
 POS Settings,POS Ayarları
@@ -502,7 +502,7 @@ Authentication required,Autentifikasiya tələb olunur
 Avg Efficiency,Orta Səmərəlilik
 Avg Invoice Value,Orta Faktura Dəyəri
 Avg Rate,Orta Qiymət
-Avg Sales/Shift,Orta Satış/Smena
+Avg Sales/Shift,Orta Satış/Növbə
 Avg Ticket,Orta Çek
 Both invoice and data parameters are missing,"Həm faktura, həm də məlumat parametrləri əksikdir"
 Cancelled Wallet Transaction {0} due to full return,Tam qaytarma səbəbindən {0} pulqabı əməliyyatı ləğv edildi
@@ -903,8 +903,8 @@ Invalid offer,Etibarsız təklif
 Payment processed,Ödəniş emal edildi
 Payment failed,Ödəniş uğursuz oldu
 Invoice saved,Faktura saxlandı
-Shift opened,Smena açıldı
-Shift closed,Smena bağlandı
+Shift opened,Növbə açıldı
+Shift closed,Növbə bağlandı
 Sync completed,Sinxronizasiya tamamlandı
 Network error,Şəbəkə xətası
 Loading,Yüklənir
@@ -979,8 +979,8 @@ Saving draft...,Qaralama saxlanılır...
 Scan barcode,Barkod skan et
 Search by name or code,Ad və ya kod ilə axtar
 Select customer,Müştəri seç
-Shift closed successfully,Smena uğurla bağlandı
-Shift opened successfully,Smena uğurla açıldı
+Shift closed successfully,Növbə uğurla bağlandı
+Shift opened successfully,Növbə uğurla açıldı
 Stock updated,Stok yeniləndi
 Submitting order...,Sifariş göndərilir...
 Sync error,Sinxronizasiya xətası
@@ -1058,8 +1058,8 @@ Not enough stock available in the warehouse. Miqdarı azaldın və ya stok yoxla
 Search for items across warehouses,Anbarlar üzrə məhsul axtar
 Search for an item,Məhsul axtar
 Start typing to see suggestions,Təkliflər görmək üçün yazmağa başlayın
-Open POS Shift,POS Smenası Aç
-Existing Shift Found,Mövcud Smena Tapıldı
+Open POS Shift,POS Növbəsı Aç
+Existing Shift Found,Mövcud Növbə Tapıldı
 You have an open shift. Would you like to resume it or close it and open a new one?,Açıq směnınız var. Onu davam etdirmək yoxsa bağlayıb yenisini açmaq istəyirsiniz?
 Resume Shift,Směnı Davam Et
 Close & Open New,Bağla və Yeni Aç
@@ -1373,7 +1373,7 @@ operation_in_progress,Əməliyyat davam edir
 Tax mode updated. Cart recalculated with new tax settings.,Vergi rejimi yeniləndi. Səbət yeni vergi ayarları ilə hesablandı.
 Total,Cəm
 Shape,Formalaşdır
-view_shift,Smena ətraflı
+view_shift,Növbə ətraflı
 last_name,Soyad
 Rotate,Fırlan
 Sales by Item,Məhsula görə satışlar
@@ -1511,7 +1511,7 @@ Below,Aşağıda
 Last,Son
 Quantity updated,Miqdar yeniləndi
 customer_code,Müştəri kodu
-Your Shift is Still Open!,Sizin Smenanız Hələ Açıqdır!
+Your Shift is Still Open!,Sizin Növbənız Hələ Açıqdır!
 Reconnecting...,Yenidən qoşulur...
 Continue,Davam et
 table_capacity,Masa tutumu
@@ -1732,7 +1732,7 @@ Save,Saxla
 energy_points,Enerji xalları
 Start Preparing,Hazırlamağa Başla
 Immediate,Dərhal
-Shift,Smena
+Shift,Növbə
 swift_code,SWIFT kodu
 Bag,Çanta
 Elbow,Dirsək
@@ -2243,7 +2243,7 @@ Cash Overage,Nağd artığı
 total_transactions,Ümumi əməliyyat
 Opened:,Açılıb:
 Login to your account,Hesabınıza daxil olun
-Shift Summary,Smena Xülasəsi
+Shift Summary,Növbə Xülasəsi
 Write,Yaz
 Complete Order,Sifarişi tamamla
 Flow,Ax
@@ -2324,7 +2324,7 @@ appearance,Xarici görünüş
 Not Found,Tapılmadı
 auto_sync,Avtomatik sinxronizasiya
 Analytics,Analitika
-Open Shift,Smena aç
+Open Shift,Növbə aç
 Conceal,Gizlət
 Failed to toggle coupon status,Kupon statusu dəyişdirilmədi
 Day,Gün
@@ -2503,7 +2503,7 @@ Degree,Dərəcə
 Teach,Tədris et
 Actual Quantity,Faktiki miqdar
 Address,Ünvan
-Shift Opened,Smena açıldı
+Shift Opened,Növbə açıldı
 Payment Amount,Ödəniş məbləği
 guest_count,Qonaq sayı
 Discount,Endirim
@@ -2612,11 +2612,11 @@ sync_on_startup,Başlanğıcda sinxronlaşdır
 Assess,Qiymətləndir
 File,Fayl
 Path,Yol
-Shift Closed,Smena bağlandı
+Shift Closed,Növbə bağlandı
 discount_details,Endirim detalları
 Charge:,Ödəniş:
 Print Report,Hesabat çap et
-Shift Report,Smena hesabatı
+Shift Report,Növbə hesabatı
 Delivery order,Çatdırılma sifarişi
 Free Item,Pulsuz məhsul
 Credit Note,Kredit qeydi
@@ -2918,7 +2918,7 @@ Hammer,Çəkic
 Profile,Profil
 Add to Customer Credit Balance,Müştəri kredit balansına əlavə et
 new_order,Yeni sifariş
-shift_not_found,Smena tapılmadı
+shift_not_found,Növbə tapılmadı
 Heal,Sağalt
 Roof,Dam
 Connection lost,Bağlantı kəsildi
@@ -3240,7 +3240,7 @@ Times Used,İstifadə sayı
 done,Hazır
 Unit,Vahid
 Statistics,Statistika
-shift_details,Smena detalları
+shift_details,Növbə detalları
 Lips,Dodaqlar
 Delayed,Gecikmiş
 Pack,Paketlə
