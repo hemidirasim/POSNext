@@ -875,3 +875,47 @@ Transfer Items,Məhsulları köçür
 Order Status,Sifariş statusu
 Waiting Time,Gözləmə vaxtı
 Search invoices...,Faktura axtar...
+Total Paid:,Ümumi ödənilib:
+Write Off Change,Qalığı sil
+Add items to the cart before applying an offer.,Təklif tətbiq etməzdən əvvəl səbətə məhsul əlavə edin.
+Cart subtotal BEFORE tax - used for discount calculations,Vergidən əvvəl səbət aralıq cəmi - endirim hesablamaları üçün
+Negative stock sales are now allowed,Mənfi stok satışlarına icazə verilir
+Tax Configuration Error,Vergi konfiqurasiya xətası
+Invoice {0} created successfully,{0} fakturası uğurla yaradıldı
+Please enter a promotion name,Aksiya adı daxil edin
+Previous order loaded for this table,Bu masa üçün əvvəlki sifariş yükləndi
+Cart does not contain items from eligible brands,Səbətdə uyğun brendlərdən məhsul yoxdur
+Invoice - {0},Faktura - {0}
+Status:,Status:
+Paid: {0},Ödənilib: {0}
+Maximum allowed discount is {0}%,Maksimum endirim {0}%
+Invoice #:,Faktura #:
+Last 7 Days,Son 7 gün
+Change:,Qalıq:
+No pending invoices to sync,Sinxronizasiya üçün gözləyən faktura yoxdur
+Server Error,Server xətası
+All Territories,Bütün ərazilər
+Add New Customer,Yeni müştəri əlavə et
+Customer added successfully,Müştəri uğurla əlavə edildi
+Offer applied,Təklif tətbiq edildi
+Offer removed,Təklif silindi
+Invalid offer,Etibarsız təklif
+Payment processed,Ödəniş emal edildi
+Payment failed,Ödəniş uğursuz oldu
+Invoice saved,Faktura saxlandı
+Shift opened,Směna açıldı
+Shift closed,Směna bağlandı
+Sync completed,Sinxronizasiya tamamlandı
+Network error,Şəbəkə xətası
+Loading,Yüklənir
+Processing,Emal edilir
+Please wait,Zəhmət olmasa gözləyin
+Operation completed,Əməliyyat tamamlandı
+Try again,Yenidən cəhd edin
+{0} items in cart,{0} məhsul səbətdə
+{0} remaining,{0} qalıb
+Today,Bu gün
+Yesterday,Dünən
+No data,Məlumat yoxdur
+No records,Yazı yoxdur
+Empty list,Boş siyahı
