@@ -1253,7 +1253,31 @@
 					<span>{{ __("Checkout") }}</span>
 				</button>
 
-				<!-- Send to Kitchen Button (Secondary - 50% width) -->
+				<!-- Cancel Order Button (Danger - 25% width) -->
+				<button
+					type="button"
+					v-if="items.length > 0"
+					@click="showCancelDialog = true"
+					class="flex-1 py-2.5 px-2 rounded-lg font-semibold text-xs text-red-700 bg-red-50 hover:bg-red-100 active:bg-red-200 transition-all touch-manipulation active:scale-[0.98] flex items-center justify-center"
+					:aria-label="__('Cancel order')"
+				>
+					<svg
+						class="w-4 h-4 me-1.5"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						stroke-width="2"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M6 18L18 6M6 6l12 12"
+						/>
+					</svg>
+					<span>{{ __("Cancel") }}</span>
+				</button>
+
+				<!-- Send to Kitchen Button (Secondary - 25% width) -->
 				<button
 					type="button"
 					v-if="items.length > 0"
@@ -1274,7 +1298,7 @@
 							d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
 						/>
 					</svg>
-					<span>{{ __("Send to Kitchen") }}</span>
+					<span>{{ __("Kitchen") }}</span>
 				</button>
 			</div>
 		</div>
@@ -1286,6 +1310,12 @@
 			:warehouses="warehouses"
 			:currency="currency"
 			@update-item="handleUpdateItem"
+		/>
+
+		<!-- Cancel Order Dialog -->
+		<CancelOrderDialog
+			v-model:show="showCancelDialog"
+			@confirm="handleCancelOrder"
 		/>
 
 	</div>
@@ -1314,6 +1344,7 @@ const log = logger.create("InvoiceCart");
 import { createResource } from "frappe-ui";
 import { computed, onBeforeUnmount, onMounted, ref, watch, nextTick } from "vue";
 import EditItemDialog from "./EditItemDialog.vue";
+import CancelOrderDialog from "./CancelOrderDialog.vue";
 
 /**
  * ============================================================================
@@ -1334,6 +1365,49 @@ function handleProceedToPayment() {
 function sendToKitchen() {
 	cartStore.setKdsStatus("Pending");
 	emit("send-to-kitchen");
+}
+
+// Cancel Order functionality
+const showCancelDialog = ref(false)
+const isCancelling = ref(false)
+
+function handleCancelOrder(cancelData) {
+	isCancelling.value = true
+	
+	// Add cancelled items info to cart store for tracking
+	const cancelledItems = props.items.map(item => ({
+		item_code: item.item_code,
+		item_name: item.item_name,
+		quantity: item.quantity,
+		reason: cancelData.reason,
+		reason_text: cancelData.reasonText,
+		cancelled_at: new Date().toISOString(),
+		cancelled_by: frappe?.session?.user || 'Unknown'
+	}))
+	
+	// Log cancellation (can be sent to backend)
+	log.info('Order cancelled', {
+		reason: cancelData.reason,
+		reason_text: cancelData.reasonText,
+		items_count: props.items.length,
+		items: cancelledItems
+	})
+	
+	// Clear the cart
+	cartStore.clearCart()
+	
+	// Show success message
+	showWarning(__('Order cancelled successfully'))
+	
+	isCancelling.value = false
+	showCancelDialog.value = false
+	
+	// Emit event for parent component
+	emit('order-cancelled', {
+		reason: cancelData.reason,
+		reason_text: cancelData.reasonText,
+		items: cancelledItems
+	})
 }
 
 /**
