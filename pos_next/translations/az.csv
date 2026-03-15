@@ -919,3 +919,74 @@ Yesterday,Dünən
 No data,Məlumat yoxdur
 No records,Yazı yoxdur
 Empty list,Boş siyahı
+(FREE),(PULSUZ)
++{0} FREE,+{0} PULSUZ
+-- No Campaign --,-- Kampaniya yoxdur --
+Active Orders,Aktiv sifarişlər
+All cached data has been cleared successfully,Bütün keşlənmiş məlumatlar uğurla təmizləndi
+An unexpected error occurred,Gözlənilməz xəta baş verdi
+Auto-Add ON - Type or scan barcode,Avto-əlavə AKTİV - Barkod yazın və ya skan edin
+BALANCE DUE:,ÖDƏNİLMƏLİ BALANS:
+Back to POS,POS-a qayıt
+Being Prepared,Hazırlanır
+Cache empty,Keş boşdur
+Cache ready,Keş hazırdır
+Cache syncing,Keş sinxronizasiya edilir
+Cart is empty,Səbət boşdur
+Certificate already exists. You can download it below.,Sertifikat artıq mövcuddur. Aşağıdan yükləyə bilərsiniz.
+Certificate generated successfully.,Sertifikat uğurla yaradıldı.
+Creating Invoice...,Faktura yaradılır...
+Credit card payment cannot exceed invoice total,Kredit kartı ödənişi faktura cəmindən çox ola bilməz
+Customer added to cart,Müştəri səbətə əlavə edildi
+Discount amount cannot be greater than grand total,Endirim məbləği yekun cəmdən çox ola bilməz
+Discount exceeded,Endirim aşıldı
+Enter barcode or search term,Barkod və ya axtarış sözü daxil edin
+Enter payment amount,Ödəniş məbləği daxil edin
+Error creating invoice,Faktura yaradılarkən xəta
+Grand Total:,Yekun Cəm:
+Invoice cancelled,Faktura ləğv edildi
+Invoice created,Faktura yaradıldı
+Invoice loaded,Faktura yükləndi
+Invoice not found,Faktura tapılmadı
+Invoice paid,Faktura ödənildi
+Item added to cart,Məhsul səbətə əlavə edildi
+Item not available,Məhsul mövcud deyil
+Item removed from cart,Məhsul səbətdən çıxarıldı
+Loading customers...,Müştərilər yüklənir...
+Loading invoice...,Faktura yüklənir...
+Loading items...,Məhsullar yüklənir...
+Make Payment,Ödəniş et
+New Invoice,Yeni Faktura
+No active shift,Aktiv směna yoxdur
+No items in cart,Səbətdə məhsul yoxdur
+No payment methods available,Mövcud ödəniş metodu yoxdur
+Order cancelled,Sifariş ləğv edildi
+Order completed,Sifariş tamamlandı
+Order placed,Sifariş verildi
+Paid amount exceeds invoice total,Ödənilmiş məbləğ faktura cəmindən çoxdur
+Payment added,Ödəniş əlavə edildi
+Payment completed,Ödəniş tamamlandı
+Payment pending,Ödəniş gözləyir
+Please add items to cart,Zəhmət olmasa səbətə məhsul əlavə edin
+Please select a customer,Zəhmət olmasa müştəri seçin
+Please select a payment method,Zəhmət olmasa ödəniş metodu seçin
+Print receipt,Çek çap et
+Printing receipt...,Çek çap edilir...
+Processing payment...,Ödəniş emal edilir...
+Receipt printed,Çek çap edildi
+Return period expired,Qaytarma müddəti bitdi
+Saving draft...,Qaralama saxlanılır...
+Scan barcode,Barkod skan et
+Search by name or code,Ad və ya kod ilə axtar
+Select customer,Müştəri seç
+Shift closed successfully,Směna uğurla bağlandı
+Shift opened successfully,Směna uğurla açıldı
+Stock updated,Stok yeniləndi
+Submitting order...,Sifariş göndərilir...
+Sync error,Sinxronizasiya xətası
+Syncing data...,Məlumat sinxronizasiya edilir...
+Tax included,Vergi daxildir
+Tax excluded,Vergi xaricdir
+Total Paid,Ümumi Ödənilib
+Transaction completed,Əməliyyat tamamlandı
+Transaction failed,Əməliyyat uğursuz oldu
