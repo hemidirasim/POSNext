@@ -3730,3 +3730,9 @@ No open POS Opening Entry found,Heç bir açıq POS açılış yazısı tapılma
 Please open a POS Opening Entry first,Əvvəlcə POS açılış yazısı açın
 Go to POS > POS Opening Entry > New,POS > POS Açılış Yazısı > Yeni keçin
 Invalid Opening Entry,Etibarsız Açılış Yazısı
+POS Opening Shift,POS Açılış Növbəsi
+POS Opening Entry,POS Açılış Yazısı
+Status: Open,Status: Açıq
+Status: Closed,Status: Bağlı
+Opening Entry,Açılış Yazısı
+Closing Entry,Bağlanış Yazısı
