@@ -1314,7 +1314,7 @@
 
 		<!-- Cancel Order Dialog -->
 		<CancelOrderDialog
-			v-model:show="showCancelDialog"
+			v-model="showCancelDialog"
 			@confirm="handleCancelOrder"
 		/>
 
