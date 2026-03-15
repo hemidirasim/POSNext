@@ -1402,6 +1402,20 @@ async function handleCancelOrder(cancelData) {
 			// Clear the cart
 			cartStore.clearCart()
 			
+			// Update table status to Available if table exists
+			if (props.table) {
+				try {
+					await call('pos_next.api.restaurant.update_table_status', {
+						table_id: props.table,
+						status: 'Available',
+						note: `Order cancelled: ${cancelData.reasonText}`
+					})
+					log.info('Table status updated to Available', { table: props.table })
+				} catch (tableError) {
+					log.warn('Failed to update table status', { table: props.table, error: tableError })
+				}
+			}
+			
 			// Show success message
 			showWarning(__('Order cancelled successfully'))
 			
@@ -1415,7 +1429,8 @@ async function handleCancelOrder(cancelData) {
 			emit('order-cancelled', {
 				log_id: result.log_id,
 				reason: cancelData.reason,
-				reason_text: cancelData.reasonText
+				reason_text: cancelData.reasonText,
+				table: props.table
 			})
 		} else {
 			showError(result.error || __('Cancellation failed'))
