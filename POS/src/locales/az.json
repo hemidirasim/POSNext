@@ -3994,6 +3994,11 @@
     "Remove from cart": "Səbətdən çıxar",
     "Clear cart": "Səbəti təmizlə",
     "Clear all items?": "Bütün məhsulları təmizlə?",
-    "This will remove all items from cart": "Bu səbətdən bütün məhsulları çıxaracaq"
+    "This will remove all items from cart": "Bu səbətdən bütün məhsulları çıxaracaq",
+    "No open POS Opening Entry found for {0} POS Profile": "{0} POS profili üçün heç bir açıq POS açılış yazısı tapılmadı",
+    "No open POS Opening Entry found": "Heç bir açıq POS açılış yazısı tapılmadı",
+    "Please open a POS Opening Entry first": "Əvvəlcə POS açılış yazısı açın",
+    "Go to POS > POS Opening Entry > New": "POS > POS Açılış Yazısı > Yeni keçin",
+    "Invalid Opening Entry": "Etibarsız Açılış Yazısı"
   }
 }
