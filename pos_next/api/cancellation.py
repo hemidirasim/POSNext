@@ -1,6 +1,5 @@
 """
-Order Cancellation API
-Handles order cancellations with reason tracking
+Order Cancellation API - Integrated with POS Invoice
 """
 import frappe
 from frappe import _
@@ -8,72 +7,152 @@ from datetime import datetime
 
 
 @frappe.whitelist()
-def cancel_order_with_reason(invoice_name=None, items=None, reason=None, reason_text=None, custom_note=None):
+def cancel_pos_invoice(invoice_name, reason, reason_text=None, custom_note=None, table=None):
     """
-    Cancel order with reason tracking
-    
-    Args:
-        invoice_name: POS Invoice name (optional if cart only)
-        items: List of cancelled items with details
-        reason: Cancellation reason code
-        reason_text: Human readable reason
-        custom_note: Custom cancellation note
-    
-    Returns:
-        dict: Cancellation result
+    Cancel POS Invoice with reason tracking
+    Updates invoice status to 'Cancelled' and logs reason
     """
     try:
-        # Validate inputs
-        if not items:
-            return {"success": False, "error": "No items provided"}
+        if not frappe.db.exists("POS Invoice", invoice_name):
+            return {"success": False, "error": "Invoice not found"}
         
-        if not reason:
-            return {"success": False, "error": "Cancellation reason required"}
+        invoice = frappe.get_doc("POS Invoice", invoice_name)
         
-        # Create cancellation log
-        cancellation_doc = frappe.get_doc({
-            "doctype": "POS Order Cancellation",
-            "posting_date": datetime.now(),
-            "user": frappe.session.user,
-            "pos_invoice": invoice_name,
-            "reason": reason,
-            "reason_text": reason_text,
-            "custom_note": custom_note,
-            "items": []
-        })
+        # Check if already cancelled
+        if invoice.status == "Cancelled":
+            return {"success": False, "error": "Invoice already cancelled"}
         
-        # Add cancelled items
-        for item in items:
-            cancellation_doc.append("items", {
-                "item_code": item.get("item_code"),
-                "item_name": item.get("item_name"),
-                "quantity": item.get("quantity"),
-                "rate": item.get("rate", 0),
-                "amount": item.get("amount", 0)
-            })
+        # Update invoice
+        invoice.status = "Cancelled"
+        invoice.cancel_reason = reason
+        invoice.cancel_reason_text = reason_text or get_reason_label(reason)
+        invoice.cancel_note = custom_note
+        invoice.cancelled_by = frappe.session.user
+        invoice.cancelled_at = datetime.now()
         
-        cancellation_doc.insert(ignore_permissions=True)
+        # If restaurant table, update table status
+        if table:
+            invoice.restaurant_table = table
+            update_table_status(table, "Available")
         
-        # If invoice exists, update its status
-        if invoice_name and frappe.db.exists("POS Invoice", invoice_name):
-            invoice = frappe.get_doc("POS Invoice", invoice_name)
-            invoice.add_comment("Comment", f"Order cancelled. Reason: {reason_text}. Note: {custom_note or 'N/A'}")
-            
-            # Optionally cancel the invoice
-            if invoice.docstatus == 1:
-                invoice.cancel()
+        # Add to comments for history
+        comment_text = f"""
+        <b>Order Cancelled</b><br>
+        Reason: {invoice.cancel_reason_text}<br>
+        Cancelled By: {frappe.session.user}<br>
+        Time: {datetime.now().strftime('%Y-%m-%d %H:%M')}<br>
+        """
+        if custom_note:
+            comment_text += f"Note: {custom_note}<br>"
+        
+        invoice.add_comment("Comment", comment_text)
+        
+        # Save changes
+        invoice.save(ignore_permissions=True)
+        
+        # Create activity log for tracking
+        create_cancellation_log(invoice, reason, reason_text, custom_note)
         
         frappe.db.commit()
         
         return {
             "success": True,
             "message": "Order cancelled successfully",
-            "cancellation_id": cancellation_doc.name
+            "invoice": invoice_name
         }
         
     except Exception as e:
-        frappe.log_error(f"Order cancellation failed: {str(e)}", "POS Cancellation")
+        frappe.log_error(f"Cancel invoice failed: {str(e)}", "POS Cancellation")
         return {"success": False, "error": str(e)}
+
+
+@frappe.whitelist()
+def cancel_cart_items(items, reason, reason_text=None, custom_note=None, 
+                       pos_profile=None, customer=None, table=None):
+    """
+    Cancel items from cart (before creating invoice)
+    Creates a Draft invoice with Cancelled status for tracking
+    """
+    try:
+        if not items:
+            return {"success": False, "error": "No items to cancel"}
+        
+        # Create cancelled draft invoice for tracking
+        invoice = frappe.get_doc({
+            "doctype": "POS Invoice",
+            "docstatus": 0,  # Draft
+            "status": "Cancelled",
+            "is_pos": 1,
+            "pos_profile": pos_profile,
+            "customer": customer or "Walking Customer",
+            "restaurant_table": table,
+            "cancel_reason": reason,
+            "cancel_reason_text": reason_text or get_reason_label(reason),
+            "cancel_note": custom_note,
+            "cancelled_by": frappe.session.user,
+            "cancelled_at": datetime.now(),
+            "posting_date": datetime.now().date(),
+            "due_date": datetime.now().date(),
+            "items": []
+        })
+        
+        # Add cancelled items
+        for item in items:
+            invoice.append("items", {
+                "item_code": item.get("item_code"),
+                "item_name": item.get("item_name"),
+                "qty": item.get("quantity", 1),
+                "rate": item.get("rate", 0),
+                "amount": item.get("amount", 0),
+                "warehouse": item.get("warehouse"),
+                "uom": item.get("uom", "Nos")
+            })
+        
+        # Calculate totals
+        invoice.set_missing_values()
+        
+        # Insert as draft (not submitted)
+        invoice.insert(ignore_permissions=True)
+        
+        # Add comment
+        comment_text = f"""
+        <b>Cart Cancelled (Before Checkout)</b><br>
+        Reason: {invoice.cancel_reason_text}<br>
+        Items: {len(items)}<br>
+        Total: {invoice.grand_total}<br>
+        Cancelled By: {frappe.session.user}<br>
+        """
+        if custom_note:
+            comment_text += f"Note: {custom_note}<br>"
+        
+        invoice.add_comment("Comment", comment_text)
+        
+        frappe.db.commit()
+        
+        return {
+            "success": True,
+            "message": "Cart cancelled successfully",
+            "invoice": invoice.name
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Cancel cart failed: {str(e)}", "POS Cancellation")
+        return {"success": False, "error": str(e)}
+
+
+@frappe.whitelist()
+def get_reason_label(reason_code):
+    """Get human readable label for reason code"""
+    reason_map = {
+        "customer_changed_mind": _("Customer changed mind"),
+        "wrong_item_ordered": _("Wrong item ordered"),
+        "item_out_of_stock": _("Item out of stock"),
+        "long_preparation_time": _("Long preparation time"),
+        "kitchen_mistake": _("Kitchen mistake"),
+        "quality_issue": _("Quality issue"),
+        "other": _("Other Reason")
+    }
+    return reason_map.get(reason_code, reason_code)
 
 
 @frappe.whitelist()
@@ -91,35 +170,75 @@ def get_cancellation_reasons():
 
 
 @frappe.whitelist()
-def get_cancellation_history(start_date=None, end_date=None, pos_profile=None, limit=50):
+def get_cancelled_invoices(start_date=None, end_date=None, pos_profile=None, 
+                           reason=None, limit=50):
     """
-    Get cancellation history for reporting
-    
-    Args:
-        start_date: Filter from date
-        end_date: Filter to date
-        pos_profile: Filter by POS Profile
-        limit: Maximum records to return
+    Get list of cancelled invoices for reporting
     """
     try:
-        filters = {}
+        filters = {
+            "status": "Cancelled",
+            "is_pos": 1
+        }
+        
         if start_date:
             filters["posting_date"] = [">=", start_date]
         if end_date:
             filters["posting_date"] = ["<=", end_date]
+        if pos_profile:
+            filters["pos_profile"] = pos_profile
+        if reason:
+            filters["cancel_reason"] = reason
         
-        cancellations = frappe.get_all(
-            "POS Order Cancellation",
+        invoices = frappe.get_all(
+            "POS Invoice",
             filters=filters,
-            fields=["name", "posting_date", "user", "pos_invoice", "reason", "reason_text", "total_amount"],
-            order_by="posting_date desc",
+            fields=[
+                "name", "posting_date", "posting_time", 
+                "customer", "grand_total", "status",
+                "cancel_reason", "cancel_reason_text", 
+                "cancelled_by", "cancelled_at",
+                "restaurant_table", "pos_profile"
+            ],
+            order_by="posting_date desc, posting_time desc",
             limit=limit
         )
         
         return {
             "success": True,
-            "cancellations": cancellations
+            "invoices": invoices,
+            "count": len(invoices)
         }
         
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+
+def create_cancellation_log(invoice, reason, reason_text, custom_note):
+    """Create activity log for cancellation"""
+    try:
+        frappe.get_doc({
+            "doctype": "Activity Log",
+            "subject": f"POS Invoice {invoice.name} Cancelled",
+            "reference_type": "POS Invoice",
+            "reference_name": invoice.name,
+            "operation": "Cancel",
+            "status": "Success",
+            "communication_date": datetime.now(),
+            "notes": f"""
+                Reason: {reason_text or reason}
+                Note: {custom_note or 'N/A'}
+                Cancelled By: {frappe.session.user}
+            """
+        }).insert(ignore_permissions=True)
+    except:
+        pass
+
+
+def update_table_status(table, status):
+    """Update restaurant table status"""
+    try:
+        if table and frappe.db.exists("Restaurant Table", table):
+            frappe.db.set_value("Restaurant Table", table, "status", status)
+    except:
+        pass

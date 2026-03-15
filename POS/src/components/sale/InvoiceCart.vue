@@ -1342,6 +1342,7 @@ import { FeatherIcon } from "frappe-ui";
 
 const log = logger.create("InvoiceCart");
 import { createResource } from "frappe-ui";
+import { call } from "@/utils/api";
 import { computed, onBeforeUnmount, onMounted, ref, watch, nextTick } from "vue";
 import EditItemDialog from "./EditItemDialog.vue";
 import CancelOrderDialog from "./CancelOrderDialog.vue";
@@ -1371,43 +1372,61 @@ function sendToKitchen() {
 const showCancelDialog = ref(false)
 const isCancelling = ref(false)
 
-function handleCancelOrder(cancelData) {
+async function handleCancelOrder(cancelData) {
 	isCancelling.value = true
 	
-	// Add cancelled items info to cart store for tracking
-	const cancelledItems = props.items.map(item => ({
-		item_code: item.item_code,
-		item_name: item.item_name,
-		quantity: item.quantity,
-		reason: cancelData.reason,
-		reason_text: cancelData.reasonText,
-		cancelled_at: new Date().toISOString(),
-		cancelled_by: frappe?.session?.user || 'Unknown'
-	}))
-	
-	// Log cancellation (can be sent to backend)
-	log.info('Order cancelled', {
-		reason: cancelData.reason,
-		reason_text: cancelData.reasonText,
-		items_count: props.items.length,
-		items: cancelledItems
-	})
-	
-	// Clear the cart
-	cartStore.clearCart()
-	
-	// Show success message
-	showWarning(__('Order cancelled successfully'))
-	
-	isCancelling.value = false
-	showCancelDialog.value = false
-	
-	// Emit event for parent component
-	emit('order-cancelled', {
-		reason: cancelData.reason,
-		reason_text: cancelData.reasonText,
-		items: cancelledItems
-	})
+	try {
+		// Prepare items for API
+		const items = props.items.map(item => ({
+			item_code: item.item_code,
+			item_name: item.item_name,
+			quantity: item.quantity,
+			rate: item.rate,
+			amount: item.amount,
+			warehouse: item.warehouse,
+			uom: item.uom
+		}))
+		
+		// Call API to cancel cart (creates cancelled draft invoice)
+		const result = await call('pos_next.api.cancellation.cancel_cart_items', {
+			items: items,
+			reason: cancelData.reason,
+			reason_text: cancelData.reasonText,
+			custom_note: cancelData.customNote,
+			pos_profile: props.posProfile,
+			customer: props.customer?.name,
+			table: props.table
+		})
+		
+		if (result.success) {
+			// Clear the cart
+			cartStore.clearCart()
+			
+			// Show success message
+			showWarning(__('Order cancelled successfully'))
+			
+			log.info('Order cancelled', {
+				invoice: result.invoice,
+				reason: cancelData.reason,
+				reason_text: cancelData.reasonText
+			})
+			
+			// Emit event
+			emit('order-cancelled', {
+				invoice: result.invoice,
+				reason: cancelData.reason,
+				reason_text: cancelData.reasonText
+			})
+		} else {
+			showError(result.error || __('Cancellation failed'))
+		}
+	} catch (error) {
+		log.error('Cancel order error', error)
+		showError(__('Cancellation failed'))
+	} finally {
+		isCancelling.value = false
+		showCancelDialog.value = false
+	}
 }
 
 /**
