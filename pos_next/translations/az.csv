@@ -3710,3 +3710,18 @@ Tax Collected,Yığılan Vergi
 Net tax,Xalis vergi
 Shift Open,Açıq Növbə
 Shift Open:,Açıq Növbə:
+Cancel Order,Sifarişi Ləğv Et
+Cancel Item,Məhsulu Ləğv Et
+Cancel Selected,Seçiləni Ləğv Et
+Cancel All,Hamısını Ləğv Et
+Cancellation Reason,Ləğv Səbəbi
+Select Reason,Səbəb Seç
+Other Reason,Digər Səbəb
+Customer changed mind,Müştəri fikrini dəyişdi
+Wrong item ordered,Yanlış məhsul sifariş edildi
+Item out of stock,Məhsul stokda yoxdur
+Long preparation time,Hazırlanma vaxtı uzundur
+Are you sure you want to cancel this order?,Bu sifarişi ləğv etmək istədiyinizə əminsiniz?
+Order cancelled successfully,Sifariş uğurla ləğv edildi
+Remove from cart,Səbətdən çıxar
+Clear cart,Səbəti təmizlə
