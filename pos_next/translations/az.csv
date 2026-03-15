@@ -101,8 +101,8 @@ open_shift,Növbə aç
 close_shift,Növbə bağla
 shift_opened,Növbə açıldı
 shift_closed,Növbə bağlandı
-no_shift,Açıq směna yoxdur
-current_shift,Cari směna
+no_shift,Açıq Növbə yoxdur
+current_shift,Cari Növbə
 shift_start,Növbə başlanğıc
 shift_end,Növbə sonu
 cashier,Kassir
@@ -957,7 +957,7 @@ Loading invoice...,Faktura yüklənir...
 Loading items...,Məhsullar yüklənir...
 Make Payment,Ödəniş et
 New Invoice,Yeni Faktura
-No active shift,Aktiv směna yoxdur
+No active shift,Aktiv Növbə yoxdur
 No items in cart,Səbətdə məhsul yoxdur
 No payment methods available,Mövcud ödəniş metodu yoxdur
 Order cancelled,Sifariş ləğv edildi
@@ -1036,7 +1036,7 @@ Permission Denied,İcazə Rədd Edildi
 Permission Required,İcazə Tələb Olunur
 Please add items to cart before proceeding to payment,Ödənişə keçməzdən əvvəl səbətə məhsul əlavə edin
 Please enter a coupon name,Kupon adı daxil edin
-Please open a shift to start making sales,Satışa başlamaq üçün směna açın
+Please open a shift to start making sales,Satışa başlamaq üçün Növbə açın
 Please select a customer before proceeding,Davam etməzdən əvvəl müştəri seçin
 Promotion created successfully,Aksiya uğurla yaradıldı
 Promotion deleted successfully,Aksiya uğurla silindi
@@ -1060,8 +1060,8 @@ Search for an item,Məhsul axtar
 Start typing to see suggestions,Təkliflər görmək üçün yazmağa başlayın
 Open POS Shift,POS Növbəsı Aç
 Existing Shift Found,Mövcud Növbə Tapıldı
-You have an open shift. Would you like to resume it or close it and open a new one?,Açıq směnınız var. Onu davam etdirmək yoxsa bağlayıb yenisini açmaq istəyirsiniz?
-Resume Shift,Směnı Davam Et
+You have an open shift. Would you like to resume it or close it and open a new one?,Açıq Növbəninız var. Onu davam etdirmək yoxsa bağlayıb yenisini açmaq istəyirsiniz?
+Resume Shift,Növbəni Davam Et
 Close & Open New,Bağla və Yeni Aç
 Stock Controls,Stok Nəzarətləri
 Warehouse Selection,Anbar Seçimi
@@ -1151,7 +1151,7 @@ sales_invoice,Satış fakturası
 Nut,Somun
 Inactive,Deaktiv
 Exhausted,Bitmiş
-pos_closing_shift,POS bağlanış směnası
+pos_closing_shift,POS bağlanış Növbəsı
 receive_payment,Ödəniş qəbul et
 this_year,Bu il
 make_payment,Ödəniş et
@@ -1367,7 +1367,7 @@ Please select,"Zəhmət olmasa, seçin"
 date_of_birth,Doğum tarixi
 Trace,İzini tap
 Enter any special requests or dietary requirements...,Xüsusi istəklər və ya pəhriz tələbləri daxil edin...
-This dialog has been open for over a minute. Please close the shift or close this dialog to resume the shift timer.,"Bu dialoq bir dəqiqədən çoxdur açıqdır. Zəhmət olmasa, směnı bağlayın və ya směna taymerini davam etdirmək üçün bu dialoqu bağlayın."
+This dialog has been open for over a minute. Please close the shift or close this dialog to resume the shift timer.,"Bu dialoq bir dəqiqədən çoxdur açıqdır. Zəhmət olmasa, Növbəni bağlayın və ya Növbə taymerini davam etdirmək üçün bu dialoqu bağlayın."
 Add to Cart,Səbətə əlavə et
 operation_in_progress,Əməliyyat davam edir
 Tax mode updated. Cart recalculated with new tax settings.,Vergi rejimi yeniləndi. Səbət yeni vergi ayarları ilə hesablandı.
@@ -1598,7 +1598,7 @@ Cannot save an empty cart as draft,Boş səbəti qaralama kimi saxlamaq olmaz
 session_invalid,Sessiya etibarsızdır
 Function,Funksiya
 Course,Kurs
-Active Shift Detected,Aktiv směna aşkarlandı
+Active Shift Detected,Aktiv Növbə aşkarlandı
 routing_number,Routing nömrəsi
 Special,Xüsusi
 Album,Albom
@@ -1715,7 +1715,7 @@ Delivered / Dismiss,Çatdırıldı / Rədd et
 Receipt downloaded,Çek yükləndi
 Not Empty,Boş deyil
 Offer not applicable,Təklif tətbiq edilə bilməz
-pos_opening_shift,POS açılış směnası
+pos_opening_shift,POS açılış Növbəsı
 Nail,Dırnaq
 Mission,Missiya
 Terminal Summary,Terminal xülasəsi
@@ -1883,7 +1883,7 @@ Date:,Tarix:
 edit_invoice,Fakturanı redaktə et
 Don't have an account?,Hesabınız yoxdur?
 Do,Et
-Please open a shift first,"Zəhmət olmasa, əvvəlcə směna açın"
+Please open a shift first,"Zəhmət olmasa, əvvəlcə Növbə açın"
 Detach,Ayır
 Expired Only,Yalnız bitmiş
 Never,Heç vaxt
@@ -2017,7 +2017,7 @@ Invoices updated in real-time,Fakturalar real vaxtda yenilənir
 Over,Üstündə
 Too many attempts. Try again in {0} seconds.,Həddən artıq cəhd. {0} saniyə sonra yenidən cəhd edin.
 changes_lost,Bütün dəyişikliklər itiriləcək
-Active Shift,Aktiv směna
+Active Shift,Aktiv Növbə
 Near,Yaxın
 Current Password,Cari şifrə
 Boulevard,Bulvar
@@ -2199,7 +2199,7 @@ from_date,Başlanğıc tarixi
 Grade,Dərəcə
 {0} applied successfully,{0} uğurla tətbiq edildi
 Invoice Sync,Faktura sinxronizasiyası
-Closing Shift,Bağlanış směnası
+Closing Shift,Bağlanış Növbəsı
 Knowledge,Bilik
 No invoices found,Faktura tapılmadı
 Public,İctimai
@@ -2475,7 +2475,7 @@ lead_time,Gözləmə vaxtı
 Empty,Boş
 Cash Refund,Nağd pul qaytarılması
 Free items,Pulsuz məhsullar
-Open a shift before creating a return invoice.,Qaytarma fakturası yaratmazdan əvvəl směna açın.
+Open a shift before creating a return invoice.,Qaytarma fakturası yaratmazdan əvvəl Növbə açın.
 {0} invoices,{0} faktura
 storage_full,Yaddaş doludur
 purchase_invoice,Alış fakturası
@@ -2488,7 +2488,7 @@ Recommended,Tövsiyə edilir
 Knuckle,Barmaq qopuğu
 login_error,Daxil olarkən xəta
 empty,Boş
-You need to open a shift before you can start making sales.,Satışa başlamazdan əvvəl směna açmalısınız.
+You need to open a shift before you can start making sales.,Satışa başlamazdan əvvəl Növbə açmalısınız.
 Send,Göndər
 payment_mode,Ödəniş rejimi
 restrict_ip,IP məhdudiyyəti
@@ -2817,7 +2817,7 @@ location,Yer
 Please select at least one variant,"Zəhmət olmasa, ən azı bir variant seçin"
 credit_payment,Kredit ödənişi
 Download Receipt,Çeki yüklə
-Please close the current shift first,"Zəhmət olmasa, əvvəlcə cari směnı bağlayın"
+Please close the current shift first,"Zəhmət olmasa, əvvəlcə cari Növbəni bağlayın"
 "This will clear all cached items, customers, and stock data. Invoices and drafts will be preserved.","Bu, bütün keşlənmiş məhsulları, müştəriləri və stok məlumatlarını təmizləyəcək. Fakturalar və qaralamalar qorunacaq."
 Silent Print Disabled,Səssiz Çap Deaktivdir
 Trench,Xəndək
@@ -3157,7 +3157,7 @@ Molecule,Molekul
 auto_apply,Avtomatik tətbiq
 client_error,Müştəri xətası
 This item is out of stock in all warehouses,Bu məhsul bütün anbarlarda stokda yoxdur
-Close your shift first to save all transactions properly,Bütün əməliyyatları düzgün saxlamaq üçün əvvəlcə směnınızı bağlayın
+Close your shift first to save all transactions properly,Bütün əməliyyatları düzgün saxlamaq üçün əvvəlcə Növbəninızı bağlayın
 Failed to load partial payments,Qismən ödənişlər yüklənərkən uğursuz oldu
 Process Payment,Ödənişi emal et
 Access your point of sale system,Satış nöqtəsi sisteminizə daxil olun
@@ -3592,7 +3592,7 @@ Basic Information,Əsas məlumat
 Fashion,Moda
 Add items to your cart to see eligible offers,Uyğun təklifləri görmək üçün səbətə məhsul əlavə edin
 Manufacturing Date,İstehsal tarixi
-Opening Shift,Açılış směnası
+Opening Shift,Açılış Növbəsı
 badges,Nişanlar
 additional_discount,Əlavə endirim
 transaction,Əməliyyat
