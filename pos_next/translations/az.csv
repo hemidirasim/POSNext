@@ -3695,3 +3695,16 @@ Existing Shift Found,Mövcud növbə tapıldı
 You have an open shift. Would you like to resume it or close it and open a new one?,Açıq növbəniz var. Onu davam etdirmək və ya bağlayıb yenisini açmaq istəyirsiniz?
 Close & Open New,Bağla və yeni aç
 Open POS Shift,POS Növbəsi Aç
+Cash,Nağd
+Expected:,Gözlənilən:
+Cash Short,Nağd Çatışmazlığı
+You have less than expected.,Gözləniləndən az var.
+Short,Çatışmazlıq
+Count your cash and enter actual amounts below,Nağd pulunuzu sayın və aşağıya faktiki məbləğləri daxil edin
+Reconcilliation,Barlaşdırma
+Total Expected,Ümumi Gözlənilən
+Net Variance,Xalis Fərq
+Gross Sales,Ümumi Satışlar
+Net Sales,Xalis Satışlar
+Tax Collected,Yığılan Vergi
+Net tax,Xalis vergi
