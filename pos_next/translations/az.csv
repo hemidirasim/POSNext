@@ -990,3 +990,45 @@ Tax excluded,Vergi xaricdir
 Total Paid,Ümumi Ödənilib
 Transaction completed,Əməliyyat tamamlandı
 Transaction failed,Əməliyyat uğursuz oldu
+Failed to generate certificate. Are you a System Manager?,Sertifikat yaradılarkən uğursuz oldu. Sistem Meneceri sizsiniz?
+Failed to load brands,Brendlər yüklənərkən uğursuz oldu
+Failed to load draft,Qaralama yüklənərkən uğursuz oldu
+Failed to load invoices,Fakturalar yüklənərkən uğursuz oldu
+Incorrect password,Yanlış şifrə
+Individual,Fərdi
+Insufficient Stock,Kifayət qədər stok yoxdur
+Invoice fully paid. No additional payment needed.,Faktura tam ödənilib. Əlavə ödənişə ehtiyac yoxdur.
+Just now,İndicə
+Kitchen Display System,Mətbəx Ekran Sistemi
+Kitchen is clear.,Mətbəx boşdur.
+Last 30 Days,Son 30 gün
+Live,Canlı
+Lock Screen,Ekranı kilidlə
+MODIFIED,DƏYİŞDİRİLDİ
+Mark Ready,Hazır olaraq işarələ
+Mobile Number,Mobil nömrə
+Naming Series Error,Adlandırma Seriyası Xətası
+Negative Stock,Mənfi Stok
+Negative stock sales are now restricted,Mənfi stok satışları məhdudlaşdırılıb
+No Active Orders,Aktiv sifariş yoxdur
+Offline - No server connection,Oflayn - Server bağlantısı yoxdur
+Password verified,Şifrə təsdiqləndi
+Print Failed,Çap Uğursuz Oldu
+Print Successful,Çap Uğurlu Oldu
+Proceed,Davam et
+Ready for Pickup,Götürməyə Hazır
+Remove Offer,Təklifi sil
+Return items,Məhsulları qaytar
+Select,Seç
+Send to Kitchen,Mətbəxə göndər
+Session Expired,Sessiya Vaxtı Bitdi
+Stock Quantity,Stok Miqdarı
+Submit,Göndər
+Sync Now,İndi Sinxronizasiya Et
+System Error,Sistem Xətası
+Tax ID,Vergi ID
+Tax Name,Vergi Adı
+Unlock,Kilidi aç
+Update failed,Yeniləmə uğursuz oldu
+Void,Ləğv et
+Void Invoice,Fakturanı Ləğv Et
