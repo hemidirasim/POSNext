@@ -1099,3 +1099,2570 @@ Return Amount,Qaytarma məbləği
 Return Reason,Qaytarma səbəbi
 Enable partial payment for invoices,Fakturalar üçün qismən ödənişi aktivləşdir
 Enable sales on credit,Kredit satışlarını aktivləşdir
+Mend,Təmir et
+Newest,Ən yeni
+invalid_number,Yanlış nömrə
+Select the unit of measure for this item:,Bu məhsul üçün ölçü vahidi seçin:
+Signal,Siqnal
+pan,PAN
+Coupon Name,Kupon adı
+email_settings,E-poçt ayarları
+Deleting...,Silinir...
+total_discount,Ümumi endirim
+Discover,Kəşf et
+Tall,Hündür
++{0} more,+{0} daha çox
+today,Bu gün
+Columns,Sütunlar
+POS Profile not found,POS Profili tapılmadı
+Trending,Trend
+Create Invoice,Faktura yarat
+join_date,Qoşulma tarixi
+Pay,Ödəniş
+Write Off,Silinmiş borc
+Gathering,Yığıncaq
+scan_barcode,Barkod skan et
+Contact,Əlaqə
+Deploy,Yerləşdir
+Hair,Saç
+Not Started,Başlamayıb
+order_status,Sifariş statusu
+duration,Müddət
+Maximum allowed discount is {0}% ({1} {2}),İcazə verilən maksimum endirim {0}% ({1} {2})
+Item: {0},Məhsul: {0}
+actual_qty,Faktiki miqdar
+Manager,Menecer
+Role Settings,Rol ayarları
+Tooth,Diş
+apply_on,Tətbiq et
+Delivery Charges,Çatdırılma xərcləri
+Attempt,Cəhd et
+<strong>POS Profile:</strong> {0},<strong>POS Profili:</strong> {0}
+try_again_later,Daha sonra yenidən cəhd edin
+Shoulder,Çiyin
+gender,Cins
+tax_rate,Vergi dərəcəsi
+Item Summary,Məhsul xülasəsi
+Minute,Dəqiqə
+actual,Faktiki
+Referral Code,Referal kodu
+Waiting,Gözləyir
+sales_invoice,Satış fakturası
+Nut,Somun
+Inactive,Deaktiv
+Exhausted,Bitmiş
+pos_closing_shift,POS bağlanış směnası
+receive_payment,Ödəniş qəbul et
+this_year,Bu il
+make_payment,Ödəniş et
+Product,Məhsul
+Educate,Təhsil ver
+Knee,Diz
+Free item added,Pulsuz məhsul əlavə edildi
+Embark,Min
+validity_usage,Keçərlilik və istifadə
+Escape,Qaç
+Actual Amount *,Faktiki məbləğ *
+{0} OFF,{0} ENDİRİM
+save_drafts_later,Fakturaları qaralama olaraq saxlayın və sonra davam edin
+Treat,Müalicə et
+login_attempts,Giriş cəhdləri
+area_name,Sahə adı
+wallet_payment,Pulqabı ödənişi
+Paid Amount,Ödənilən məbləğ
+Compress,Sıxışdır
+Active Warehouse,Aktiv anbar
+cost_center,Xərc mərkəzi
+Update cart,Səbəti yenilə
+total_paid,Ümumi ödənilən
+Withdraw,Çıxar
+Failed to load recent invoices,Son fakturalar yüklənərkən uğursuz oldu
+{0} new notifications,{0} yeni bildiriş
+Put Together,Bir yerdə qoy
+Tin,Qalay
+Enhance,Təkmilləşdir
+Timeout error,Vaxt aşımı xətası
+Group,Qrup
+Sack,Torba
+Occupied Tables,Dolu masalar
+Import, idxal
+Purchases,Alışlar
+Wisdom,Müdriklik
+operation_successful,Əməliyyat uğurlu oldu
+Cache,Keş
+{0} item(s) selected,{0} məhsul seçilib
+reorder_level,Yenidən sifariş səviyyəsi
+Tip,Uç
+receipt_settings,Çek ayarları
+cheque,Çek
+early_payment_discount,Erkən ödəniş endirimi
+Events,Hadisələr
+Export Data,Məlumat ixrac et
+Teeth,Dişlər
+Save Instructions,Təlimatları Saxla
+The coupon code you entered is not valid,Daxil etdiyiniz kupon kodu etibarlı deyil
+Reserved,Rezerv edilib
+Please enter a coupon code,"Zəhmət olmasa, kupon kodu daxil edin"
+confirm_close,Bağlamaq istədiyinizə əminsiniz?
+Employ,İstifadə et
+Cistern,Su anbarı
+Merge items to existing invoice when adding to table,Masaya əlavə edərkən mövcud fakturaya birləşdir
+sync_error,Sinxronizasiya xətası
+{0} hours ago,{0} saat əvvəl
+Like,Bəyən
+Invoice Number,Faktura nömrəsi
+Printer Settings,Printer ayarları
+Sign Out,Çıxış
+Cash Out,Nağd çıxış
+Sole,Taban
+Bank Transfer,Bank köçürməsi
+This invoice was sold on credit. The customer owes the full amount.,Bu faktura kreditlə satıldı. Müştəri tam məbləği ödəməlidir.
+Used: {0}/{1},İstifadə edilib: {0}/{1}
+Delete ,Sil 
+Flee,Qaç
+Updating...,Yenilənir...
+Search items...,Məhsul axtar...
+Upon,Üzərinə
+Locate,Yerləşdir
+all_status,Bütün statuslar
+Tax,Vergi
+Invoice,Faktura
+Cease,Dayan
+Edit Item,Məhsulu redaktə et
+print_format,Çap formatı
+actual_time,Faktiki vaxt
+Choose a variant of this item:,Bu məhsulun variantını seçin:
+Generate Report,Hesabat yarat
+Powerful,Güclü
+Customer Error,Müştəri xətası
+yes,Bəli
+industry,Sənaye
+Sales Person: {0},Satış Əməkdaşı: {0}
+Ready,Hazırdır
+Item Stock,Məhsul stoku
+Heel,Dabanca
+Engagement,Nişan
+Canal,Kanal
+name,POS Next
+-- Select --,-- Seç --
+1 item,1 məhsul
+Content,Məzmun
+Stock UOM,Stok ölçü vahidi
+number_format,Nömrə formatı
+Finish,Bitir
+in 1 warehouse,1 anbarda
+promotion_name,Aksiya adı
+Failed to clear drafts,Qaralamalar təmizlənərkən uğursuz oldu
+light_mode,İşıqlı rejim
+user,İstifadəçi
+forecast,Proqnoz
+Unknown,Naməlum
+Light,İşıq
+Export,İxrac
+{0} - {1} of {2},{0} - {1} / {2}
+Twist,Bük
+No items to display,Göstəriləcək məhsul yoxdur
+Tax:,Vergi:
+Kitchen Order,Mətbəx sifarişi
+Failed to update UOM. Please try again.,ÖV yenilənərkən uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.
+Utility,Köməkçi proqram
+Low Stock,Az qalıb
+Kitchen,Mətbəx
+invalid_format,Yanlış format
+Top,Üst
+Quantity cannot be negative,Miqdar mənfi ola bilməz
+Category Summary,Kateqoriya xülasəsi
+Optimize,Optimallaşdır
+last_quarter,Keçən rüb
+network_status,Şəbəkə statusu
+Tools,Alətlər
+First,Birinci
+This invoice cannot be returned because the return period has expired.,Bu faktura qaytarma müddəti bitdiyinə görə qaytarıla bilməz.
+Edit,Redaktə et
+POS Profile Configuration,POS Profili konfiqurasiyası
+Strive,Çalış
+Invoice deleted successfully,Faktura uğurla silindi
+Permission Settings,İcazə ayarları
+Under maintenance,Texniki xidmətdə
+Sales by Customer,Müştəriyə görə satışlar
+Return Quantity,Qaytarma miqdarı
+waiter,Ofisiant
+Mobile,Mobil
+Processing...,Emal edilir...
+fullscreen,Tam ekran
+No eligible items for this offer,Bu təklif üçün uyğun məhsul yoxdur
+enable_auto_stock_sync,Avtomatik stok sinxronizasiyasını aktivləşdir
+This action cannot be undone,Bu əməliyyat geri qaytarıla bilməz
+days_overdue,Gecikmiş günlər
+Date & Time,Tarix və vaxt
+Spin,Fırlan
+Kind,Növ
+Additional Discount,Əlavə endirim
+no_data,Məlumat yoxdur
+no_unpaid_invoices,Ödənilməmiş faktura yoxdur
+add_item,Məhsul əlavə et
+Import Data,Məlumat idxal et
+Cave,Mağara
+login_after,Sonra giriş
+dine_in,Məkanda yemək
+Allow editing item rate in cart. Disabled when offers are applied.,Səbətdə məhsul qiymətinin redaktəsinə icazə ver. Təkliflər tətbiq edildikdə deaktiv olur.
+Select All,Hamısını seç
+Open Cash Drawer,Kassa çekmecesini aç
+{0} variants,{0} variant
+Payment cancelled,Ödəniş ləğv edildi
+Quarry,Daş karxanası
+discount_on,Endirim üzərində
+mobile_payment,Mobil ödəniş
+Are you sure you want to delete this offline invoice?,Bu oflayn fakturanı silmək istədiyinizə əminsiniz?
+No items found,Məhsul tapılmadı
+Remove all {0} items from cart?,Səbətdən bütün {0} məhsulu silmək istəyirsiniz?
+Ascend,Qalx
+Download Invoice,Fakturanı yüklə
+PARTIAL PAYMENT,QİSMƏN ÖDƏNİŞ
+cleaning,Təmizlik
+Return invoice {0} created successfully,Qaytarma fakturası {0} uğurla yaradıldı
+Login,Daxil ol
+Documentation,Sənədləşmə
+Customer updated successfully,Müştəri uğurla yeniləndi
+Daily Sales,Gündəlik satışlar
+quick_sale,Sürətli satış
+"Are you sure you want to delete &lt;strong&gt;""{0}""&lt;strong&gt;?","&lt;strong&gt;""{0}""&lt;/strong&gt;-ni silmək istədiyinizə əminsiniz?"
+Flexible,Elastik
+Warehouse updated but failed to reload stock. Please refresh manually.,Anbar yeniləndi amma stok yenidən yüklənmədi. Zəhmət olmasa əl ilə yeniləyin.
+Please contact your manager if you need to process this return.,"Bu qaytarmanı emal etməyinizə ehtiyac varsa, zəhmət olmasa, menecerinizlə əlaqə saxlayın."
+Side,Tərəf
+Miss,Burax
+{0} months ago,{0} ay əvvəl
+Maneuver,Manevr
+no,Xeyr
+new_user,Yeni istifadəçi
+Paper,Kağız
+Question,Sual
+Volume,Həcm
+Discount Percentage,Endirim faizi
+Tax Rate,Vergi Dərəcəsi
+user_name,İstifadəçi adı
+Rank,Rütbə
+first_name,Ad
+Gas,Qaz
+Query,Sorğu
+You have unsaved changes. Are you sure you want to leave?,Saxlanmamış dəyişiklikləriniz var. Çıxmaq istədiyinizə əminsiniz?
+Search settings...,Ayar axtar...
+remove_item,Məhsulu çıxar
+Only {0} units of ,Yalnız {0} vahid 
+Last Sync,Son sinxronizasiya
+Widen,Enləndir
+Download Backup,Ehtiyat nüsxəsini yüklə
+Search products...,Məhsul axtar...
+Document,Sənəd
+Cancelled,Ləğv edildi
+Select at least one item to return,Qaytarmaq üçün ən azı bir məhsul seçin
+Cart Items,Səbət məhsulları
+Density,Sıxlıq
+Drive,Sür
+Neck,Boyun
+Country,Ölkə
+in_stock,Stokda var
+Please select,"Zəhmət olmasa, seçin"
+date_of_birth,Doğum tarixi
+Trace,İzini tap
+Enter any special requests or dietary requirements...,Xüsusi istəklər və ya pəhriz tələbləri daxil edin...
+This dialog has been open for over a minute. Please close the shift or close this dialog to resume the shift timer.,"Bu dialoq bir dəqiqədən çoxdur açıqdır. Zəhmət olmasa, směnı bağlayın və ya směna taymerini davam etdirmək üçün bu dialoqu bağlayın."
+Add to Cart,Səbətə əlavə et
+operation_in_progress,Əməliyyat davam edir
+Tax mode updated. Cart recalculated with new tax settings.,Vergi rejimi yeniləndi. Səbət yeni vergi ayarları ilə hesablandı.
+Total,Cəm
+Shape,Formalaşdır
+view_shift,Směna ətraflı
+last_name,Soyad
+Rotate,Fırlan
+Sales by Item,Məhsula görə satışlar
+Graph,Qrafik
+Stock cleared successfully,Stok uğurla təmizləndi
+Ignore,Nəzərə alma
+"Use the search box above to find invoices by number, customer name, or phone number","Faktura nömrəsi, müştəri adı və ya telefon nömrəsi ilə axtarmaq üçün yuxarıdakı axtarış qutusundan istifadə edin"
+Return against {0},{0}-ə qarşı qaytarma
+Remarks,Qeydlər
+Grasp,Anla
+Hold,Tut
+date_range,Tarix aralığı
+Initiate,Başlat
+Taxes:,Vergilər:
+Commitment,Öhdəlik
+new_items,Yeni əlavələr
+Tax Settings,Vergi ayarları
+invoice_status,Faktura statusu
+No campaigns available,Mövcud kampaniya yoxdur
+subtitle,Satış nöqtəsi sistemi
+{0}s ago,{0}s əvvəl
+cvv,CVV
+beverage,İçki
+No items found for ,Məhsul tapılmadı 
+Offers,Təkliflər
+return_invoice,Qaytarma fakturası
+shipping_address,Çatdırılma ünvanı
+Estimate,Qiymətləndir
+Offline,Oflayn
+Serial No:,Seriya No:
+Cheek,Yanaq
+Sort,Sırala
+The return amount was added to the customer credit balance. No cash refund was given.,Qaytarma məbləği müştəri kredit balansına əlavə edildi. Nağd pul qaytarılmadı.
+table_number,Masa nömrəsi
+Please select a customer for gift card,Hədiyyə kartı üçün zəhmət olmasa müştəri seçin
+Item updated,Məhsul yeniləndi
+Sales Trend,Satış trendi
+Square,Kvadrat
+Invoice voided successfully,Faktura uğurla ləğv edildi
+Invalid amount,Etibarsız məbləğ
+Total Amount,Ümumi məbləğ
+database_error,Verilənlər bazası xətası
+Strait,Boğaz
+Protected,Qorunur
+payment_receipt,Ödəniş qəbzi
+Actual Stock,Faktiki stok
+Users,İstifadəçilər
+Anthology,Antologiya
+Failed to load settings,Ayarlar yüklənərkən uğursuz oldu
+Cauldron,Kazan
+contact,Əlaqə
+Situation,Vəziyyət
+Least Selling Items,Ən az satılan məhsullar
+Saved,Saxlandı
+Start,Başla
+please_wait,"Zəhmət olmasa, gözləyin..."
+Margin,Marja
+Review,Rəy
+debit_note,Debit qeydi
+outstanding_amount,Qalıq məbləğ
+Handle,İdarə et
+searching,Axtarılır...
+Incorrect,Yanlış
+Trunk,Baqaj
+Saved to drafts,Qaralamalara saxlandı
+Workflow,İş axını
+Phone,Telefon
+Not enough stock for {0},{0} üçün kifayət qədər stok yoxdur
+Failed to load unpaid invoices,Ödənilməmiş fakturalar yüklənmədi
+Card,Kart
+No sales data available,Satış məlumatı mövcud deyil
+Try a different search term or create a new customer,Fərqli axtarış sözü sınayın və ya yeni müştəri yaradın
+return_invoices_here,Qaytarma fakturaları burada görünəcək
+sales,Satışlar
+This action cannot be undone. Are you sure?,Bu əməliyyat geri qaytarıla bilməz. Əminsiniz?
+Responsibility,Məsuliyyət
+Calm,Sakitləş
+Payment Reference,Ödəniş referansı
+no_return_invoices,Qaytarma fakturası yoxdur
+Invoice Details,Faktura detalları
+Discount has been removed,Endirim silindi
+Stock quantity refreshed,Stok miqdarı yeniləndi
+Search,Axtar
+Contact Us,Bizimlə əlaqə
+create,Yarat
+last_month,Keçən ay
+Foot,Ayaq
+Pail,Kələk
+account_number,Hesab nömrəsi
+sync_status,Sinxronizasiya statusu
+No items found for,Məhsul tapılmadı
+expiry_year,Bitmə ili
+Notification,Bildiriş
+"When enabled, displayed prices include tax. When disabled, tax is calculated separately. Changes apply immediately to your cart when you save.","Aktiv edildikdə, göstərilən qiymətlər vergi daxil olmaqla göstərilir. Deaktiv edildikdə, vergi ayrıca hesablanır. Dəyişikliklər saxlandıqda dərhal səbətinizə tətbiq olunur."
+Theme,Tema
+Items,Məhsullar
+Failed to load orders from server.,Serverdən sifarişlər yüklənərkən uğursuz oldu.
+QZ Tray Connection,QZ Tray bağlantısı
+Discount Settings,Endirim ayarları
+Closing Cash,Bağlanış nağd
+Descend,En
+Logo,Loqo
+Order #: {0},Sifariş #: {0}
+You are online,Onlaynsınız
+reference_no,Referans nömrəsi
+Last Modified,Son redaktə
+Nerve,Sinir
+Understand,Anla
+Discard Changes?,Dəyişiklikləri at?
+Wrap,Bük
+City,Şəhər
+invoice_not_found,Faktura tapılmadı
+Please pick up your order,Zəhmət olmasa sifarişinizi götürün
+customer_not_found,Müştəri tapılmadı
+Certificate is installed and signing is active. Print jobs will be sent silently without confirmation dialogs.,Sertifikat quraşdırılıb və imzalama aktivdir. Çap işləri təsdiq dialoqları olmadan səssiz göndəriləcək.
+Apply,Tətbiq et
+Add,Əlavə et
+Notice,Bildiriş
+negative_stock,Mənfi stok
+overdue_invoice,Gecikmiş faktura
+Read,Oxu
+Payment Method,Ödəniş metodu
+Discount has been removed from cart,Endirim səbətdən silindi
+Event,Hadisə
+Ascending,Artan
+Resolve,Həll et
+Forward,İrəli
+notification_settings,Bildiriş ayarları
+Instruct,Təlimat ver
+this_month,Bu ay
+user_id,İstifadəçi ID-si
+Delete,Sil
+Feet,Ayaqlar
+Below,Aşağıda
+Last,Son
+Quantity updated,Miqdar yeniləndi
+customer_code,Müştəri kodu
+Your Shift is Still Open!,Sizin Směnanız Hələ Açıqdır!
+Reconnecting...,Yenidən qoşulur...
+Continue,Davam et
+table_capacity,Masa tutumu
+Item Movement,Məhsul hərəkəti
+Payment of {0} received,{0} ödənişi qəbul edildi
+Total Tax:,Ümumi Vergi:
+Loading sales data...,Satış məlumatları yüklənir...
+Paste,Yapışdır
+Wallet,Pulqabı
+Please review and fix the errors,"Zəhmət olmasa, xətaları nəzərdən keçirin və düzəldin"
+Beneath,Altında
+{0} day(s),{0} gün
+Use the search box above to find invoices,Faktura axtarmaq üçün yuxarıdakı axtarış qutusundan istifadə edin
+price_list,Qiymət siyahısı
+password_policy,Şifrə siyasəti
+Broaden,Genişləndir
+change_table,Masanı dəyiş
+Tax removed,Vergi silindi
+Offline Invoice Saved,Oflayn Faktura Saxlandı
+Plugin,Plagin
+Noise,Səs
+advance_payment,Avans ödəniş
+Pit,Çuxur
+This Month,Bu ay
+Crack,Çatla
+Add {0} more to unlock,Açmaq üçün {0} daha əlavə et
+Name,Ad
+Pursue,İzlə
+Pay on Account,Hesaba ödə
+Failed to add payment,Ödəniş əlavə edilmədi
+Hurt,Ağrı
+choose_a_table_to_begin_the_order,Sifarişə başlamaq üçün masa seçin
+React,Reaksiya ver
+To Date,Son tarix
+Outstanding Payments,Ödənilməmiş ödənişlər
+api_access,API girişi
+Save as Draft,Qaralama kimi saxla
+"<strong>Note:</strong> When enabled, the system will allow sales even when stock quantity is zero or negative. This is useful for handling stock sync delays or backorders. All transactions are tracked in the stock ledger.","<strong>Qeyd:</strong> Aktiv edildikdə, sistem stok miqdarı sıfır və ya mənfi olanda belə satışlara icazə verəcək. Bu, stok sinxronizasiya gecikmələri və ya sifarişlərin idarə edilməsi üçün faydalıdır. Bütün əməliyyatlar stok dəftərində izlənilir."
+recurring_payment,Dövri ödəniş
+Upload Backup,Ehtiyat nüsxəsi yüklə
+Conical,Konus
+{0} items,{0} məhsul
+annual_revenue,İllik gəlir
+Within,Daxilində
+send_welcome_email,Xoş gəldin e-poçtu göndər
+Clone Invoice,Fakturanı klonla
+Data,Məlumat
+gift_card,Hədiyyə kartı
+credit_days,Kredit günləri
+No invoices were created. Closing amounts should match opening amounts.,Faktura yaradılmadı. Bağlanış məbləqləri açılış məbləqlərinə uyğun olmalıdır.
+takeaway,Götürülmə
+Phone Number,Telefon nömrəsi
+No Connection,Bağlantı yoxdur
+Skip & Sign Out,Keç və Çıx
+cash_balance,Nağd balans
+Working,İşləyir
+Resume,Davam et
+Hidden,Gizli
+Specific,Xüsusi
+account_receivable,Alınacaq hesab
+Removed,Silindi
+Operation,Əməliyyat
+Shin,Süngər sümük
+Reload,Yenidən yüklə
+Service,Xidmət
+Max,Maks
+privacy_policy,Məxfilik siyasəti
+Create New Invoice,Yeni faktura yarat
+Actions,Əməliyyatlar
+Process,Proses
+Washer,Podşipnik
+Bucket,Kələk
+Enable Silent Printing,Səssiz çapı aktivləşdir
+last_active,Son aktivlik
+Coupon status updated successfully,Kupon statusu uğurla yeniləndi
+Low,Alçaq
+"Instead of cash refund, add the return amount to customer credit balance for future purchases.","Nağd geri ödəniş əvəzinə, qaytarma məbləğini gələcək alışlar üçün müştəri kredit balansına əlavə edin."
+server_error,Server xətası
+Lip,Dodaq
+payment_summary,Ödəniş xülasəsi
+Invalid date,Etibarsız tarix
+Out of stock,Stokda yoxdur
+Cannot save an empty cart as draft,Boş səbəti qaralama kimi saxlamaq olmaz
+session_invalid,Sessiya etibarsızdır
+Function,Funksiya
+Course,Kurs
+Active Shift Detected,Aktiv směna aşkarlandı
+routing_number,Routing nömrəsi
+Special,Xüsusi
+Album,Albom
+Completed,Tamamlandı
+Reprinting...,Yenidən çap edilir...
+item_not_found,Məhsul tapılmadı
+Username,İstifadəçi adı
+Benefit,Fayda
+Failed to delete promotion,Aksiya silinərkən uğursuz oldu
+Breast,Sinə
+Audit Report,Audit hesabatı
+Loading invoice details...,Faktura detalları yüklənir...
+Coupon Code,Kupon kodu
+Category,Kateqoriya
+Show,Göstər
+User,İstifadəçi
+Advance Payment,Avans ödəniş
+max_value,Ən çox {max} ola bilər
+Yes,Bəli
+new_sale,Yeni satış
+Meeting,Görüş
+Hold Order,Sifarişi saxla
+Vote,Səs
+banner_image,Banner şəkli
+Harm,Zərər
+Served,Xidmət edilib
+item_group,Məhsul qrupu
+First Name,Ad
+subscription,Abunə
+Returning...,Qaytarılır...
+"Are you sure you want to delete &lt;strong&gt;""{0}""&lt;/strong&gt;?","&lt;strong&gt;""{0}""&lt;/strong&gt;-ni silmək istədiyinizə əminsiniz?"
+Unable to connect to printer,Printerə qoşulmaq mümkün olmadı
+No recent orders,Son sifariş yoxdur
+Payment Status,Ödəniş statusu
+Intelligence,İntellekt
+Net Total:,Xalis cəm:
+Text,Mətn
+keep_editing,Redaktəni davam etdir
+Conversion Factor,Çevirmə əmsalı
+Refund processed,Geri ödəniş emal edildi
+State,Vəziyyət
+Shield,Qoru
+Password,Şifrə
+Information,Məlumat
+in_progress,Davam edir
+merge_invoices,Fakturaları birləşdir
+transfer_items,Məhsulları köçür
+Time: {0},Vaxt: {0}
+Advertisement,Reklam
+Register,Qeydiyyat
+Value,Dəyər
+Scanner ON - Enable Auto for automatic addition,Skaner AKTİV - Avtomatik əlavə üçün Avtonu aktivləşdirin
+{0}% off {1},{1}-də {0}% endirim
+Follow,İzlə
+Offer has been removed from cart,Təklif səbətdən silindi
+Email Invoice,Fakturanı e-poçtla göndər
+individual,Fərdi
+Steps,Addımlar
+Available Quantity,Mövcud miqdar
+Wrist,Bilək
+Not implemented,Tətbiq edilməyib
+iban,IBAN
+customers,Müştərilər
+Coat,Ört
+Download Certificate,Sertifikat yüklə
+customer_type,Müştəri növü
+{0} units available in,{0} vahid mövcuddur
+Signboard,Reklam lövhəsi
+Flat,Düz
+Scheme,Sxem
+waiting_time,Gözləmə vaxtı
+no_coupons,Kupon tapılmadı
+Kitchen Order Tracking,Mətbəx sifariş izləmə
+Split,Böl
+Build,Qur
+Delete Customer,Müştərini sil
+net_sales,Xalis satış
+Remove,Çıxar
+Hard,Çətin
+Artery,Arteriya
+Pages,Səhifələr
+no_invoices,Faktura yoxdur
+Rows,Sətirlər
+{0} failed,{0} uğursuz oldu
+confirm_password,Şifrəni təsdiqlə
+"Not enough stock available in the warehouse.
+
+Please reduce the quantity or check stock availability.",Anbarda kifayət qədər stok yoxdur. Miqdarı azaldın və ya stok yoxlayın.
+Distance,Məsafə
+in {0} warehouses,{0} anbarda
+Item Details,Məhsul detalları
+Apply Discount On,Endirimi tətbiq et
+Across,Digər tərəfdə
+Blunt,Küt
+Payment Methods,Ödəniş metodları
+Coupon updated successfully,Kupon uğurla yeniləndi
+Invalid format,Etibarsız format
+Reservoir,Su anbarı
+Small,Kiçik
+Style,Stil
+Scale,Miqyas
+Invalid price,Etibarsız qiymət
+Checkout,Ödəniş
+scan,Skan et
+Toil,Çalış
+"4. Click &lt;strong&gt;""Create""&lt;strong&gt;","4. &lt;strong&gt;""Yarat""&lt;/strong&gt; düyməsini klikləyin"
+"Enter reason for return (e.g., defective product, wrong item, customer request)...","Qaytarma səbəbini daxil edin (məsələn, qüsurlu məhsul, yanlış məhsul, müştəri istəyi)..."
+Failed to update promotion,Aksiya yenilənərkən uğursuz oldu
+Opening Cash,Açılış nağd
+Alert,Xəbərdarlıq
+Elastic,Elastik
+Win,Qazan
+Delivered / Dismiss,Çatdırıldı / Rədd et
+Receipt downloaded,Çek yükləndi
+Not Empty,Boş deyil
+Offer not applicable,Təklif tətbiq edilə bilməz
+pos_opening_shift,POS açılış směnası
+Nail,Dırnaq
+Mission,Missiya
+Terminal Summary,Terminal xülasəsi
+Failed to load invoice details,Faktura detalları yüklənmədi
+min_order_qty,Minimum sifariş miqdarı
+view_invoice,Fakturaya bax
+min_length,Ən az {min} simvol olmalıdır
+Struggle,Mübarizə apar
+bio,Bio
+Fall,Düş
+Local Storage cleared,Yerli yaddaş təmizləndi
+filter_by_customer,Müştəriyə görə filtrlə
+Save,Saxla
+energy_points,Enerji xalları
+Start Preparing,Hazırlamağa Başla
+Immediate,Dərhal
+Shift,Směna
+swift_code,SWIFT kodu
+Bag,Çanta
+Elbow,Dirsək
+Throw,At
+Together,Birlikdə
+apply_multiple,Çoxlu tətbiq et
+Confirmation,Təsdiqləmə
+payment_required,Ödəniş tələb olunur
+Failed to save settings,Ayarlar saxlanarkən uğursuz oldu
+billing_address,Faktura ünvanı
+Printer Error,Printer Xətası
+Tax Amount,Vergi məbləği
+uploading,Yüklənir...
+Back,Arxa
+Display,Ekran
+Glue,Yapışdır
+Promotion Details,Aksiya detalları
+Thermal Printing,Termal çap
+Offline invoice deleted successfully,Oflayn faktura uğurla silindi
+Updating stock...,Stok yenilənir...
+Sound,Səs
+Deny,Rədd et
+Balance,Tərəzi
+You don't have permission to create promotions,Aksiya yaratmaq üçün icazəniz yoxdur
+{0}h {1}m ago,{0}s {1}d əvvəl
+Construct,Tik
+Coffin,Tabut
+Yearly Sales,İllik satışlar
+Syncing,Sinxronizasiya edilir...
+high_priority,Yüksək prioritet
+Select None,Heç birini seçmə
+Code,Kod
+payment_reconciliation,Ödəniş razılaşdırması
+Program,Proqram
+Exit,Çıx
+check_updates,Yeniləmələri yoxla
+Know,Bil
+Amount Due,Ödənilməli məbləğ
+Location,Yer
+Subtotal,Aralıq cəm
+Attach,Bağla
+"Search by invoice number, customer...","Faktura nömrəsi, müştəri ilə axtar..."
+Board,Lövhə
+Loss,Zərər
+Select payment method,Ödəniş metodu seç
+Receive,Qəbul et
+Signing Out...,Çıxılır...
+is_frozen,Dondurulub
+Set Up,Qur
+About,Haqqında
+Method,Metod
+Restore Backup,Ehtiyat nüsxəsini bərpa et
+Cannot add more non-cash payments. Use cash for overpayment.,Daha çox nağd olmayan ödəniş əlavə edilə bilməz. Artıq ödəniş üçün nağd istifadə edin.
+no_payment_method,Ödəniş üsulu seçilməyib
+Drip,Damlama
+Cheque,Çek
+Total Discount:,Ümumi Endirim:
+bank_transfer,Bank köçürməsi
+Swim,Üz
+concurrency_error,Eyni vaxtda dəyişiklik conflict-i
+Optional,İstəyə görə
+Retry,Yenidən cəhd et
+general_settings,Ümumi ayarlar
+Repair,Təmir et
+Eyes,Gözlər
+Intestine,Bağırsaq
+Restrict,Məhdudlaşdır
+Payment removed,Ödəniş silindi
+Sales summary,Satış xülasəsi
+Cash Difference,Nağd fərqi
+Slow,Yavaş
+Favorite,Sevimli
+Eye,Göz
+{0} invoice - {1} outstanding,{0} faktura - {1} qalıq
+Grand Total,Yekun cəm
+delete_invoice,Fakturanı sil
+Carton,Karton
+Finalize,Yekunlaşdır
+Item Category,Məhsul kateqoriyası
+Inside,İçəridə
+Goal,Məqsəd
+Right,Sağ
+"Choose a promotion from the list to view and edit, or create a new one to get started",Baxmaq və redaktə etmək üçün siyahıdan aksiya seçin və ya başlamaq üçün yeni yaradın
+Regular,Adi
+delete_user,İstifadəçini sil
+Payment Report,Ödəniş hesabatı
+Quiet,Sakit
+Head,Baş
+stock_management,Stok idarəsi
+permission_denied,İcazə yoxdur
+River,Çay
+Error loading customers,Müştərilər yüklənərkən xəta
+Sign up,Qeydiyyatdan keç
+export_pdf,PDF-ə ixrac
+Stock Refresh Interval,Stok yeniləmə intervalı
+not_found,Tapılmadı
+In stock,Stokda var
+delete_customer,Müştərini sil
+Failed to update cart after removing offer.,Təklif silindikdən sonra səbət yenilənərkən uğursuz oldu.
+Paid,Ödənilib
+Protect,Qoru
+Reminder,Xatırlatma
+Nose,Burun
+view,Bax
+Available Tables,Boş masalar
+Thumb,Baş barmaq
+"&lt;strong&gt;Note:&lt;strong&gt; When enabled, the system will allow sales even when stock quantity is zero or negative. This is useful for handling stock sync delays or backorders. All transactions are tracked in the stock ledger.","&lt;strong&gt;Qeyd:&lt;strong&gt; Aktiv edildikdə, sistem stok miqdarı sıfır və ya mənfi olanda belə satışlara icazə verəcək. Bu, stok sinxronizasiya gecikmələri və ya sifarişlərin idarə edilməsi üçün faydalıdır. Bütün əməliyyatlar stok dəftərində izlənilir."
+Instant,Ani
+Order marked as delivered,Sifariş çatdırılmış olaraq işarələndi
+Tasks,Tapşırıqlar
+campaign,Kampaniya
+Place your order at the counter,Sifarişinizi stolda verin
+List,Siyahı
+Soft,Yumşaq
+Stomach,Mədə
+Save these filters as...,Bu filtrləri ... olaraq saxla
+Payment added successfully,Ödəniş uğurla əlavə edildi
+Sense,Hiss et
+Cancel Invoice,Fakturanı ləğv et
+system_user,Sistem istifadəçisi
+table_management,Masa idarəsi
+Rough,Kobud
+Failed to delete offline invoice,Oflayn faktura silinərkən uğursuz oldu
+Inspect,Yoxla
+Current Session,Cari sessiya
+split_bill,Hesabı böl
+Cavity,Boşluq
+DB,VB
+Latest,Son
+Objective,Hədəf
+{0} settings applied immediately,{0} ayarlar dərhal tətbiq edildi
+variants,variant
+interests,Maraqlar
+Retrieve Order,Sifarişi bərpa et
+Another...,Digər...
+View Receipt,Çeki gör
+forgot_password,Şifrəni unutmusan?
+Ocean,Okean
+Receipt Email Sent,Çek E-poçtu Göndərildi
+Done,Hazır
+Grid,Şəbəkə
+Item Quantity,Məhsul miqdarı
+Chop,Doğra
+Powerless,Gücsüz
+normal,Normal
+{0} days ago,{0} gün əvvəl
+Date:,Tarix:
+edit_invoice,Fakturanı redaktə et
+Don't have an account?,Hesabınız yoxdur?
+Do,Et
+Please open a shift first,"Zəhmət olmasa, əvvəlcə směna açın"
+Detach,Ayır
+Expired Only,Yalnız bitmiş
+Never,Heç vaxt
+Base,Baza
+invalid,Yanlış dəyər
+Pilot,Pilotluq et
+Disabled Only,Yalnız deaktiv
+Cylindrical,Silindrik
+course,Kurs
+Position,Vəzifə
+print_invoice,Fakturanı çap et
+Return not allowed for this item,Bu məhsul üçün qaytarma icazə verilmir
+appetizer,Qəlyanaltı
+Invoice restored from draft,Faktura qaralamadan bərpa edildi
+amount_exceeded,Məbləğ həddini aşır
+posting_date,Tarix
+Table Number,Masa nömrəsi
+Amount,Məbləğ
+Error,Xəta
+Spine,Onurğa
+Receipt,Çek
+CLI,Komanda sətri interfeysi
+opening_balance,Açılış balansı
+Inclusive Tax,Daxili vergi
+closing_cash,Bağlanış pulu
+Bent,Əyilmiş
+expected_cash,Gözlənilən pul
+ready_to_serve,Servisə hazır
+{0} invoice(s) failed to sync,{0} faktura sinxronizasiya edilərkən uğursuz oldu
+Failed to create invoice,Faktura yaratmaq uğursuz oldu
+chef,Aşpaz
+create_new_promotion,Yeni aksiya yarat
+Integration Settings,İntegrasiya ayarları
+Touch,Dəymə
+Order,Sifariş
+Find,Tap
+sync_settings,Sinxronizasiya ayarları
+Offer removed: {0}. Cart no longer meets requirements.,Təklif silindi: {0}. Səbət artıq tələblərə uyğun gəlmir.
+Game,Oyun
+Last Name,Soyad
+Ramp,Ramka
+Validating...,Təsdiqlənir...
+Invalid input,Etibarsız giriş
+invoice_type,Faktura növü
+Offline data synced,Oflayn məlumatlar sinxronizasiya edildi
+Labels,Etiketlər
+this_week,Bu həftə
+Reject,Rədd et
+available_qty,Mövcud miqdar
+enter_opening_balance,Açılış balansını daxil edin
+Please select a discount type,Zəhmət olmasa endirim növü seçin
+cleared,Təmizlənib
+Mind,Ağıl
+account,Hesab
+Backup,Ehtiyat nüsxəsi
+Downgrade,Aşağı sal
+Hide invoice details,Faktura detallarını gizlət
+Forget,Unut
+running_tab,Açıq hesab
+Select Coupon,Kupon Seç
+Privacy Policy,Məxfilik siyasəti
+Calf,Baldır
+Break,Sın
+Box,Qutu
+Percentage,Faiz
+Dismount,En
+Rivet,Perçin
+Switched to {0}. Stock quantities refreshed.,{0}-ə keçildi. Stok miqdarları yeniləndi.
+valid_upto,Keçərli son
+title,POS Next
+mobile,Mobil
+customer_since,Müştəri olduğu tarix
+Nos,ədəd
+dark_mode,Qaranlıq rejim
+Clear Cache,Keşi təmizlə
+TOTAL:,CƏM:
+customer_list,Müştəri siyahısı
+kds_status,KDS statusu
+Left,Sol
+An unexpected error occurred.,Gözlənilməz xəta baş verdi.
+save_before_exit,Çıxmadan əvvəl saxlayın
+Are you sure you want to delete &lt;strong&gt;&quot;{0}&quot;&lt;strong&gt;?,"&lt;strong&gt;""{0}""&lt;/strong&gt;-ni silmək istədiyinizə əminsiniz?"
+coupons,Kuponlar
+already_exists,Artıq mövcuddur
+Keep,Saxla
+Stick,Yapışdır
+All Settings,Bütün ayarlar
+Arrive,Çat
+items,Məhsullar
+Float,Üz
+Assemble,Yığ
+Hour,Saat
+cached,Keşlənmiş
+Please enter,"Zəhmət olmasa, daxil edin"
+total_quantity,Ümumi miqdar
+Authorization error,Səlahiyyət xətası
+{0}h {1}m,{0}s {1}d
+Print,Çap et
+Palm,Əl içi
+Checking warehouse availability...,Anbar mövcudluğu yoxlanılır...
+External,Xarici
+Invoice cancelled successfully,Faktura uğurla ləğv edildi
+"Search by item code, name, item group or scan barcode","Məhsul kodu, adı, qrupu ilə axtarın və ya barkod skan edin"
+Reach,Çat
+Summit,Zirvə
+Plug In,Tax
+Rounded Total,Yuvarlaşdırılmış cəm
+Spring,Bulaq
+priority,Prioritet
+Against: {0},Qarşı: {0}
+Guard,Qoru
+Clear,Təmizlə
+and,və
+Example,Nümunə
+Detailed,Ətraflı
+Try a different search term or check the invoice number,Fərqli axtarış sözü sınayın və ya faktura nömrəsini yoxlayın
+Improve,Yaxşılaşdır
+Non-cash payment must equal {0} exactly,Nağd olmayan ödəniş dəqiq {0}-ə bərabər olmalıdır
+Decrease,Azalt
+Get,Al
+{0} of {1} customers,{0} / {1} müştəri
+credit_note,Kredit qeydi
+no_draft_invoices,Qaralama faktura yoxdur
+changes_saved,Dəyişikliklər saxlandı
+total_tax,Ümumi vergi
+Sample,Nümunə
+Failed to load coupon details,Kupon detalları yüklənmədi
+No,Xeyr
+balance_stock,Balans stoku
+Invoices updated in real-time,Fakturalar real vaxtda yenilənir
+Over,Üstündə
+Too many attempts. Try again in {0} seconds.,Həddən artıq cəhd. {0} saniyə sonra yenidən cəhd edin.
+changes_lost,Bütün dəyişikliklər itiriləcək
+Active Shift,Aktiv směna
+Near,Yaxın
+Current Password,Cari şifrə
+Boulevard,Bulvar
+Error loading items,Məhsullar yüklənərkən xəta
+Saving...,Saxlanılır...
+Customer Name is required,Müştəri adı tələb olunur
+ordered,Sifariş edilmiş
+Internal,Daxili
+Available Stock,Mövcud stok
+Feedback,Rəy
+Your session has expired. Please login again.,Sessiya vaxtınız bitdi. Zəhmət olmasa yenidən daxil olun.
+Invoice {0} created successfully!,{0} fakturası uğurla yaradıldı!
+group_items,Məhsulları qrupla
+Full Return,Tam qaytarma
+Urn,Küp
+Hold Cart,Səbəti saxla
+Spherical,Kürəvi
+Mount,Min
+Failed to create customer,Müştəri yaradılarkən uğursuz oldu
+Priority,Prioritet
+Rectangular,Düzbucaqlı
+Condition,Şərait
+Fix,Düzəlt
+Room,Otaq
+Gift,Hədiyyə
+Tag,Etiket
+amount_paid,Ödənilən məbləğ
+Target Warehouse,Hədəf anbarı
+Huge,Nəhəng
+Try Again,Yenidən cəhd et
+plugins,Plaginlər
+Failed to save draft,Qaralama saxlanarkən uğursuz oldu
+payment_due,Ödəmə vaxtı
+Batch No,Partiya nömrəsi
+Forge,Döymə
+Come Out,Çıx
+offline_ready,Oflayn hazırdır
+Item Discount,Məhsul endirimi
+contacts,Əlaqələr
+Return invoices cannot be processed while offline. Please connect to the internet to search for invoices and create returns.,Qaytarma fakturaları oflayn rejimdə emal edilə bilməz. Fakturaları axtarmaq və qaytarma yaratmaq üçün internetə qoşulun.
+main_course,Əsas yemək
+Lower,Aşağı sal
+Close To,Yaxın
+{0} Pending Invoice(s),{0} Gözləyən Faktura
+Certificate not found. Generate it first.,Sertifikat tapılmadı. Əvvəlcə yaradın.
++ Free Item,+ Pulsuz məhsul
+categories,Kateqoriyalar
+Watch,İzlə
+project,Layihə
+seconds,saniyə
+Waist,Bel
+blocked,Bloklanıb
+Settings saved and warehouse updated. Reloading stock...,Ayarlar saxlandı və anbar yeniləndi. Stok yenidən yüklənir...
+Response,Cavab
+Shared,Paylaşılmış
+reserved,Rezerv edilmiş
+Target,Hədəf
+installments,Taksitlər
+Failed to delete invoice,Faktura silmək uğursuz oldu
+Out,Çöldə
+Fixed,Sabit
+Labor,Çalış
+desk_theme,İş masası teması
+save_error,Saxlanarkən xəta
+Download,Yüklə
+Customer created successfully,Müştəri uğurla yaradıldı
+Disable,Deaktivləşdir
+operation_failed,Əməliyyat uğursuz oldu
+Duty,Vəzifə
+Select Territory,Ərazi Seç
+1. Go to <strong>Item Master</strong> → <strong>{0}</strong>,1. <strong>Məhsul Master</strong> → <strong>{0}</strong>-ə keçin
+Create Customer,Yeni müştəri yarat
+export_csv,CSV-ə ixrac
+Time,Vaxt
+Not found,Tapılmadı
+Invoice details,Faktura detalları
+Buttock,Dal
+change_password,Şifrəni dəyiş
+Terms of Service,Xidmət şərtləri
+max_amount,Maks məbləğ
+loading_data,Məlumatlar yüklənir...
+no_customers,Müştəri yoxdur
+installment,Taksit
+Come In,Daxil ol
+Rate reduction of {0}% exceeds maximum allowed discount of {1}%,{0}% qiymət endirimi icazə verilən maksimum {1}% endirimi aşır
+Detect,Aşkar et
+captain,Kapitan
+Leak,Sızma
+Weak,Zəif
+Hide,Gizlən
+Please select a warehouse,"Zəhmət olmasa, anbar seçin"
+invalid_discount,Yanlış endirim
+Currency,Valyuta
+qty,Miq
+Temporarily unavailable,Müvəqqəti olaraq əlçatan deyil
+Tape,Lent
+login_success,Uğurla daxil oldunuz
+New Sale,Yeni satış
+Realize,Fərqində ol
+transaction_id,Əməliyyat ID-si
+Full Name,Tam ad
+changes_unsaved,Saxlanmamış dəyişikliklər var
+auto_save_enabled,Avtomatik saxlama aktivdir
+Stock Report,Stok hesabatı
+Restore,Bərpa et
+Enable Table Management,Masa idarəsini aktivləşdir
+Connection Lost,Bağlantı kəsildi
+Trash,Zibil
+Lung,Ağciyər
+Rate,Qiymət
+Select items to return,Qaytarmaq üçün məhsullar seç
+Reply,Cavab ver
+Instance,Misal
+This invoice was partially paid. The refund will be split proportionally.,Bu faktura qismən ödənilib. Geri ödəniş proporsional bölünəcək.
+Warped,Əyilmiş
+Refuse,İmtina et
+Partial,Qismən
+Selected,Seçilib
+remarks,Qeydlər
+Error updating customer,Müştəri yenilənərkən xəta
+Failed to load promotion details,Aksiya detalları yüklənərkən uğursuz oldu
+Points applied: {0}. Please pay remaining {1} with {2},Xallar tətbiq edildi: {0}. Qalan {1} məbləğini {2} ilə ödəyin
+<strong>Status:</strong> Stopped,<strong>Status:</strong> Dayandırılıb
+min_amount,Min məbləğ
+Expected: &lt;span class=&quot;font-medium&quot;&gt;{0}&lt;/span&gt;,"Gözlənilən: &lt;span class=""font-medium""&gt;{0}&lt;/span&gt;"
+Reference,Referans
+auto_lock,Avtomatik kilidləmə
+Finger,Barmaq
+Triangular,Üçbucaqlı
+Error saving draft,Qaralama saxlanarkən xəta
+downloading,Endirilir...
+Grow,Böyü
+{0} minutes ago,{0} dəqiqə əvvəl
+two_factor_auth,İki faktorlu autentifikasiya
+Version,Versiya
+4. Click &lt;strong&gt;&quot;Create&quot;&lt;strong&gt;,"4. &lt;strong&gt;""Yarat""&lt;/strong&gt; düyməsini klikləyin"
+saving_data,Məlumatlar saxlanılır...
+Disembark,En
+All draft invoices deleted,Bütün qaralama fakturalar silindi
+Failed to apply offer. Please try again.,Təklif tətbiq edilərkən uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.
+Stairs,Pilləkən
+Sales by User,İstifadəçiyə görə satışlar
+Backward,Geri
+Direction,İstiqamət
+{0} created and selected,{0} yaradıldı və seçildi
+The customer received a cash refund for this return.,Müştəri bu qaytarma üçün nağd pul aldı.
+General Settings,Ümumi ayarlar
+Quick,Sürətli
+Failed to delete draft,Qaralama silinərkən uğursuz oldu
+Settings saved,Ayarlar saxlandı
+Customer Changed Mind,Müştəri fikrini dəyişdi
+Tax Excluded,Vergi Xaric
+new_password,Yeni şifrə
+Edit Rate in Cart,Səbətdə qiyməti redaktə et
+This will delete all draft invoices permanently,Bu bütün qaralama fakturaları birdəfəlik siləcək
+mute_sounds,Səsləri söndür
+No returns allowed,Qaytarma icazə verilmir
+balance_mismatch,Balans uyğunsuzluğu
+bank_account,Bank hesabı
+Admin,Administrator
+Return,Qaytar
+Already exists,Artıq mövcuddur
+simultaneous_sessions,Eyni vaxtda sessiyalar
+See,Gör
+Suspended,Dayandırılıb
+Please select at least one item,"Zəhmət olmasa, ən azı bir məhsul seçin"
+unknown_error,Bilinməyən xəta baş verdi
+Orders,Sifarişlər
+sale,Satış
+Invoice Items,Faktura məhsulları
+Required field,Məcburi xana
+reset_password,Şifrəni sıfırla
+Loading customers for offline use...,Oflayn istifadə üçün müştərilər yüklənir...
+Popular,Məşhur
+audit_trail,Audit izi
+Control,Nəzarət et
+<strong>Items Tracked:</strong> {0},<strong>İzlənən məhsullar:</strong> {0}
+from_date,Başlanğıc tarixi
+Grade,Dərəcə
+{0} applied successfully,{0} uğurla tətbiq edildi
+Invoice Sync,Faktura sinxronizasiyası
+Closing Shift,Bağlanış směnası
+Knowledge,Bilik
+No invoices found,Faktura tapılmadı
+Public,İctimai
+This coupon requires a minimum purchase of ,Bu kupon minimum alış-veriş tələb edir 
+Twisted,Bükülmüş
+OS,ƏS
+logout_all_sessions,Bütün sessiyalardan çıx
+Compilation,Tərtibat
+period,Dövr
+Invoice created successfully,Faktura uğurla yaradıldı
+Surf,Sörf et
+Create,Yarat
+Edge,Kənar
+Branch,Filial
+Pour,Tökmək
+range,{min} və {max} arası olmalıdır
+Coupon Details,Kupon detalları
+Bookmark,Əlfəcin
+Solve,Həll et
+Seek,Axtar
+promotions,Aksiyalar
+Deposit,Depozit
+Ski,Xizək sür
+Failed to process payment,Ödəniş emal edilərkən uğursuz oldu
+Wide,Geniş
+Preparing,Hazırlanır
+no_remarks,Qeyd yoxdur
+Hunt,Ovla
+stock_not_available,Stok mövcud deyil
+Failed to clear cache. Please try again.,Keş təmizlənərkən uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.
+Song,Mahnı
+Invoice Date,Faktura tarixi
+APPLIED,TƏTBİQ EDİLDİ
+"Download the certificate and import it into QZ Tray, then restart QZ Tray.","Sertifikatı yükləyin və QZ Tray-ə idxal edin, sonra QZ Tray-i yenidən başladın."
+pending_sync,Sinxronizasiya gözləyir
+Types,Növlər
+Please add payment,"Zəhmət olmasa, ödəniş əlavə edin"
+Rectify,Düzəlt
+Paid Amount:,Ödənilən məbləğ:
+Cash Overage,Nağd artığı
+total_transactions,Ümumi əməliyyat
+Opened:,Açılıb:
+Login to your account,Hesabınıza daxil olun
+Shift Summary,Směna Xülasəsi
+Write,Yaz
+Complete Order,Sifarişi tamamla
+Flow,Ax
+{0} paid,{0} ödənilib
+Check Availability in All Wherehouses,Bütün anbarlarda mövcudluğu yoxla
+Assist,Kömək et
+Extension,Genişləndirmə
+Task,Tapşırıq
+operation_cancelled,Əməliyyat ləğv edildi
+Printer not connected,Printer qoşulmayıb
+Delete draft,Qaralanmanı sil
+Request,Sorğu
+Direct,İstiqamətləndir
+Install,Quraşdır
+Out of Stock,Stokda yoxdur
+Partly Paid,Qismən ödənilib
+auto,Avtomatik
+Slide,Sürüş
+Constrain,Məhdudlaşdır
+Allow Negative Stock,Mənfi stoka icazə ver
+Type,Növ
+Exercise,Məşq
+sales_by_category,Kateqoriyaya görə satış
+Generate Certificate,Sertifikat yarat
+Neglect,Laqeyd yanaş
+Collection,Kolleksiya
+download_offline,Oflayn üçün yüklə
+Commercial,Reklam
+Rating,Reytinq
+Stock not available,Stok mövcud deyil
+<strong>Company:</strong>,<strong>Şirkət:</strong>
+customer_id,Müştəri ID-si
+Sharp,Kəskin
+Database,Verilənlər bazası
+Cash Payment,Nağd ödəniş
+Utilize,İstifadə et
+No recent invoices,Son faktura yoxdur
+{0} left,{0} qalıb
+Payments cannot be added while offline. Connect to the internet to add payments.,Oflayn rejimdə ödəniş əlavə edilə bilməz. Ödəniş əlavə etmək üçün internetə qoşulun.
+Serve,Xidmət et
+stock_ledger,Stok çıxarışı
+z_report,Z Hesabatı
+background_stock_sync,Fon stok sinxronizasiyası
+gstin,GSTIN
+Connection Error,Bağlantı xətası
+Failed to download certificate.,Sertifikat yüklənərkən uğursuz oldu.
+Add Delivery,Çatdırılma əlavə et
+Barcode,Barkod
+Select Item Variant,Məhsul Variantı Seç
+Occupied,Dolu
+Restaurant & KDS,Restoran və KDS
+Silent Print Enabled,Səssiz Çap Aktivdir
+Tactic,Taktika
+Squash,Sıx
+Late,Gecikmiş
+Less,Daha az
+Application Programming Interface,Tətbiqi proqramlaşdırma interfeysi
+Coupon Status & Info,Kupon statusu və məlumatı
+last_transaction,Son əməliyyat
+disabled,Deaktiv edilib
+Level,Səviyyə
+Discount settings changed. Cart recalculated.,Endirim ayarları dəyişdi. Səbət yenidən hesablandı.
+Running Tab Mode,Açıq hesab rejimi
+Payment Entry,Ödəniş yazısı
+order_type,Sifariş növü
+Plate,Boşqab
+No results for ,Nəticə yoxdur 
+Email,E-poçt
+invalid_url,Yanlış URL
+maximum_discount,Maksimum endirim məbləği
+Cart,Səbət
+Template,Şablon
+Loading...,Yüklənir...
+Data is ready for offline use,Məlumatlar oflayn istifadə üçün hazırdır
+Staff,Əməkdaş
+Silent,Səssiz
+appearance,Xarici görünüş
+Not Found,Tapılmadı
+auto_sync,Avtomatik sinxronizasiya
+Analytics,Analitika
+Open Shift,Směna aç
+Conceal,Gizlət
+Failed to toggle coupon status,Kupon statusu dəyişdirilmədi
+Day,Gün
+Gate,Darvaza
+Ride,Min
+Descending,Azalan
+Amount Paid,Ödənilmiş məbləğ
+Table #: {0},Masa #: {0}
+Make,Et
+Injure,Yarala
+Solder,Lövhə
+Vein,Vena
+Package,Paket
+Glass,Stəkan
+Customer balance updated,Müştəri balansı yeniləndi
+manage_invoices,Bütün fakturalarınızı bir yerdə idarə edin
+Run,Qaç
+Insert,Daxil et
+Identify,Müəyyən et
+Discount Amount,Endirim məbləği
+Delivered,Çatdırıldı
+Advanced Settings,Ətraflı ayarlar
+Bottle,Şüşə
+select_coupon,Kupon seç
+Commence,Başla
+Please enter a valid amount,"Zəhmət olmasa, etibarlı məbləğ daxil edin"
+report,Hesabat
+Kettle,Çaydan
+Not enough loyalty points,Kifayət qədər loyallıq xalı yoxdur
+Order reactivated! Added {0} items. Kitchen notified.,Sifariş yenidən aktivləşdirildi! {0} məhsul əlavə edildi. Mətbəx xəbərdar edildi.
+Join,Qoşul
+Info,Məlumat
+Form,Formalaşdır
+Gain,Qazan
+{0} invoice(s) synced successfully,{0} faktura uğurla sinxronizasiya edildi
+Failed to print draft,Qaralama çap edilərkən uğursuz oldu
+Exchange Items,Məhsulları dəyiş
+Road,Yol
+Ear,Qulaq
+"Settings saved, warehouse updated, and tax mode changed. Cart will be recalculated.","Ayarlar saxlandı, anbar yeniləndi və vergi rejimi dəyişdi. Səbət yenidən hesablanacaq."
+Hip,Çanaq
+This item is a template. Please select a variant.,"Bu məhsul şablondur. Zəhmət olmasa, variant seçin."
+"Search by item name, code, or scan barcode","Məhsul adı, kodu ilə axtar və ya barkod skan et"
+{0} free item(s) included,{0} pulsuz məhsul daxildir
+allow_edit_rate,Qiymət redaktəsinə icazə ver
+Select Offer,Təklif Seç
+Initiative,Təşəbbüs
+Loading variants...,Variantlar yüklənir...
+Mark,Marka
+Stiff,Bərk
+Vacant,Boş
+saved,Saxlandı
+Study,Təhsil
+Shipping Address,Çatdırılma ünvanı
+Are you sure you want to delete this coupon?,Bu kuponu silmək istədiyinizə əminsiniz?
+Schedule,Cədvəl
+Next To,Yanında
+Giant,Nəhəng
+sales_trend,Satış trendi
+Mixed payment cannot exceed invoice total. Limit: {0},Qarışıq ödəniş faktura cəmindən çox ola bilməz. Limit: {0}
+Pending,Gözləyir
+Inventory,İnventar
+Payment Summary,Ödəniş xülasəsi
+Liver,Qaraciyər
+"2. Click <strong>""Make Variants""</strong> button","2. <strong>""Variant yarat""</strong> düyməsini klikləyin"
+Warning,Xəbərdarlıq
+Credit,Kredit
+generate_report,Hesabat yarat
+Fast,Sürətli
+Language Settings,Dil ayarları
+Failed to sync data,Məlumat sinxronizasiya edilərkən uğursuz oldu
+Discount Type,Endirim növü
+license,Lisenziya
+merge_tables,Masaları birləşdir
+Go Out,Çıx
+Remember me,Məni xatırla
+General,Ümumi
+Pound,Döymək
+This item template &lt;strong&gt;{0}&lt;strong&gt; has no variants created yet.,Bu məhsul şablonu &lt;strong&gt;{0}&lt;/strong&gt; üçün hələ variant yaradılmayıb.
+Hand,Əl
+"Choose a coupon from the list to view and edit, or create a new one to get started",Baxmaq və redaktə etmək üçün siyahıdan kupon seçin və ya başlamaq üçün yeni yaradın
+Adhere,Yapış
+Assembly,Yığıncaq
+dessert,Şirniyyat
+Authentication error,Autentifikasiya xətası
+edit_item,Məhsulu redaktə et
+Push Notification,Push bildirişi
+Receipt printed successfully,Çek uğurla çap edildi
+Select Unit of Measure,Ölçü Vahidi Seç
+Reserve,Rezerv et
+Calculate,Hesabla
+"Certificate is not installed on this machine. Generate a certificate, download it, and import it into QZ Tray.","Sertifikat bu maşında quraşdırılmayıb. Sertifikat yaradın, yükləyin və QZ Tray-ə idxal edin."
+Search Customer,Müştəri Axtar
+Appointment,Görüş
+Train,Təlim ver
+primary_address,Əsas ünvan
+Sales Tax,Satış vergisi
+Bar Chart,Sütun diaqramı
+Separate,Ayrı
+Expiry Date,Son istifadə tarixi
+History,Tarixçə
+QZ Tray must be installed and running on this computer. Download from,QZ Tray bu kompüterdə quraşdırılmalı və işləməlidir. Yükləmə ünvanı:
+Tub,Vanna
+Settings,Ayarlar
+Title,Başlıq
+Wallet Payment,Pulqabı ödənişi
+to_date,Son tarix
+required_field,Məcburi xana
+Syncing...,Sinxronizasiya edilir...
+Leave,Tərk et
+Push,Təşviqat
+allow_negative,Mənfi stoka icazə ver
+Print Invoice,Fakturanı çap et
+Failed to create return invoice,Qaytarma fakturası yaradılarkən uğursuz oldu
+Close Register,Qeydiyyatı bağla
+Dish,Qab
+Obtain,Əldə et
+Vase,Gülqab
+duplicate_entry,Təkrar giriş
+Featured,Seçilmiş
+Add Note / Modifier,Qeyd / Modifikator əlavə et
+addresses,Ünvanlar
+payment_gateway,Ödəniş şlüzi
+lead_source,Mənbə
+"Configure pricing, discounts, and sales operations","Qiymətləndirmə, endirimlər və satış əməliyyatlarını konfiqurasiya edin"
+Sea,Dəniz
+permissions,İcazələr
+safety_stock,Təhlükəsiz stok
+Uninstall,Sil
+required,Bu xana məcburidir
+Icon,İkon
+Size,Ölçü
++ Create New Customer,+ Yeni müştəri yarat
+Remove Item,Məhsulu çıxar
+Carry Out,Həyata keçir
+Graphical User Interface,Qrafik istifadəçi interfeysi
+Creek,Xırda çay
+Confirm,Təsdiqlə
+Are you sure you want to delete this promotion?,Bu aksiyanı silmək istədiyinizə əminsiniz?
+Warehouse Transfer,Anbar köçürməsi
+This will clear all items from the cart,Bu səbətdən bütün məhsulları təmizləyəcək
+update_stock,Stoku yenilə
+Enable,Aktivləşdir
+delay,Gecikmə
+Software Development Kit,Proqram təminatı inkişaf dəsti
+Connect,Qoş
+lead_time,Gözləmə vaxtı
+Empty,Boş
+Cash Refund,Nağd pul qaytarılması
+Free items,Pulsuz məhsullar
+Open a shift before creating a return invoice.,Qaytarma fakturası yaratmazdan əvvəl směna açın.
+{0} invoices,{0} faktura
+storage_full,Yaddaş doludur
+purchase_invoice,Alış fakturası
+Failed to print receipt,Çek çap edilərkən uğursuz oldu
+Exchange Item,Məhsulu dəyiş
+Play,Oyna
+Order marked as served,Sifariş xidmət edilmiş olaraq işarələndi
+export_excel,Excel-ə ixrac
+Recommended,Tövsiyə edilir
+Knuckle,Barmaq qopuğu
+login_error,Daxil olarkən xəta
+empty,Boş
+You need to open a shift before you can start making sales.,Satışa başlamazdan əvvəl směna açmalısınız.
+Send,Göndər
+payment_mode,Ödəniş rejimi
+restrict_ip,IP məhdudiyyəti
+In Progress,Davam edir
+Failed to load customer details,Müştəri detalları yüklənərkən uğursuz oldu
+Pot,Qazan
+"If QZ Tray is unavailable, printing will fall back to the browser dialog.","Əgər QZ Tray mövcud deyilsə, çap brauzer dialoquna keçəcək."
+Organ,Orqan
+Chase,Qov
+Chin,Çənə
+Degree,Dərəcə
+Teach,Tədris et
+Actual Quantity,Faktiki miqdar
+Address,Ünvan
+Shift Opened,Směna açıldı
+Payment Amount,Ödəniş məbləği
+guest_count,Qonaq sayı
+Discount,Endirim
+Height,Hündürlük
+Sticker,Etiket
+Face,Üz
+Bone,Sümük
+Count,Say
+compact_mode,Kompakt rejim
+Your Order,Sizin Sifarişiniz
+Weight,Çəki
+Show Stock Availability,Stok mövcudluğunu göstər
+Recent,Son
+Far From,Uzaq
+User Settings,İstifadəçi ayarları
+go_offline,Oflayn rejimə keç
+Date,Tarix
+Smooth,Hamarsız
+current_password,Cari şifrə
+Rear,Arxa
+Guide,Bələdçilik et
+Tiny,Kiçik
+No settings found matching your search,Axtarışınıza uyğun ayar tapılmadı
+Disconnect,Bağlantını kəs
+Modify,Dəyişdir
+promotion_coupon_management,Aksiya və Kupon İdarəsi
+GUI,Qrafik interfeys
+Place Order,Sifariş ver
+list_settings,Siyahı ayarları
+discount_percentage,Endirim faizi (%)
+Not as Described,Təsvir edildiyi kimi deyil
+Customer: {0},Müştəri: {0}
+Job,İş
+invalid_email,Yanlış e-poçt ünvanı
+Refund,Qaytarma
+Perform,İcra et
+Promotions,Aksiyalar
+Try a different search term,Fərqli axtarış sözü sınayın
+Fountain,Fəvvarə
+view_report,Hesabata bax
+Refund Method,Qaytarma metodu
+Stock Value,Stok dəyəri
+Extend,Uzat
+Unplug,Çıxar
+balance_due,Ödənilməli məbləğ
+Options,Seçimlər
+Products,Məhsullar
+Width,En
+Interface,İnterfeys
+Removed from cart,Səbətdən silindi
+Column,Sütun
+{0} {1} {2}h {3}m,{0} {1} {2}s {3}d
+No redeemable points available,Bərpa edilə biləcək xal yoxdur
+Receipt reprinted,Çek yenidən çap edildi
+Into,İçinə
+No expiry,Son tarix yoxdur
+Full Payment,Tam ödəniş
+coupon_invalid,Yanlış kupon
+role,Rol
+Mass,Kütlə
+Elevate,Yüksəlt
+Sale,Satış
+Validation Error,Təsdiqləmə Xətası
+Manage,İdarə et
+role_profile,Rol profili
+card_balance,Kart balansı
+Spill,Tökmək
+Prototype,Prototip
+pos_profile,POS profili
+Please enter a valid discount percentage (1-100),Zəhmət olmasa etibarlı endirim faizi daxil edin (1-100)
+offline_mode,Oflayn rejim
+invoice_history,Faktura tarixçəsi
+Duplicate entry,Təkrar giriş
+Stream,Axın
+Scan,Skan et
+Maximum Use,Maksimum istifadə
+You don,Siz 
+Weld,Qaynaq
+Maximum discount exceeded,Maksimum endirim aşıldı
+posting_time,Vaxt
+Teapot,Çaynik
+Select Customer,Müştəri seç
+Weigh,Çək
+Sing,Oxu
+average_sale,Orta satış
+The return amount will be added to the customer credit balance. No cash refund will be given.,Qaytarma məbləği müştəri kredit balansına əlavə ediləcək. Nağd geri ödəniş verilməyəcək.
+Up,Yuxarı
+Saving,Saxlanılır...
+<strong>Opened:</strong> {0},<strong>Açılıb:</strong> {0}
+least_selling,Ən az satılan
+Promotion Type,Aksiya növü
+offers,Təkliflər
+tax_summary,Vergi xülasəsi
+Customer,Müştəri
+drive_through,Drive-thru
+unauthorized,İcazəsiz əməliyyat
+Order marked as ready,Sifariş hazır olaraq işarələndi
+All stock operations will use this warehouse. Stock quantities will refresh after saving.,Bütün stok əməliyyatları bu anbarı istifadə edəcək. Stok miqdarları saxlandıqdan sonra yenilənəcək.
+company,Şirkət
+Customer not added,Müştəri əlavə edilmədi
+Line Chart,Xətti diaqram
+Hollow,Boşluq
+VAT,ƏDV
+Update Cart,Səbəti yenilə
+sync_on_startup,Başlanğıcda sinxronlaşdır
+Assess,Qiymətləndir
+File,Fayl
+Path,Yol
+Shift Closed,Směna bağlandı
+discount_details,Endirim detalları
+Charge:,Ödəniş:
+Print Report,Hesabat çap et
+Shift Report,Směna hesabatı
+Delivery order,Çatdırılma sifarişi
+Free Item,Pulsuz məhsul
+Credit Note,Kredit qeydi
+Your cart has been cleared,Səbətiniz təmizləndi
+Calendar,Təqvim
+Recognize,Tanı
+Lose,İtir
+Screen,Ekran
+Failed to check invoice,Faktura yoxlanarkən uğursuz oldu
+Access denied,Giriş qadağandır
+Success,Uğur
+"Search by invoice number, customer name, or phone...","Faktura nömrəsi, müştəri adı və ya telefon ilə axtar..."
+Search customers...,Müştəri axtar...
+split_table,Masanı böl
+Create permission required,Yaratmaq üçün icazə tələb olunur
+Price,Qiymət
+Order #,Sifariş #
+Stopped,Dayandırılıb
+Bowl,Kasa
+Deselect All,Seçimi ləğv et
+occupied,Dolu
+Rest,Dincəl
+x_report,X Hesabatı
+Credit Card,Kredit kartı
+Press,Bas
+Ankle,Topuq
+TAX INVOICE,VERGİ FAKTURASI
+No tables found in this area,Bu ərazidə masa tapılmadı
+Not Available,Mövcud deyil
+check_number,Çek nömrəsi
+Customer Code,Müştəri kodu
+Check,Yoxla
+"If QZ Tray is not available, use browser print dialog","Əgər QZ Tray mövcud deyilsə, brauzer çap dialoqundan istifadə et"
+Customer Name,Müştəri adı
+Correct,Düzəlt
+Total Items,Ümumi məhsul
+territory,Ərazi
+Could not verify password. Please try again.,Şifrə yoxlana bilmədi. Zəhmət olmasa yenidən cəhd edin.
+Cart does not contain items from eligible groups,Səbət uyğun qruplardan məhsullar ehtiva etmir
+Sales Summary,Satış xülasəsi
+New Customer,Yeni müştəri
+Reports,Hesabatlar
+Achievement,Nailiyyət
+System,Sistem
+tax_id,Vergi ID-si
+Loading stock information...,Stok məlumatı yüklənir...
+Outside,Çöldə
+Quick Modifiers,Sürətli Modifikatorlar
+Particle,Zərrəcik
+Details,Detallar
+saving,Saxlanılır...
+License,Lisenziya
+Sales Report,Satış hesabatı
+View,Bax
+Select Variants,Variantları seç
+Cannot sync while offline,Oflayn rejimdə sinxronizasiya edilə bilməz
+Forgot Password,Şifrəni unutmusan?
+Change,Dəyiş
+Bay,Körfəz
+Grind,Üyüt
+Center,Mərkəz
+Tables,Masalar
+UI,İstifadəçi interfeysi
+Pool,Hovuz
+Command Line,Komanda sətri
+Settings saved. Tax mode is now ,Ayarlar saxlandı. Vergi rejimi indi 
+Take Advantage,Faydalan
+all_invoices_paid,Bütün fakturalar tam ödənilib
+Pitcher,Kuzə
+opening_cash,Açılış pulu
+transaction_failed,Əməliyyat uğursuz oldu
+Out of service,Xidmətə bağlı deyil
+Complete Sale,Satışı tamamla
+Personal,Şəxsi
+Table,Masa
+Loading {0}...,{0} yüklənir...
+Show invoice details,Faktura detallarını göstər
+payment_due_date,Ödəniş son tarixi
+sync_now,İndi sinxronlaşdır
+Tongue,Dil
+Taxes,Vergilər
+Something went wrong,Nəsə səhv getdi
+2. Click &lt;strong&gt;&quot;Make Variants&quot;&lt;strong&gt; button,"2. &lt;strong&gt;""Variant yarat""&lt;/strong&gt; düyməsini klikləyin"
+Pie Chart,Dairəvi diaqram
+Lane,Sıra
+yesterday,Dünən
+Failed to process selection. Please try again.,Seçim emal edilərkən uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.
+Gift Card,Hədiyyə kartı
+Save failed,Saxlama uğursuz oldu
+Updating customer...,Müştəri yenilənir...
+Thin,İncə
+Failed to apply coupon. Please try again.,Kupon tətbiq edilərkən uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.
+Ad,Reklam
+Validation error,Təsdiqləmə xətası
+add_customer,Müştəri əlavə et
+Brook,Xırda çay
+Generate,Yarat
+auto_save_disabled,Avtomatik saxlama deaktivdir
+Clear All,Hamısını təmizlə
+Rounding,Yuvarlaqlaşdırma
+Massive,Kütləvi
+Rise,Qalx
+Qty,Miq
+modified,Dəyişdirilib
+"4. Click <strong>""Create""</strong> button","4. <strong>""Yarat""</strong> düyməsini klikləyin"
+Note: Cart will be cleared,Qeyd: Səbət təmizlənəcək
+Curve,Əyri
+Send receipts directly to a thermal printer via QZ Tray (no browser dialog),Çekləri brauzer dialoqu olmadan QZ Tray vasitəsilə termal printerə birbaşa göndərin
+Set,Dəst
+Next,Növbəti
+Away,Uzaq
+Submit Order,Sifarişi göndər
+Navigate,Naviqasiya et
+market_segment,Bazar seqmenti
+<strong>Opened:</strong>,<strong>Açılıb:</strong>
+Liquid,Maye
+Total Quantity,Ümumi miqdar
+An error occurred,Xəta baş verdi
+Scan Barcode,Barkod skan et
+{0} transactions • {1},{0} əməliyyat • {1}
+Confirm Cancel,Ləğvi təsdiqlə
+Console,Konsol
+chart,Qrafik
+Return amount,Qaytarma məbləği
+Electron,Elektron
+Addition Order,Əlavə sifarişi
+Print Receipt,Çek çap et
+Messages,Mesajlar
+Framework,Çərçivə
+demand,Tələb
+Unable to apply discount,Endirim tətbiq edilə bilmədi
+Payment removed from cart,Ödəniş səbətdən silindi
+Restaurant,Restoran
+Spot,Ləkə
+Tool,Alət
+{0} years ago,{0} il əvvəl
+Upload,Yüklə
+pending_payments,Gönləyən ödənişlər
+emi,EMI
+Invoice saved offline. Will sync when online,Faktura oflayn saxlandı. Onlayn olduqda sinxronizasiya ediləcək
+Delete Coupon,Kuponu sil
+Payment Settings,Ödəniş ayarları
+pos_settings,POS ayarları
+sidebar,Yan panel
+Failure,Uğursuzluq
+Apart,Ayrı
+edit_user,İstifadəçini redaktə et
+Select an invoice to view details,Detalları görmək üçün faktura seçin
+sync_interval,Sinxronizasiya aralığı
+Search Again,Yenidən axtar
+Wound,Yara
+auto_debit,Avtomatik debit
+Dot,Nöqtə
+cheque_payment,Çek ödənişi
+Roll,Yuvarlan
+The invoice was created offline and will sync automatically when you are back online,Faktura oflayn yaradıldı və onlayn olduqda avtomatik sinxronizasiya ediləcək
+Return created,Qaytarma yaradıldı
+In Stock,Stokda var
+kitchen_display,Mətbəx ekranı
+Oldest,Ən köhnə
+Remind,Xatırlat
+Geyser,Geysir
+Service Tax,Xidmət vergisi
+batch_numbers,Partiya nömrələri
+last_year,Keçən il
+Valid,Etibarlı
+invoice_management,Faktura İdarəsi
+Fallback to Browser Print,Brauzer çapına keç
+roles,Rollar
+Tax Type,Vergi növü
+Quantity exceeds available stock,Miqdar mövcud stoku aşır
+True,Doğru
+Straighten,Düzləşdir
+Catch,Tut
+Alley,Kiçik küçə
+Invoice ID: {0},Faktura ID: {0}
+Promotion,Tanıtım
+Accept,Qəbul et
+Confirm Delete,Silməni təsdiqlə
+Coupon Type,Kupon növü
+no_items,Məhsul yoxdur
+sort,Sırala
+sent_to_kitchen,Mətbəxə göndərildi
+payment_terms,Ödəniş şərtləri
+Session data cleared,Sessiya məlumatları təmizləndi
+Failed to load variants,Variantları yükləmək uğursuz oldu
+network_error,Şəbəkə xətası
+Clear Cart,Səbəti təmizlə
+Mince,Doğra
+webhooks,Webhooks
+Cash In,Nağd giriş
+offer,Təklif
+security_settings,Təhlükəsizlik ayarları
+Invoice updated successfully,Faktura uğurla yeniləndi
+Outstanding:,Qalıq:
+Glide,Sürüş
+location,Yer
+Please select at least one variant,"Zəhmət olmasa, ən azı bir variant seçin"
+credit_payment,Kredit ödənişi
+Download Receipt,Çeki yüklə
+Please close the current shift first,"Zəhmət olmasa, əvvəlcə cari směnı bağlayın"
+"This will clear all cached items, customers, and stock data. Invoices and drafts will be preserved.","Bu, bütün keşlənmiş məhsulları, müştəriləri və stok məlumatlarını təmizləyəcək. Fakturalar və qaralamalar qorunacaq."
+Silent Print Disabled,Səssiz Çap Deaktivdir
+Trench,Xəndək
+connection_lost,Bağlantı kəsildi
+Invalid barcode,Etibarsız barkod
+Beyond,Kənarda
+invalid_phone,Yanlış telefon nömrəsi
+Previous,Əvvəlki
+Immense,Böyük
+invoice_number,Faktura nömrəsi
+Ears,Qulaqlar
+Disconnected,Bağlantı kəsilib
+View Details,Detallara bax
+Promotion status updated successfully,Aksiya statusu uğurla yeniləndi
+discount_summary,Endirim xülasəsi
+select_item_group,Məhsul qrupu seç
+closing_balance,Bağlanış balansı
+pending_items,Gözləyən elementlər
+Blood,Qan
+invoice_details,Faktura detalları
+Casket,Tabut
+Total Discount,Ümumi endirim
+loyalty_program,Loyalty proqramı
+Chimney,Buxar
+{0}% OFF,{0}% ENDİRİM
+Shrink,Kiçil
+Failed to update item.,Məhsul yenilənərkən uğursuz oldu.
+end_time,Son vaxt
+Coupon deleted successfully,Kupon uğurla silindi
+Get To,Çat
+Street,Küçə
+Curved,Əyri
+Transactions,Əməliyyatlar
+negative_amount,Mənfi məbləğ ola bilməz
+Shorten,Qısalt
+Sales,Satışlar
+discount_exceeded,Endirim limiti aşıldı
+new_invoice,Yeni faktura
+Requested quantity ({0}) exceeds available stock ({1}),Tələb olunan miqdar ({0}) mövcud stoku ({1}) aşır
+is_return,Qaytarma
+module_profile,Modul profili
+Quantity,Miqdar
+Blocked,Bloklanıb
+Kitchen Notes,Mətbəx qeydləri
+Low stock,Az stok
+Edit Invoice,Fakturanı redaktə et
+Locked,Kilidlənib
+High,Hündür
+Invoices,Fakturalar
+1. Go to &lt;strong&gt;Item Master&lt;strong&gt; → &lt;strong&gt;{0}&lt;strong&gt;,1. &lt;strong&gt;Məhsul Master&lt;/strong&gt; → &lt;strong&gt;{0}&lt;/strong&gt;-ə keçin
+Private,Şəxsi
+{0}m ago,{0}d əvvəl
+Coupon Payment,Kupon ödənişi
+Defend,Müdafiə et
+Grab,Yapış
+Refund Amount,Qaytarma məbləği
+timeout,Vaxt bitdi
+tax_category,Vergi kateqoriyası
+Point,Nöqtə
+Solid,Bərk
+Company,Şirkət
+confirm_exit,Çıxmaq istədiyinizə əminsiniz?
+integrations,İnteqrasiyalar
+sales_by_item,Məhsula görə satış
+Planning,Planlaşdırma
+Floor,Döşəmə
+Assignment,Tapşırıq
+crypto_payment,Kripto ödəniş
+Front,Ön
+Invoice {0} created but print failed,{0} fakturası yaradıldı amma çap uğursuz oldu
+Add Payment,Ödəniş əlavə et
+Promotion ,Aksiya 
+Address Line 2,Ünvan sətri 2
+company_settings,Şirkət ayarları
+N/A,Mövcud deyil
+Number,Nömrə
+Reset,Sıfırla
+Change Password,Şifrəni dəyiş
+Sustain,Davam etdir
+Cup,Fincan
+Arm,Qol
+Edit Customer,Müştərini redaktə et
+This invoice was paid on account (credit sale). The return will reverse the accounts receivable balance. No cash refund will be processed.,Bu faktura hesaba ödənilib (kredit satışı). Qaytarma debitor borc balansını ləğv edəcək. Nağd geri ödəniş emal edilməyəcək.
+Symbol,Simvol
+<strong>Last Sync:</strong> {0},<strong>Son sinxronizasiya:</strong> {0}
+shortage,Çatışmazlıq
+total_amount,Ümumi məbləğ
+Customer:,Müştəri:
+Amount Tendered,Təklif edilən məbləğ
+Department,Şöbə
+Off,Bağlı
+Rule,Qayda
+You can now start making sales,İndi satışa başlaya bilərsiniz
+user_image,İstifadəçi şəkli
+Screw,Vinta
+confirm_submit,Göndərmək istədiyinizə əminsiniz?
+Hammer,Çəkic
+Profile,Profil
+Add to Customer Credit Balance,Müştəri kredit balansına əlavə et
+new_order,Yeni sifariş
+shift_not_found,Směna tapılmadı
+Heal,Sağalt
+Roof,Dam
+Connection lost,Bağlantı kəsildi
+Decline,İmtina et
+Error Report - POS Next,Xəta Hesabatı - POS Next
+Display Settings,Ekran ayarları
+Customers,Müştərilər
+Track,Yol
+auto_save,Avtomatik saxlama
+Unlimited,Limitsiz
+return_against,Qarşı qaytarma
+max_qty,Maks miqdar
+Sign,İşarə
+Draft deleted successfully,Qaralama uğurla silindi
+excess,Artıqlıq
+select_promotion,Aksiya seç
+cache_size,Keş həcmi
+promotional_schemes,Aksiya sxemləri
+Core,Nüvə
+Close,Bağla
+Email Receipt,Çeki e-poçtla göndər
+Row,Sətir
+Table Status,Masa statusu
+Squeeze,Sıx
+gst_category,GST kateqoriyası
+contact_support,"Zəhmət olmasa, dəstəklə əlaqə saxlayın"
+Second,İkinci
+View Invoice,Fakturaya bax
+Invoice Type,Faktura növü
+total_sales,Ümumi satış
+Enable selling items even when stock reaches zero or below. Integrates with Back Office stock settings.,Stok sıfıra və ya aşağıya düşdükdə belə məhsul satışına icazə ver. Back Office stok ayarları ilə inteqrasiya olunur.
+Visible,Görünən
+letter_head,Letterhead
+Remember Me,Məni xatırla
+Walk,Gəz
+Aid,Kömək et
+More,Daha çox
+Drum,Barrel
+Site,Sayt
+Door,Qapı
+Cash Balance,Nağd balans
+Total Available,Ümumi mövcud
+Design,Dizayn
+Pond,Hovuz
+Container,Qab
+Invoice {0} created and sent to printer,{0} fakturası yaradıldı və printerə göndərildi
+enter_closing_balance,Bağlanış balansını daxil edin
+Invalid quantity,Etibarsız miqdar
+Global,Qlobal
+coupon_expired,Kuponun vaxtı keçib
+Coupon,Kupon
+Feel,Hiss et
+Daily Sales Summary,Gündəlik satış xülasəsi
+Auto-Add: OFF - Click to enable automatic cart addition on Enter,Avto-əlavə: OFF - Enter ilə avtomatik səbət əlavəsini aktivləşdirmək üçün klikləyin
+Disabled,Deaktiv edilib
+{0} units available in ,{0} vahid mövcuddur 
+Paid amount,Ödənilmiş məbləğ
+Withdrawal,Çıxarış
+Long,Uzun
+Permission denied,İcazə rədd edildi
+Learn,Öyrən
+Outstanding Amount,Qalıq məbləği
+<strong>Last Sync:</strong> Never,<strong>Son sinxronizasiya:</strong> Heç vaxt
+Obligation,Öhdəlik
+Return Against:,Qarşı qaytarma:
+Username is required,İstifadəçi adı tələb olunur
+Mine,Mədən
+Order status updated,Sifariş statusu yeniləndi
+Failed to load warehouse availability,Anbar mövcudluğunu yükləmək uğursuz oldu
+Failed to update invoice,Faktura yeniləmək uğursuz oldu
+unsaved_changes,Saxlanmamış dəyişikliklər
+pending_invoices,Gözləyən fakturalar
+Mold,Formalaşdır
+Advanced,Ətraflı
+Held Orders,Saxlanmış sifarişlər
+Are you sure?,Əminsiniz?
+insufficient_amount,Yetərsiz məbləğ
+server_connection_failed,Server bağlantısı uğursuz oldu
+Leg,Ayaq
+"Note: When enabled, the system will allow sales even when stock quantity is zero or negative. This is useful for handling stock sync delays or backorders. All transactions are tracked in the stock ledger.","Qeyd: Aktiv edildikdə, sistem stok miqdarı sıfır və ya mənfi olanda belə satışlara icazə verəcək. Bu, stok sinxronizasiya gecikmələri və ya sifarişlərin idarə edilməsi üçün faydalıdır. Bütün əməliyyatlar stok dəftərində izlənilir."
+Comprehend,Qavra
+Your cart doesn,Sizin səbətiniz 
+Exclusive Tax,Xarici vergi
+{0} invoices - {1} outstanding,{0} faktura - {1} qalıq
+shelf_life,Rəf ömrü
+Queue,Növbə
+user_permissions,İstifadəçi icazələri
+Notes,Qeydlər
+Forgot password?,Şifrəni unutmusan?
+background_sync,Fon sinxronizasiyası
+Failed to process return,Qaytarma emal edilərkən uğursuz oldu
+confirm_delete,Silmək istədiyinizə əminsiniz?
+reorder_qty,Yenidən sifariş miqdarı
+Store,Saxla
+Failed to load draft invoices,Qaralama fakturalar yüklənərkən uğursuz oldu
+Address Line 1,Ünvan sətri 1
+Cavern,Mağara
+Conclude,Nəticə çıxar
+fixed_amount,Sabit məbləğ
+Lake,Göl
+Maintain,Qoru
+Password:,Şifrə:
+Required,Məcburi
+Badge,Nişan
+Automation,Avtomatlaşdırma
+Rigid,Bərk
+Branch Settings,Filial ayarları
+Brief,Qısa
+False,Yanlış
+With,İlə
+No additional units of measurement configured for this item.,Bu məhsul üçün əlavə ölçü vahidləri konfiqurasiya edilməyib.
+Transaction,Əməliyyat
+Remove from Cart,Səbətdən çıxar
+estimated_time,Təxmini vaxt
+Expired,Vaxtı keçmiş
+Valid Until,Keçərli son
+Session expired,Sessiya vaxtı bitdi
+{0} updated,{0} yeniləndi
+Mug,Krujka
+No POS Profiles available. Please contact your administrator.,"POS Profili mövcud deyil. Zəhmət olmasa, administratorunuzla əlaqə saxlayın."
+try_again,Yenidən cəhd edin
+Through,İçindən
+confirm_cancel,İmtina etmək istədiyinizə əminsiniz?
+Return quantity,Qaytarma miqdarı
+access_denied,Giriş qadağandır
+Implement,Tətbiq et
+Intellect,Ağıl
+Behind,Arxada
+Connected,Qoşulub
+Peak,Zirvə
+zero_amount,Sıfır məbləğ ola bilməz
+Peace,Sülh
+Drift,Sürüklən
+Top Selling Items,Ən çox satılan məhsullar
+Qty exceeds available stock,Miqdar mövcud stoku aşır
+Warehouse Settings,Anbar ayarları
+Modified,Dəyişdirilib
+Notifications,Bildirişlər
+Acquire,Əldə et
+Hill,Təpə
+{0} added to cart,{0} səbətə əlavə edildi
+Chart,Qrafik
+import_customers,Müştəriləri idxal et
+Sales by Terminal,Terminala görə satışlar
+Debit Card,Debit kart
+Bend,Bük
+Payment cannot be empty,Ödəniş boş ola bilməz
+rounding,Yuvarlaqlaşdırma
+Note,Qeyd
+Server connection restored,Server bağlantısı bərpa edildi
+Conference,Konfrans
+Recall,Xatırla
+Slim,İncə
+Section,Bölmə
+Please enter a valid discount amount,Zəhmət olmasa etibarlı endirim məbləği daxil edin
+Loyalty Points,Loyallıq xalları
+Scope,Əhatə
+Tear,Yırt
+Workout,Məşq
+invalid_value,Yanlış dəyər
+go_online,Onlayn rejimə keç
+Increase,Artır
+Compute,Hesabla
+Avoid,Qaçın
+Fat,Şişman
+Receipt deleted,Çek silindi
+Order Ready!,Sifariş Hazırdır!
+Terminate,Sonlandır
+Apply Coupon,Kupon tətbiq et
+Logout,Çıxış
+Thigh,Bud
+Round,Yuvarlaq
+walking_customer,Səyyar müştəri
+Split Payment,Bölünmüş ödəniş
+Skate,Sürüş
+sales_by_customer,Müştəriyə görə satış
+Partial Payment,Qismən ödəniş
+Sync invoices with server in real-time,Fakturaları serverlə real vaxtda sinxronizasiya et
+Avenue,Prospekt
+Scheduled,Planlaşdırılmış
+Processing return...,Qaytarma emal edilir...
+"Delete ""{0}""?","""{0}"" silinsin?"
+&lt;strong&gt;{0}&lt;/strong&gt; of &lt;strong&gt;{1}&lt;/strong&gt; invoice(s),&lt;strong&gt;{0}&lt;/strong&gt; / &lt;strong&gt;{1}&lt;/strong&gt; faktura
+Expected Cash,Gözlənilən nağd
+Created On,Yaradılma tarixi
+Bug,Xəta
+{0} item,{0} məhsul
+Local,Yerli
+Add Item,Məhsul əlavə et
+Fluid,Maye
+Work,İş
+Produce,İstehsal et
+Pan,Tava
+source,Mənbə
+ignore_pricing_rule,Qiymət qaydalarını nəzərə alma
+table_status,Masa statusu
+End,Son
+Conduct,Apardı
+closing_time,Bağlanış vaxtı
+average_order,Orta sifariş
+Confirm Password,Şifrəni təsdiqlə
+Server: {0},Xidmətçi: {0}
+authorization_code,Avtorizasiya kodu
+Prevent,Qarşısını al
+users,İstifadəçilər
+set_warehouse,Anbar təyin et
+Earn,Qazan
+Execute,İcra et
+Urgent,Təcili
+Address Title,Ünvan başlığı
+Enable Auto-Add,Avto-əlavəni aktivləşdir
+Shown,Göstərilib
+Eject,Çıxar
+remember_me,Məni xatırla
+Large,Böyük
+Middle,Orta
+Respond,Cavab ver
+Observe,Müşahidə et
+prep_time,Hazırlanma vaxtı
+Test,Test et
+Above,Yuxarıda
+Draft invoice loaded successfully,Qaralama faktura uğurla yükləndi
+first_transaction,Birinci əməliyyat
+Sail,Üz
+Customer Type,Müştəri növü
+Unable to load data,Məlumat yüklənə bilmədi
+Alerts,Xəbərdarlıqlar
+Climb,Dırman
+Change Amount,Qalıq məbləği
+{0} total,{0} cəm
+Length,Uzunluq
+Pattern,Model
+Partial payment,Qismən ödəniş
+pricing_rules,Qiymət qaydaları
+Molecule,Molekul
+auto_apply,Avtomatik tətbiq
+client_error,Müştəri xətası
+This item is out of stock in all warehouses,Bu məhsul bütün anbarlarda stokda yoxdur
+Close your shift first to save all transactions properly,Bütün əməliyyatları düzgün saxlamaq üçün əvvəlcə směnınızı bağlayın
+Failed to load partial payments,Qismən ödənişlər yüklənərkən uğursuz oldu
+Process Payment,Ödənişi emal et
+Access your point of sale system,Satış nöqtəsi sisteminizə daxil olun
+Delivery Date,Çatdırılma tarixi
+add_user,İstifadəçi əlavə et
+Congress,Konqres
+{0} items found,{0} məhsul tapıldı
+Total Tax,Ümumi vergi
+Skin,Dəri
+Leverage,İstifadə et
+No transactions found,Əməliyyat tapılmadı
+permission_error,İcazə xətası
+No stock available,Stok mövcud deyil
+minimum_cart_amount,Minimum səbət məbləği
+Cannot process return for this invoice,Bu faktura üçün qaytarma emal edilə bilməz
+Customer Details,Müştəri detalları
+Unable to connect to server. Check your internet connection.,Serverə qoşulmaq mümkün olmadı. İnternet bağlantınızı yoxlayın.
+"4. Click &lt;strong&gt;""Create""&lt;/strong&gt;","4. &lt;strong&gt;""Yarat""&lt;/strong&gt; düyməsini klikləyin"
+Beside,Yanında
+You don't have permission to void this invoice,Bu fakturanı ləğv etmək üçün icazəniz yoxdur
+Complete,Tamamla
+Certificate Status,Sertifikat statusu
+Filter,Filtr
+POS is offline without cached data. Please connect to sync.,POS keşlənmiş məlumat olmadan oflayndır. Zəhmət olmasa sinxronizasiya üçün qoşulun.
+Active Only,Yalnız aktiv
+full_name,Tam ad
+Archive,Arxiv
+Cell,Hüceyrə
+min_value,Ən az {min} olmalıdır
+Area,Sahə
+Save Changes?,Dəyişiklikləri saxla?
+Preserve,Qoru
+Case,Hal
+Check stock availability,Stok mövcudluğunu yoxla
+Clear all,Hamısını təmizlə
+Escalator,Eskalator
+Field,Xana
+Reconnect,Yenidən qoşul
+Basic,Əsas
+{0} item(s),{0} məhsul
+Show Customer Balance,Müştəri balansını göstər
+Language,Dil
+discount_configuration,Endirim konfiqurasiyası
+Used,İstifadə edilib
+last_week,Keçən həftə
+<strong>Warehouse:</strong> {0},<strong>Anbar:</strong> {0}
+download_invoice,Fakturanı yüklə
+Measure,Ölç
+Tunnel,Tunel
+Strategy,Strategiya
+Strong,Güclü
+Current Status,Cari status
+New Password,Yeni şifrə
+Failed to apply offer,Təklif tətbiq edilərkən uğursuz oldu
+Pause,Fasilə ver
+Rip,Yırt
+Enabled,Aktivdir
+Page,Səhifə
+Shut,Bağla
+(Max Discount: {0}),(Maks endirim: {0})
+primary_contact,Əsas əlaqə
+Enter,Daxil ol
+session_expired,Sessiya vaxtı bitdi
+payment_entry,Ödəniş daxilolması
+expiry_month,Bitmə ayı
+write_off_amount,Silinmiş məbləğ
+Examine,Yoxla
+Postal Code,Poçt kodu
+Item already in cart,Məhsul artıq səbətdədir
+max_length,Ən çox {max} simvol ola bilər
+or,və ya
+opening_time,Açılış vaxtı
+Database error,Verilənlər bazası xətası
+Pricing Error,Qiymət Xətası
+Gadget,Qadget
+Reduce,Azalt
+min_qty,Min miqdar
+Payment,Ödəniş
+Times Used,İstifadə sayı
+done,Hazır
+Unit,Vahid
+Statistics,Statistika
+shift_details,Směna detalları
+Lips,Dodaqlar
+Delayed,Gecikmiş
+Pack,Paketlə
+Failed to create coupon,Kupon yaradılmadı
+Launch,Başlat
+Sales by Category,Kateqoriyaya görə satışlar
+Tissue,Doku
+Use,İstifadə et
+Outstanding,Qalıq
+Brain,Beyin
+Exchange,Mübadilə
+Deleting draft...,Qaralama silinir...
+stock_sync_description,Fon rejimində serverdən stok miqdarlarını dövri sinxronlaşdırın (Web Worker-də işləyir)
+"Expected: &lt;span class=""font-medium""&gt;{0}&lt;/span&gt;","Gözlənilən: &lt;span class=""font-medium""&gt;{0}&lt;/span&gt;"
+Cash Shortage,Nağd çatışmazlığı
+Down Payment,İlkin ödəniş
+discard_changes,Dəyişiklikləri at
+All items removed from cart,Bütün məhsullar səbətdən çıxarıldı
+"2. Click &lt;strong&gt;""Make Variants""&lt;strong&gt; button","2. &lt;strong&gt;""Variant yarat""&lt;/strong&gt; düyməsini klikləyin"
+Fist,Dəstə
+Select items to start or choose a quick action,Başlamaq üçün məhsullar seçin və ya sürətli əməliyyat seçin
+Throat,Boğaz
+Muscle,Əzələ
+Pointed,Kəskin
+selling_price_list,Satış qiyməti siyahısı
+bank_payment,Bank ödənişi
+Foundation,Baza
+Cover,Ört
+Nucleus,Nüvə
+export_customers,Müştəriləri ixrac et
+Crate,Konteyner
+Current Discount:,Cari endirim:
+This Year,Bu il
+Profit,Mənfəət
+Custom Instructions,Xüsusi təlimatlar
+Volcano,Vulkan
+Library,Kitabxana
+Cart does not contain eligible items for this offer,Səbət bu təklif üçün uyğun məhsullar ehtiva etmir
+Tax Report,Vergi hesabatı
+Paused,Fasilə verilib
+invalid_date,Yanlış tarix
+Order Received,Sifariş Qəbul Edildi
+Export Report,Hesabat ixrac et
+These invoices will be submitted when you,Bu fakturalar siz göndəriləcək
+Loyalty Payment,Loyallıq ödənişi
+Select or create customer,Müştəri seç və ya yarat
+Return Item,Məhsulu qaytar
+Customer Search,Müştəri axtarışı
+Reserved Quantity,Rezerv edilmiş miqdar
+Thick,Qalın
+Overlook,Nəzərdən qaçır
+Under,Altında
+Account,Hesab
+Module,Modul
+<strong>Status:</strong> Running,<strong>Status:</strong> İşləyir
+Credit Sale,Kredit satışı
+Delivery,Çatdırılma
+Return from Invoice {0},{0} Fakturadan Qaytarma
+brand,Brend
+Failed to update coupon,Kupon yenilənmədi
+Answer,Cavab ver
+Extent,Həcm
+submitted,Göndərilib
++ Add Payment,+ Ödəniş əlavə et
+Run Away,Qaç
+Issue,Problem
+Fully Paid,Tam ödənilib
+Balance Amount,Balans məbləği
+Inventory Report,İnventar hesabatı
+Range,Aralıq
+Crooked,Əyri
+Valid From,Keçərli başlanğıc
+Automatically add items to cart when pressing Enter in search,Axtarışda Enter basdıqda məhsulları avtomatik səbətə əlavə et
+{0}: maximum {1},{0}: maksimum {1}
+Extract,Çıxar
+Invoice loaded to cart for editing,Faktura redaktə üçün səbətə yükləndi
+Short URL copied,Qısa URL kopyalandı
+Customer Report,Müştəri hesabatı
+sous_chef,Baş aşpaz
+Customer deleted successfully,Müştəri uğurla silindi
+confirm_save,Saxlamaq istədiyinizə əminsiniz?
+Stop,Dayan
+validation_error,Təsdiqləmə xətası
+Theme Settings,Tema ayarları
+drafts,Qaralamalar
+Non-cash payments,Nağd olmayan ödənişlər
+total_returns,Ümumi qaytarma
+Can,Qutu
+Saved Filters,Saxlanmış filtrlər
+Limit,Məhdudlaşdır
+allow_edit_discount,Endirim redaktəsinə icazə ver
+no_promotions,Aksiya tapılmadı
+You have unsaved changes,Saxlanmamış dəyişiklikləriniz var
+Remember,Xatırla
+Payment Date,Ödəniş tarixi
+theme,Tema
+Select Customer Group,Müştəri Qrupu Seç
+Practice,Məşq et
+By,Yanında
+From,Başlanğıc
+down_payment,İlkin ödəniş
+Ditch,Xəndək
+Slice,Dil
+Tax Included,Vergi Daxil
+serial_numbers,Seriya nömrələri
+offline_settings,Oflayn ayarları
+user_type,İstifadəçi növü
+Record,Yazı
+How often to check server for stock updates (minimum 10 seconds),Serverdə stok yeniləmələrini yoxlamaq tezliyi (minimum 10 saniyə)
+insufficient_stock,Yetərsiz stok
+item_details,Məhsul detalları
+this_quarter,Bu rüb
+Procedure,Prosedur
+Hardware Settings,Hardware ayarları
+Fly,Uç
+subtotal_discount,Aralıq cəm endirim
+Snap,Qır
+Mountain,Dağ
+Stock unit,Stok vahidi
+Drop,Düş
+Item,Məhsul
+Discount:,Endirim:
+Payment History,Ödəniş tarixçəsi
+None,Heç biri
+order_not_found,Sifariş tapılmadı
+Show Less,Daha az göstər
+Invalid,Etibarsız
+card_number,Kart nömrəsi
+email_invoice,Fakturanı göndər
+printer_settings,Printer ayarları
+Failed to load invoice,Faktura yüklənərkən uğursuz oldu
+Secure,Təhlükəsizləşdir
+On,Açıq
+courses,Kurslar
+connection_restored,Bağlantı bərpa edildi
+No payment methods configured for this POS Profile,Bu POS Profili üçün ödəniş metodları konfiqurasiya edilməyib
+Duplicate Entry,Təkrar giriş
+Sink,Bat
+User Summary,İstifadəçi xülasəsi
+Circular,Dairəvi
+Show kitchen orders display for prepared items,Hazırlanan məhsullar üçün mətbəx sifariş ekranını göstər
+Description,Təsvir
+Type to search invoices...,Faktura axtarmaq üçün yazın...
+This Week,Bu həftə
+Unlocked,Kilid açılıb
+Quick Sale,Sürətli satış
+Email Address,E-poçt ünvanı
+Synced,Sinxronizasiya edildi
+partial_payment,Qismən ödəniş
+Hole,Deşik
+invoices,Fakturalar
+Default Warehouse,Standart anbar
+Short,Qısa
+3. Select attribute combinations,3. Atribut kombinasiyalarını seçin
+coupon_used,Kupon artıq istifadə edilib
+Onto,Üstünə
+No search results,Axtarış nəticəsi yoxdur
+Halt,Dayan
+Template has no variants,Şablonun variantı yoxdur
+Approach,Yaxınlaş
+dashboard,İdarə paneli
+lock_timeout,Kilidləmə vaxtı
+one_use_per_customer,Hər müştəri yalnız bir dəfə
+Online,Onlayn
+reserved_qty,Rezerv edilmiş
+Place,Yer
+Please try again,"Zəhmət olmasa, yenidən cəhd edin"
+standing_instruction,Daimi təlimat
+Select UOM,ÖV Seç
+bank_name,Bank adı
+Dice,Doğra
+Collapse,Yığ
+update_reserved_qty,Rezerv miqdarı yenilə
+Open,Aç
+Analyze,Təhlil et
+Heart,Ürək
+"2. Click &lt;strong&gt;""Make Variants""&lt;/strong&gt; button","2. &lt;strong&gt;""Variant yarat""&lt;/strong&gt; düyməsini klikləyin"
+actual_cash,Faktiki pul
+You will be logged out of POS Next,POS Next-dən çıxış ediləcək
+Dislike,Bəyənmə
+Payment completed for invoice {0},{0} fakturası üçün ödəniş tamamlandı
+From Date,Başlanğıc tarixi
+Please enter valid credentials,"Zəhmət olmasa, etibarlı səlahiyyətlər daxil edin"
+Gulf,Körfəz
+Damaged Goods,Zədələnmiş mallar
+Color,Rəng
+Lead,Rəhbərlik et
+Go In,Daxil ol
+Dance,Rəqs et
+Operate,İdarə et
+No more items to load,Yüklənəcək daha məhsul yoxdur
+Cure,Müalicə et
+payment_history,Ödəniş tarixçəsi
+start_time,Başlanğıc vaxtı
+Turn,Dön
+User Interface,İstifadəçi interfeysi
+Tabs,Tablar
+Coming soon,Tezliklə
+Failed to load coupons,Kuponlar yüklənmədi
+Running,İşləyir
+Delivery Address,Çatdırılma ünvanı
+Some data may not be available offline,Bəzi məlumatlar oflayn mövcud olmaya bilər
+Sport,İdman
+Backup Settings,Backup ayarları
+Invoice Status,Faktura statusu
+Delete Item,Məhsulu sil
+Custom,Xüsusi
+Jump,Tullan
+Add another...,Digər əlavə et...
+filter_by_item,Məhsula görə filtrlə
+Monthly Sales,Aylıq satışlar
+Available,Mövcud
+Stock Available,Stok mövcuddur
+Label,Etiket
+Sync,Sinxronizasiya
+Summary,Xülasə
+Failed to delete coupon,Kupon silinmədi
+Jar,Banka
+choose_promotion,"Siyahıdan aksiya seçib baxın və redaktə edin, və ya yeni yaradın"
+top_selling,Ən çox satılan
+Added to Customer Credit,Müştəri kreditinə əlavə edildi
+stock_reconciliation,Stok razılaşdırması
+stock_validation_policy,Stok təsdiqləmə siyasəti
+online_order,Onlayn sifariş
+Agenda,Gündəlik
+Payment Error,Ödəniş Xətası
+Expand,Genişləndir
+Down,Aşağı
+Sheet,Vərəq
+Try,Cəhd et
+Stock,Stok
+payments,Ödənişlər
+invalid_amount,Yanlış məbləğ
+Upgrade,Yükselt
+Multiple Payments,Çoxlu ödənişlər
+Flag,Bayraq
+Card Payment,Kart ödənişi
+Sort By,Sırala
+Sales Return,Satış qaytarması
+storage_usage,Yaddaş istifadəsi
+coupon_code_based,Kupon kodu əsaslı
+Recollect,Xatırla
+Vessel,Gəmi
+Enable Kitchen Display,Mətbəx ekranını aktivləşdir
+payment_method,Ödəniş üsulu
+Actual Cash,Faktiki nağd
+Ceiling,Tavan
+"To print without confirmation dialogs, generate a signing certificate and install it on each POS machine.",Təsdiq dialoqları olmadan çap etmək üçün imzalama sertifikatı yaradın və hər POS maşınında quraşdırın.
+payment_entries,Ödəniş daxilolmaları
+Dashboard,İdarə paneli
+Bottom,Alt
+Manner,Qayda
+sms_settings,SMS ayarları
+Failed to load item groups,Məhsul qrupları yüklənərkən uğursuz oldu
+website_user,Veb sayt istifadəçisi
+Steer,İdarə et
+Order ready,Sifariş hazırdır
+projected,Proqnozlaşdırılmış
+Jug,Kuvshin
+Wall,Divar
+Cannot verify password offline. No cached credentials available.,Oflayn rejimdə şifrə yoxlana bilməz. Keşlənmiş səlahiyyət yoxdur.
+form_settings,Forma ayarları
+View and update coupon information,Kupon məlumatlarına bax və yenilə
+Heavy,Ağır
+{0} selected,{0} seçilib
+Promotion Status,Aksiya statusu
+Weekly Sales,Həftəlik satışlar
+Class,Sinif
+draft_invoices,Qaralama fakturalar
+Customer {0} created successfully,{0} müştərisi uğurla yaradıldı
+Solution,Həll
+leaderboard,Lider lövhəsi
+wire_transfer,Bank köçürməsi
+Cost,Maya
+Widget,Vidjet
+Stock Synchronization,Stok sinxronizasiyası
+Server error,Server xətası
+Cancel,İmtina et
+Perceive,Qəbul et
+network_unavailable,Şəbəkə mövcud deyil
+Loyalty Settings,Loyallıq ayarları
+Source Warehouse,Mənbə anbarı
+data_validation_failed,Məlumat təsdiqləməsi uğursuz oldu
+Show More,Daha çox göstər
+Straight,Düz
+Added {0} items to tab. Total: {1},{0} məhsul hesaba əlavə edildi. Cəm: {1}
+Invalid code,Etibarsız kod
+Total Qty:,Ümumi Miqdar:
+last_login,Son giriş
+Elevator,Lift
+Overview,Ümumi baxış
+Sign In,Daxil ol
+Payments,Ödənişlər
+Jaw,Çənə
+Security Deposit,Təhlükəsizlik depoziti
+Wrong Item,Yanlış məhsul
+Company Settings,Şirkət ayarları
+Pull,Çək
+To,Son
+Help,Kömək et
+Unsaved Changes,Saxlanmamış dəyişikliklər
+terms_of_service,Xidmət şərtləri
+pricing_rule,Qiymət qaydası
+&lt;strong&gt;{0}&lt;/strong&gt; item(s) selected,&lt;strong&gt;{0}&lt;/strong&gt; məhsul seçilib
+Damage,Ziyan
+{0}m,{0}d
+Stock Level,Stok səviyyəsi
+Coupon created successfully,Kupon uğurla yaradıldı
+Feature,Funksiya
+Support,Dəstəklə
+Billing Address,Faktura ünvanı
+Secured,Təhlükəsiz
+Without,Siz
+You don't have permission to create coupons,Kupon yaratmaq üçün icazəniz yoxdur
+Route,Marşrut
+Operating System,Əməliyyat sistemi
+pattern,Yanlış format
+Narrow,Dar
+Ahead,Qabaqda
+generating,Generasiya edilir...
+Other,Digər
+Failed to save cart,Səbət saxlanarkən uğursuz oldu
+Lot,Partiya
+Printing...,Çap edilir...
+rush,Təcili
+Lengthen,Uzat
+No variants found,Variant tapılmadı
+card_holder,Kart sahibi
+Message,Mesaj
+Partial Return,Qismən qaytarma
+Type to search items...,Məhsul axtarmaq üçün yazın...
+Relax,Rahatla
+last_order,Son sifariş
+Categories,Kateqoriyalar
+Empty Cart,Boş səbət
+Customer {0} updated successfully,{0} müştərisi uğurla yeniləndi
+Track kitchen orders in real-time,Mətbəx sifarişlərini real vaxtda izləyin
+online_payment,Onlayn ödəniş
+Standard,Standart
+filter_by_date,Tarixə görə filtrlə
+Cut,Kəs
+Customer credit balance,Müştəri kredit balansı
+card_payment,Kart ödənişi
+Setting,Ayar
+Exploit,İstifadə et
+Sales by Payment Method,Ödəniş metoduna görə satışlar
+additional_items,Əlavə məhsullar
+Basic Information,Əsas məlumat
+Fashion,Moda
+Add items to your cart to see eligible offers,Uyğun təklifləri görmək üçün səbətə məhsul əlavə edin
+Manufacturing Date,İstehsal tarixi
+Opening Shift,Açılış směnası
+badges,Nişanlar
+additional_discount,Əlavə endirim
+transaction,Əməliyyat
+<strong>{0}</strong> of <strong>{1}</strong> invoice(s),<strong>{0}</strong> / <strong>{1}</strong> faktura
+stock_lookup,Stok axtarışı
+working_offline,Oflayn rejimdə işləyir
+Notification Settings,Bildiriş ayarları
+Delete Invoice,Fakturanı sil
+Vast,Geniş
+cash_payment,Nağd ödəniş
+valid_from,Keçərli başlanğıc
+no_orders,Sifariş yoxdur
+Draft invoice deleted,Qaralama faktura silindi
+Customer Credit:,Müştəri krediti:
+Act,Hərəkət et
+{0} off {1},{1}-də {0} endirim
+{0} ({1}) added to cart,{0} ({1}) səbətə əlavə edildi
+uncleared,Təmizlənməyib
+Mode,Rejim
+Report,Hesabat
+Begin,Başla
+Tags,Etiketlər
+You are offline,Oflaynsınız
+Failed to update customer,Müştəri yenilənərkən uğursuz oldu
+special_instructions,Xüsusi təlimatlar
+Boost,Artır
+Announcement,Elan
+offline_data,Oflayn məlumatlar
+Evaluate,Qiymətləndir
+select_language,Dil seç
+Channel,Kanal
+Kidney,Böyrək
+new_customer,Yeni müştəri
+payment_processor,Ödəniş prosessoru
+Chest,Sinə
+Window,Pəncərə
+search_promotions,Aksiya axtar...
+Platform,Platforma
+Voice,Səs
+delivery,Çatdırılma
+select_print_heading,Çap başlığı seç
+Ground,Yer
+Abort,Ləğv et
+Active,Aktiv
+tables,Masalar
+Point of Sale,Satış Nöqtəsi
+Net Total,Xalis cəm
+Raise,Yuxarı qaldır
+Update,Yenilə
+Toe,Barmaq
+Music,Musiqi
+Well,Quyu
+check_date,Çek tarixi
+Walking Customer,Gəzən müştəri
+Default,Varsayılan
+Cannot delete coupon as it has been used {0} times,Kupon {0} dəfə istifadə edildiyinə görə silinə bilməz
+Invoice saved as draft successfully,Faktura uğurla qaralama kimi saxlandı
+Crush,Əz
+Recording,Yazı
+Subject,Mövzu
+Image,Şəkil
+Mouth,Ağız
+Look,Bax
+backup_settings,Ehtiyat nüsxəsi ayarları
+Ladder,Nərdivan
+This will also delete all associated pricing rules. This action cannot be undone.,"Bu, həmçinin bütün əlaqəli qiymət qaydalarını siləcək. Bu əməliyyat geri qaytarıla bilməz."
+Big,Böyük
+Purchase,Alış
+{0} returns,{0} qaytarma
+Way,Yol
+Placard,Plakat
+Our chefs are cooking your meal,Aşbazlarımız yeməyinizi bişirir
+Failed to update promotion status,Aksiya statusu yenilənərkən uğursuz oldu
