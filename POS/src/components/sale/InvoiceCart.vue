@@ -1485,6 +1485,7 @@ const emit = defineEmits([
 	"edit-item", // (item) - Open item edit dialog
 	"view-shift", // () - View current shift details
 	"show-drafts", // () - Show draft/held orders
+	"order-cancelled", // ({reason, reason_text, items}) - Order cancelled with reason
 	"show-history", // () - Show invoice history
 	"show-return", // () - Open return invoice dialog
 	"close-shift", // () - Close current shift

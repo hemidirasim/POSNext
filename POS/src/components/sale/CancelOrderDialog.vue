@@ -90,6 +90,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { Dialog, Button, FeatherIcon, FormControl } from 'frappe-ui'
+import { __ } from '@/utils/translation'
 
 const props = defineProps({
 	show: {
