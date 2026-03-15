@@ -3610,7 +3610,7 @@
     "No tables found in this area": "Bu ərazidə masa tapılmadı",
     "Non-cash payment must equal {0} exactly": "Nağd olmayan ödəniş dəqiq {0}-ə bərabər olmalıdır",
     "Not Found": "Tapılmadı",
-    "Not enough stock available in the warehouse.\n\nPlease reduce the quantity or check stock availability.": "Anbarda kifayət qədər stok yoxdur.\n\nZəhmət olmasa miqdarı azaldın və ya stok mövcudluğunu yoxlayın.",
+    "Not enough stock available in the warehouse.\n\nPlease reduce the quantity or check stock availability.": "Anbarda kifayət qədər stok yoxdur. Miqdarı azaldın və ya stok yoxlayın.",
     "Offer has been removed from cart": "Təklif səbətdən silindi",
     "Offers": "Təkliflər",
     "Offline invoice deleted successfully": "Oflayn faktura uğurla silindi",
@@ -3705,6 +3705,8 @@
     "{0} settings applied immediately": "{0} ayarlar dərhal tətbiq edildi",
     "{0} units available in ": "{0} vahid mövcuddur ",
     "{0}%": "{0}%",
-    "{0}: maximum {1}": "{0}: maksimum {1}"
+    "{0}: maximum {1}": "{0}: maksimum {1}",
+    "Table": "Masa",
+    "Pending": "Gözləyir"
   }
 }
