@@ -1058,3 +1058,25 @@ Not enough stock available in the warehouse. Miqdarı azaldın və ya stok yoxla
 Search for items across warehouses,Anbarlar üzrə məhsul axtar
 Search for an item,Məhsul axtar
 Start typing to see suggestions,Təkliflər görmək üçün yazmağa başlayın
+Open POS Shift,POS Směnası Aç
+Existing Shift Found,Mövcud Směna Tapıldı
+You have an open shift. Would you like to resume it or close it and open a new one?,Açıq směnınız var. Onu davam etdirmək yoxsa bağlayıb yenisini açmaq istəyirsiniz?
+Resume Shift,Směnı Davam Et
+Close & Open New,Bağla və Yeni Aç
+Stock Controls,Stok Nəzarətləri
+Warehouse Selection,Anbar Seçimi
+Stock Management,Stok İdarəsi
+Sales Management,Satış İdarəsi
+Sales Controls,Satış Nəzarətləri
+Save Changes,Dəyişiklikləri Saxla
+Pricing & Discounts,Qiymətləndirmə və Endirimlər
+Tax Inclusive,Vergi Daxil
+Use Percentage Discount,Faiz Endirimi İstifadə Et
+Allow Additional Discount,Əlavə Endirim İcazə Ver
+Allow Item Discount,Məhsul Endiriminə İcazə Ver
+Allow User To Edit Rate,İstifadəçiyə Qiymət Redaktəsinə İcazə Ver
+Sales Operations,Satış Əməliyyatları
+Allow Credit Sale,Kredit Satışına İcazə Ver
+Allow Return,Qaytarma İcazə Ver
+Allow Write Off Change,Qalıq Silinməsinə İcazə Ver
+Silent Print,Səssiz Çap

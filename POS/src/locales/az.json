@@ -3707,6 +3707,9 @@
     "{0}%": "{0}%",
     "{0}: maximum {1}": "{0}: maksimum {1}",
     "Table": "Masa",
-    "Pending": "Gözləyir"
+    "Pending": "Gözləyir",
+    "POS Profile": "POS Profili",
+    "Opened:": "Açılıb:",
+    "Note: When enabled, the system will allow sales even when stock quantity is zero or negative. This is useful for handling stock sync delays or backorders. All transactions are tracked in the stock ledger.": "Qeyd: Aktiv edildikdə, sistem stok miqdarı sıfır və ya mənfi olanda belə satışlara icazə verəcək. Bu, stok sinxronizasiya gecikmələri və ya sifarişlərin idarə edilməsi üçün faydalıdır. Bütün əməliyyatlar stok dəftərində izlənilir."
   }
 }
