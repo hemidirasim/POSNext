@@ -367,7 +367,8 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         invoice = frappe.new_doc("POS Invoice")
         invoice.restaurant_table = table_name
         invoice.pos_profile = pos_profile
-        invoice.posa_pos_opening_shift = pos_opening_shift  # Required for POS Invoice
+        invoice.posa_pos_opening_shift = pos_opening_shift  # POS Next custom field
+        invoice.pos_opening_entry = pos_opening_shift  # ERPNext standard field (required for validation)
         invoice.is_pos = 1
         invoice.update_stock = 1
         
