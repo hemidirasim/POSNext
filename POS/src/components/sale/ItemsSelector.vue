@@ -746,9 +746,9 @@ import LazyImage from "@/components/common/LazyImage.vue"
 import WarehouseAvailabilityDialog from "@/components/sale/WarehouseAvailabilityDialog.vue"
 import { useItemSearchStore } from "@/stores/itemSearch"
 import { usePOSSettingsStore } from "@/stores/posSettings"
-import { useCartStore } from "@/stores/posCart"
-import { useStock } from "@/composables/useStock"
-import { useDialogState } from "@/composables/useDialogState"
+import { usePOSCartStore } from "@/stores/posCart"
+import { useStock } from "@/composables/useStock.js"
+import { useDialogState } from "@/composables/useDialogState.js"
 import { useSearchInput } from "@/composables/useSearchInput"
 import { DEFAULT_CURRENCY, formatCurrency as formatCurrencyUtil } from "@/utils/currency"
 import { useToast } from "@/composables/useToast"
@@ -780,7 +780,7 @@ const emit = defineEmits(["item-selected", "change-table"])
 // Use composables
 const { getStockStatus } = useStock()
 const settingsStore = usePOSSettingsStore()
-const cartStore = useCartStore()
+const cartStore = usePOSCartStore()
 const { showError, showWarning } = useToast()
 const { isAnyDialogOpen } = useDialogState()
 

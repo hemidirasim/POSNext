@@ -1,4 +1,4 @@
-import { useDialog, useDialogState } from "@/composables/useDialogState"
+import { useDialog, useDialogState } from "@/composables/useDialogState.js"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 

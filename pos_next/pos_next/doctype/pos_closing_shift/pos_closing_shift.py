@@ -250,10 +250,11 @@ class POSClosingShift(Document):
             closing_entry.save()
             frappe.logger().info(f"POS Closing Entry saved: {closing_entry.name}")
             
-            # Submit
-            frappe.logger().info(f"Submitting POS Closing Entry {closing_entry.name}...")
-            closing_entry.submit()
-            frappe.logger().info(f"POS Closing Entry {closing_entry.name} submitted successfully")
+            # Submit - use db_set to avoid consolidate_pos_invoices which only works with POS Invoice
+            frappe.logger().info(f"Submitting POS Closing Entry {closing_entry.name} via db_set...")
+            closing_entry.db_set("docstatus", 1)
+            closing_entry.db_set("status", "Submitted")
+            frappe.logger().info(f"POS Closing Entry {closing_entry.name} submitted successfully via db_set")
             
             # Link to this closing shift
             try:

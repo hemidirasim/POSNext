@@ -1342,7 +1342,7 @@ import { FeatherIcon } from "frappe-ui";
 
 const log = logger.create("InvoiceCart");
 import { createResource } from "frappe-ui";
-import { call } from "@/utils/api";
+import { call } from "@/utils/apiWrapper";
 import { computed, onBeforeUnmount, onMounted, ref, watch, nextTick } from "vue";
 import EditItemDialog from "./EditItemDialog.vue";
 import CancelOrderDialog from "./CancelOrderDialog.vue";
