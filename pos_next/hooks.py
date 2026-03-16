@@ -337,3 +337,9 @@ scheduler_events = {
 
 
 website_route_rules = [{'from_route': '/pos/<path:app_path>', 'to_route': 'pos'},]
+
+# Override POS Closing Entry validation to support Sales Invoice
+# ---------------------------------------------------------------
+from pos_next.overrides.pos_closing_entry import custom_validate_pos_invoices
+from erpnext.accounts.doctype.pos_closing_entry.pos_closing_entry import POSClosingEntry
+POSClosingEntry.validate_pos_invoices = custom_validate_pos_invoices
