@@ -1311,7 +1311,8 @@ async function handleSendToKitchen() {
 			unsentItems,
 			cartStore.restaurantTable.name,
 			shiftStore.currentProfile?.name,
-			cartStore.customer?.name || cartStore.customer
+			cartStore.customer?.name || cartStore.customer,
+			shiftStore.currentShift?.name  // POS Opening Shift
 		);
 		
 		if (result && result.success) {

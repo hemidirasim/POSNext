@@ -123,19 +123,26 @@ export const useRestaurantStore = defineStore("restaurant", () => {
 	 * Merge new items to running tab
 	 * Returns which items were actually sent to kitchen (new/additional)
 	 */
-	async function mergeItemsToInvoice(invoiceName, items, tableName, posProfile, customer) {
+	async function mergeItemsToInvoice(invoiceName, items, tableName, posProfile, customer, posOpeningShift = null) {
 		if (!items?.length) return { success: true, sentItems: [] }
 		
 		try {
 			log.info(`Merging ${items.length} items to invoice: ${invoiceName || 'NEW'}`)
 			
-			const result = await call("pos_next.api.restaurant.merge_items_to_invoice", {
+			const params = {
 				invoice_name: invoiceName,
 				new_items: JSON.stringify(items),
 				table_name: tableName,
-			pos_profile: posProfile,
-			customer: customer
-			})
+				pos_profile: posProfile,
+				customer: customer
+			}
+			
+			// Add pos_opening_shift if provided (required for new invoices)
+			if (posOpeningShift) {
+				params.pos_opening_shift = posOpeningShift
+			}
+			
+			const result = await call("pos_next.api.restaurant.merge_items_to_invoice", params)
 			
 			if (result && result.success) {
 				// Update current invoice reference

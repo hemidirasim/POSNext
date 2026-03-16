@@ -286,7 +286,7 @@ def get_or_create_table_invoice(table_name, pos_profile, customer=None):
 
 
 @frappe.whitelist()
-def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile=None, customer=None):
+def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile=None, customer=None, pos_opening_shift=None):
     """
     Merge new items into existing invoice (Running Tab pattern).
     Only sends new/updated items to kitchen.
@@ -297,6 +297,7 @@ def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile
         table_name: Restaurant Table name (for new invoice)
         pos_profile: POS Profile name (required for new invoice)
         customer: Customer name (optional)
+        pos_opening_shift: POS Opening Shift name (required for new invoice)
     
     Returns:
         dict: { success, invoice_name, new_items_count, sent_items: [...] }
@@ -317,7 +318,7 @@ def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile
     for attempt in range(max_retries):
         try:
             return _merge_items_to_invoice_impl(
-                invoice_name, new_items, table_name, pos_profile, customer
+                invoice_name, new_items, table_name, pos_profile, customer, pos_opening_shift
             )
         except frappe.exceptions.TimestampMismatchError:
             # Document was modified by another request, retry
@@ -343,7 +344,7 @@ def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile
     return {"success": False, "message": _("Failed to update table after retries")}
 
 
-def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_profile=None, customer=None):
+def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_profile=None, customer=None, pos_opening_shift=None):
     """Internal implementation with retry support."""
     
     # Get or create invoice with lock
@@ -363,6 +364,7 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         invoice = frappe.new_doc("POS Invoice")
         invoice.restaurant_table = table_name
         invoice.pos_profile = pos_profile
+        invoice.posa_pos_opening_shift = pos_opening_shift  # Required for POS Invoice
         invoice.is_pos = 1
         invoice.update_stock = 1
         
