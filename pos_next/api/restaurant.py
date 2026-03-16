@@ -368,12 +368,23 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         invoice.restaurant_table = table_name
         invoice.pos_profile = pos_profile
         invoice.posa_pos_opening_shift = pos_opening_shift  # POS Next custom field
-        invoice.pos_opening_entry = pos_opening_shift  # ERPNext standard field (required for validation)
+        
+        # Try to get linked POS Opening Entry from shift (if field exists)
+        pos_entry_name = pos_opening_shift
+        if pos_opening_shift and frappe.db.exists("POS Opening Shift", pos_opening_shift):
+            try:
+                shift_doc = frappe.get_doc("POS Opening Shift", pos_opening_shift)
+                if hasattr(shift_doc, 'pos_opening_entry') and shift_doc.pos_opening_entry:
+                    pos_entry_name = shift_doc.pos_opening_entry
+            except:
+                pass
+        
+        invoice.pos_opening_entry = pos_entry_name  # ERPNext standard field
         invoice.is_pos = 1
         invoice.update_stock = 1
         
         # DEBUG: Verify fields are set
-        frappe.log_error(f"DEBUG CREATE: pos_opening_shift={pos_opening_shift}, invoice.pos_opening_entry={invoice.pos_opening_entry}", "POS Debug")
+        frappe.log_error(f"DEBUG CREATE: pos_opening_shift={pos_opening_shift}, pos_entry_name={pos_entry_name}, invoice.pos_opening_entry={invoice.pos_opening_entry}", "POS Debug")
         
         # Set required fields from POS Profile
         invoice.company = profile.company

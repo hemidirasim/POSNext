@@ -30,8 +30,8 @@ class POSOpeningShift(Document):
     def create_pos_opening_entry(self):
         """Create ERPNext standard POS Opening Entry for validation compatibility"""
         try:
-            # Check if already exists
-            if self.pos_opening_entry:
+            # Check if field exists and already has value
+            if hasattr(self, 'pos_opening_entry') and self.pos_opening_entry:
                 return
             
             # Create POS Opening Entry (ERPNext standard)

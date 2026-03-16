@@ -87,6 +87,9 @@ class POSClosingShift(Document):
 
     def close_pos_opening_entry(self, opening_shift):
         """Close the linked ERPNext standard POS Opening Entry"""
+        # Check if field exists
+        if not hasattr(opening_shift, 'pos_opening_entry'):
+            return
         if not opening_shift.pos_opening_entry:
             return
         
