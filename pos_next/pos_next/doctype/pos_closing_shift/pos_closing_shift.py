@@ -156,7 +156,8 @@ class POSClosingShift(Document):
                         "pos_invoice": invoice_name,      # Required for ERPNext validation
                         "sales_invoice": invoice_name,    # Also set for compatibility
                         "posting_date": txn.posting_date,
-                        "grand_total": txn.grand_total
+                        "grand_total": txn.grand_total,
+                        "customer": txn.customer if hasattr(txn, 'customer') else None
                     })
             
             closing_entry.grand_total = self.grand_total
