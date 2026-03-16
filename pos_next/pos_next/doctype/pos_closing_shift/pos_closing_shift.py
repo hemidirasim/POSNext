@@ -151,13 +151,26 @@ class POSClosingShift(Document):
                     
                 if invoice_name not in seen_invoices:
                     seen_invoices.add(invoice_name)
+                    
+                    # Get customer - mandatory field for ERPNext
+                    customer = txn.customer if hasattr(txn, 'customer') and txn.customer else None
+                    if not customer:
+                        # Fetch customer from the actual invoice
+                        customer = frappe.db.get_value("Sales Invoice", invoice_name, "customer")
+                    if not customer:
+                        # Use default customer from POS Profile
+                        customer = frappe.db.get_value("POS Profile", self.pos_profile, "customer")
+                    if not customer:
+                        # Fallback to Walk-in Customer
+                        customer = "Walk-in Customer"
+                    
                     # ERPNext validates pos_invoice field, not sales_invoice!
                     closing_entry.append("pos_transactions", {
                         "pos_invoice": invoice_name,      # Required for ERPNext validation
                         "sales_invoice": invoice_name,    # Also set for compatibility
                         "posting_date": txn.posting_date,
                         "grand_total": txn.grand_total,
-                        "customer": txn.customer if hasattr(txn, 'customer') else None
+                        "customer": customer              # Never None!
                     })
             
             closing_entry.grand_total = self.grand_total
