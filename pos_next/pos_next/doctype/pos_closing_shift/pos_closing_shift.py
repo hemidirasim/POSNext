@@ -75,13 +75,29 @@ class POSClosingShift(Document):
             d.difference = +flt(d.closing_amount, precision) - flt(d.expected_amount, precision)
 
     def on_submit(self):
-        opening_entry = frappe.get_doc("POS Opening Shift", self.pos_opening_shift)
-        opening_entry.pos_closing_shift = self.name
-        opening_entry.set_status()
+        opening_shift = frappe.get_doc("POS Opening Shift", self.pos_opening_shift)
+        opening_shift.pos_closing_shift = self.name
+        opening_shift.set_status()
         self.delete_draft_invoices()
-        opening_entry.save()
+        opening_shift.save()
         # link invoices with this closing shift so ERPNext can block edits
         self._set_closing_entry_invoices()
+        # Close linked POS Opening Entry (ERPNext standard)
+        self.close_pos_opening_entry(opening_shift)
+
+    def close_pos_opening_entry(self, opening_shift):
+        """Close the linked ERPNext standard POS Opening Entry"""
+        if not opening_shift.pos_opening_entry:
+            return
+        
+        try:
+            entry = frappe.get_doc("POS Opening Entry", opening_shift.pos_opening_entry)
+            if entry.docstatus == 1 and not entry.period_end_date:
+                entry.period_end_date = self.period_end_date
+                entry.save(ignore_permissions=True)
+                frappe.logger().info(f"Closed POS Opening Entry {entry.name}")
+        except Exception as e:
+            frappe.log_error(f"Failed to close POS Opening Entry for Shift {opening_shift.name}: {str(e)}", "POS Shift Sync")
 
     def on_cancel(self):
         if frappe.db.exists("POS Opening Shift", self.pos_opening_shift):

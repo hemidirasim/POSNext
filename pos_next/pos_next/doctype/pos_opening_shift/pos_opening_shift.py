@@ -5,7 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
-from frappe.utils import cint
+from frappe.utils import cint, flt
 from frappe.model.document import Document
 
 
@@ -25,6 +25,40 @@ class POSOpeningShift(Document):
 
     def on_submit(self):
         self.set_status(update=True)
+        self.create_pos_opening_entry()
+
+    def create_pos_opening_entry(self):
+        """Create ERPNext standard POS Opening Entry for validation compatibility"""
+        try:
+            # Check if already exists
+            if self.pos_opening_entry:
+                return
+            
+            # Create POS Opening Entry (ERPNext standard)
+            entry = frappe.new_doc("POS Opening Entry")
+            entry.pos_profile = self.pos_profile
+            entry.user = self.user
+            entry.company = self.company
+            entry.period_start_date = self.period_start_date
+            
+            # Add opening balances from balance_details
+            for detail in self.balance_details:
+                entry.append("balance_details", {
+                    "mode_of_payment": detail.mode_of_payment,
+                    "opening_amount": flt(detail.amount)
+                })
+            
+            entry.save(ignore_permissions=True)
+            entry.submit()
+            
+            # Link to this shift
+            self.db_set("pos_opening_entry", entry.name)
+            
+            frappe.logger().info(f"Created POS Opening Entry {entry.name} for Shift {self.name}")
+            
+        except Exception as e:
+            frappe.log_error(f"Failed to create POS Opening Entry for Shift {self.name}: {str(e)}", "POS Shift Sync")
+            # Don't throw error - allow shift to work without entry
 
     def set_status(self, update=False):
         """Set the status of the opening shift"""
