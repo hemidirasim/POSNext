@@ -287,17 +287,7 @@
 						>
 							<!-- Table Selector Modal -->
 							<template v-if="showTableSelector">
-								<div class="flex flex-col h-full">
-									<div class="p-3 bg-amber-50 border-b border-amber-200 flex items-center justify-between">
-										<h3 class="text-sm font-bold text-amber-900">{{ __('Select Table') }}</h3>
-										<Button v-if="cartStore.restaurantTable" variant="ghost" size="sm" @click="closeTableSelector">
-											{{ __('Cancel') }}
-										</Button>
-									</div>
-									<div class="flex-1 overflow-auto">
-										<TableSelector @table-selected="onTableSelected" />
-									</div>
-								</div>
+								<TableSelector @table-selected="onTableSelected" />
 							</template>
 							
 							<template v-else>
