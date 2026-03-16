@@ -263,6 +263,17 @@ class POSClosingShift(Document):
             except Exception as link_error:
                 frappe.logger().warning(f"Could not link pos_closing_entry: {link_error}")
             
+            # Update POS Opening Entry status and link
+            try:
+                if opening_shift and opening_shift.pos_opening_entry:
+                    frappe.db.set_value("POS Opening Entry", opening_shift.pos_opening_entry, {
+                        "pos_closing_entry": closing_entry.name,
+                        "status": "Closed"
+                    })
+                    frappe.logger().info(f"Updated POS Opening Entry {opening_shift.pos_opening_entry} status to Closed")
+            except Exception as opening_error:
+                frappe.logger().warning(f"Could not update POS Opening Entry: {opening_error}")
+            
             frappe.logger().info(f"✅ Successfully created POS Closing Entry {closing_entry.name} for Shift {self.name}")
             
         except Exception as e:
