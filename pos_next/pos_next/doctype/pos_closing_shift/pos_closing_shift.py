@@ -127,23 +127,30 @@ class POSClosingShift(Document):
             closing_entry.user = self.user
             closing_entry.company = self.company
             
-            # Add payment reconciliation from closing shift
+            # Add payment reconciliation from closing shift (ensure unique modes)
+            seen_modes = set()
             for payment in self.payment_reconciliation:
-                closing_entry.append("payment_reconciliation", {
-                    "mode_of_payment": payment.mode_of_payment,
-                    "opening_amount": payment.opening_amount,
-                    "expected_amount": payment.expected_amount,
-                    "closing_amount": payment.closing_amount or payment.expected_amount,
-                    "difference": payment.difference
-                })
+                if payment.mode_of_payment not in seen_modes:
+                    seen_modes.add(payment.mode_of_payment)
+                    closing_entry.append("payment_reconciliation", {
+                        "mode_of_payment": payment.mode_of_payment,
+                        "opening_amount": payment.opening_amount,
+                        "expected_amount": payment.expected_amount,
+                        "closing_amount": payment.closing_amount or payment.expected_amount,
+                        "difference": payment.difference
+                    })
             
-            # Add POS transactions
+            # Add POS transactions (ensure unique invoices)
+            seen_invoices = set()
             for txn in self.pos_transactions:
-                closing_entry.append("pos_transactions", {
-                    "sales_invoice": txn.sales_invoice or txn.pos_invoice,
-                    "posting_date": txn.posting_date,
-                    "grand_total": txn.grand_total
-                })
+                invoice_name = txn.sales_invoice or txn.pos_invoice
+                if invoice_name and invoice_name not in seen_invoices:
+                    seen_invoices.add(invoice_name)
+                    closing_entry.append("pos_transactions", {
+                        "sales_invoice": invoice_name,
+                        "posting_date": txn.posting_date,
+                        "grand_total": txn.grand_total
+                    })
             
             closing_entry.grand_total = self.grand_total
             closing_entry.net_total = self.net_total
