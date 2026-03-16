@@ -1304,17 +1304,22 @@ async function handleSendToKitchen() {
 		}
 		
 		console.log('[DEBUG] Unsent items:', unsentItems.length);
+		console.log('[DEBUG] shiftStore:', shiftStore);
 		console.log('[DEBUG] currentShift:', shiftStore.currentShift);
+		console.log('[DEBUG] currentShift keys:', shiftStore.currentShift ? Object.keys(shiftStore.currentShift) : 'null');
 		console.log('[DEBUG] currentShift.name:', shiftStore.currentShift?.name);
 		
 		// Use Running Tab API - merge items to existing invoice
+		const shiftName = shiftStore.currentShift?.name || shiftStore.currentShift?.shift_name || shiftStore.currentShift?.pos_opening_shift;
+		console.log('[DEBUG] Extracted shiftName:', shiftName);
+		
 		const result = await restaurantStore.mergeItemsToInvoice(
 			cartStore.serverInvoiceName,
 			unsentItems,
 			cartStore.restaurantTable.name,
 			shiftStore.currentProfile?.name,
 			cartStore.customer?.name || cartStore.customer,
-			shiftStore.currentShift?.name  // POS Opening Shift
+			shiftName  // POS Opening Shift
 		);
 		
 		if (result && result.success) {
