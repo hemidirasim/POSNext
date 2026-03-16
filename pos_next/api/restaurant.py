@@ -372,6 +372,9 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         invoice.is_pos = 1
         invoice.update_stock = 1
         
+        # DEBUG: Verify fields are set
+        frappe.log_error(f"DEBUG CREATE: pos_opening_shift={pos_opening_shift}, invoice.pos_opening_entry={invoice.pos_opening_entry}", "POS Debug")
+        
         # Set required fields from POS Profile
         invoice.company = profile.company
         invoice.customer = customer or profile.customer
@@ -517,7 +520,11 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     saved_restaurant_table = invoice.restaurant_table
     saved_kds_status = invoice.get('kds_status') or 'Pending'
     saved_pos_opening_entry = invoice.pos_opening_entry  # ERPNext standard field
+    saved_posa_shift = invoice.posa_pos_opening_shift  # POS Next field
     was_modified = saved_kds_status != 'Pending'
+    
+    # DEBUG: Log fields before set_missing_values
+    frappe.log_error(f"DEBUG BEFORE: pos_opening_entry={invoice.pos_opening_entry}, posa_shift={invoice.posa_pos_opening_shift}", "POS Debug")
     
     # Set missing values and calculate totals with error handling
     try:
@@ -543,6 +550,9 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     # Restore pos_opening_entry (ERPNext standard field required for validation)
     if saved_pos_opening_entry and not invoice.pos_opening_entry:
         invoice.pos_opening_entry = saved_pos_opening_entry
+    
+    # DEBUG: Log fields after restore
+    frappe.log_error(f"DEBUG AFTER: pos_opening_entry={invoice.pos_opening_entry}, posa_shift={invoice.posa_pos_opening_shift}", "POS Debug")
     
     # Reset kds_status to Pending for modified orders (or ensure it's set)
     if saved_kds_status != 'Pending':
