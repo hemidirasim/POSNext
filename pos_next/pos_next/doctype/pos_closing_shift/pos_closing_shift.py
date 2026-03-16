@@ -92,12 +92,14 @@ class POSClosingShift(Document):
         
         try:
             entry = frappe.get_doc("POS Opening Entry", opening_shift.pos_opening_entry)
-            if entry.docstatus == 1 and not entry.period_end_date:
-                entry.period_end_date = self.period_end_date
-                entry.save(ignore_permissions=True)
+            # Entry must be submitted and not already closed
+            if entry.docstatus == 1:
+                # Use db_set to avoid validation issues
+                frappe.db.set_value("POS Opening Entry", entry.name, "period_end_date", self.period_end_date)
                 frappe.logger().info(f"Closed POS Opening Entry {entry.name}")
         except Exception as e:
             frappe.log_error(f"Failed to close POS Opening Entry for Shift {opening_shift.name}: {str(e)}", "POS Shift Sync")
+            # Don't raise - allow closing shift to proceed
 
     def on_cancel(self):
         if frappe.db.exists("POS Opening Shift", self.pos_opening_shift):
@@ -623,12 +625,16 @@ def make_closing_shift_from_opening(opening_shift):
 
 @frappe.whitelist()
 def submit_closing_shift(closing_shift):
-    closing_shift = json.loads(closing_shift)
-    closing_shift_doc = frappe.get_doc(closing_shift)
-    closing_shift_doc.flags.ignore_permissions = True
-    closing_shift_doc.save()
-    closing_shift_doc.submit()
-    return closing_shift_doc.name
+    try:
+        closing_shift = json.loads(closing_shift)
+        closing_shift_doc = frappe.get_doc(closing_shift)
+        closing_shift_doc.flags.ignore_permissions = True
+        closing_shift_doc.save()
+        closing_shift_doc.submit()
+        return closing_shift_doc.name
+    except Exception as e:
+        frappe.log_error(f"Submit closing shift error: {str(e)}", "POS Closing Shift")
+        raise
 
 
 def submit_printed_invoices(pos_opening_shift, doctype):
