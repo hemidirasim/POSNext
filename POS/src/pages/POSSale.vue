@@ -390,6 +390,7 @@
 								@show-history="uiStore.showHistoryDialog = true"
 								@show-return="uiStore.showReturnDialog = true"
 								@close-shift="handleCloseShift()"
+								@order-cancelled="handleOrderCancelled"
 							/>
 						</div>
 					</keep-alive>
@@ -2425,6 +2426,31 @@ function confirmClearCart() {
 	previousCartHash = "";
 	uiStore.showClearCartDialog = false;
 	showSuccess(__("All items removed from cart"));
+}
+
+// Handle order cancelled - clear cart and reset table
+function handleOrderCancelled(cancelData) {
+	// Clear cart
+	cartStore.clearCart();
+	previousCartHash = "";
+	
+	// Clear table draft from localStorage
+	if (cartStore.restaurantTable) {
+		clearTableDraft(cartStore.restaurantTable.name);
+	}
+	
+	// Reset table selection and related state
+	cartStore.setRestaurantTable(null);
+	cartStore.serverInvoiceName = null;
+	restaurantStore.clearCurrentTableInvoice();
+	
+	// Remove last table from localStorage
+	localStorage.removeItem('pos_last_table');
+	
+	// Show table selector for new customer
+	uiStore.showTableSelector = true;
+	
+	console.log('[DEBUG] Order cancelled, cart and table cleared', cancelData);
 }
 
 async function handleOptionSelected(option) {
