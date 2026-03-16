@@ -1494,6 +1494,10 @@ const props = defineProps({
 		type: Array,
 		default: () => [],
 	},
+	table: {
+		type: String,
+		default: null,
+	},
 });
 
 /**

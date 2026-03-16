@@ -362,6 +362,7 @@
 								:currency="shiftStore.profileCurrency"
 								:applied-offers="cartStore.appliedOffers"
 								:warehouses="profileWarehouses"
+								:table="cartStore.restaurantTable?.name"
 								@update-quantity="cartStore.updateItemQuantity"
 								@remove-item="
 									(itemCode, uom) => cartStore.removeItem(itemCode, uom)
@@ -2430,19 +2431,28 @@ function confirmClearCart() {
 
 // Handle order cancelled - clear cart and reset table
 function handleOrderCancelled(cancelData) {
-	// Clear cart
+	console.log('[DEBUG] handleOrderCancelled START', cancelData);
+	
+	// Get table name BEFORE clearing cart (clearCart resets restaurantTable)
+	const tableName = cartStore.restaurantTable?.name;
+	console.log('[DEBUG] Table name before clear:', tableName);
+	
+	// Clear table draft from localStorage FIRST
+	if (tableName) {
+		clearTableDraft(tableName);
+		console.log('[DEBUG] Cleared table draft for:', tableName);
+	}
+	
+	// Clear cart (this also resets restaurantTable)
 	cartStore.clearCart();
 	previousCartHash = "";
-	
-	// Clear table draft from localStorage
-	if (cartStore.restaurantTable) {
-		clearTableDraft(cartStore.restaurantTable.name);
-	}
+	console.log('[DEBUG] Cart cleared');
 	
 	// Reset table selection and related state
 	cartStore.setRestaurantTable(null);
 	cartStore.serverInvoiceName = null;
 	restaurantStore.clearCurrentTableInvoice();
+	console.log('[DEBUG] Table state reset');
 	
 	// Remove last table from localStorage
 	localStorage.removeItem('pos_last_table');
@@ -2450,7 +2460,7 @@ function handleOrderCancelled(cancelData) {
 	// Show table selector for new customer
 	uiStore.showTableSelector = true;
 	
-	console.log('[DEBUG] Order cancelled, cart and table cleared', cancelData);
+	console.log('[DEBUG] handleOrderCancelled COMPLETE');
 }
 
 async function handleOptionSelected(option) {
