@@ -327,12 +327,18 @@ def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile
                 continue
             else:
                 return {"success": False, "message": _("Table is busy, please try again")}
+        except frappe.exceptions.ValidationError as e:
+            # Return validation errors clearly to frontend
+            frappe.log_error(f"ValidationError in merge_items_to_invoice: {str(e)}", "POS Restaurant")
+            return {"success": False, "message": str(e), "error_type": "validation"}
         except Exception as e:
             if attempt < max_retries - 1 and "Document has been modified" in str(e):
                 frappe.db.commit()
                 time.sleep(retry_delay)
                 continue
-            raise
+            # Log and return other errors
+            frappe.log_error(f"Error in merge_items_to_invoice: {str(e)}", "POS Restaurant")
+            return {"success": False, "message": str(e), "error_type": "exception"}
     
     return {"success": False, "message": _("Failed to update table after retries")}
 
@@ -538,7 +544,25 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
         invoice.kds_status = 'Pending'
     
     # Save invoice (draft)
-    invoice.save(ignore_permissions=True)
+    try:
+        invoice.save(ignore_permissions=True)
+    except frappe.exceptions.ValidationError as e:
+        error_msg = str(e)
+        frappe.log_error(f"Invoice save validation error: {error_msg}", "POS Restaurant")
+        return {
+            "success": False, 
+            "message": _("Validation error: {0}").format(error_msg),
+            "error_type": "validation",
+            "error_detail": error_msg
+        }
+    except Exception as e:
+        error_msg = str(e)
+        frappe.log_error(f"Invoice save error: {error_msg}", "POS Restaurant")
+        return {
+            "success": False, 
+            "message": _("Save error: {0}").format(error_msg),
+            "error_type": "save_error"
+        }
     
     # Notify KDS about new items
     if sent_items:
