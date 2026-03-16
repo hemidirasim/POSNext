@@ -34,6 +34,11 @@ class POSOpeningShift(Document):
             if hasattr(self, 'pos_opening_entry') and self.pos_opening_entry:
                 return
             
+            # Check if pos_opening_entry field exists in the doctype
+            if not frappe.db.has_column("POS Opening Shift", "pos_opening_entry"):
+                frappe.logger().debug("pos_opening_entry field does not exist in POS Opening Shift")
+                return
+            
             # Create POS Opening Entry (ERPNext standard)
             entry = frappe.new_doc("POS Opening Entry")
             entry.pos_profile = self.pos_profile
@@ -57,7 +62,7 @@ class POSOpeningShift(Document):
             frappe.logger().info(f"Created POS Opening Entry {entry.name} for Shift {self.name}")
             
         except Exception as e:
-            frappe.log_error(f"Failed to create POS Opening Entry for Shift {self.name}: {str(e)}", "POS Shift Sync")
+            frappe.log_error(f"Failed to create POS Opening Entry for Shift {self.name}: {str(e)}", "POS Opening Shift")
             # Don't throw error - allow shift to work without entry
 
     def set_status(self, update=False):

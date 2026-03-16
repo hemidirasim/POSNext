@@ -87,36 +87,49 @@ class POSClosingShift(Document):
 
     def close_pos_opening_entry(self, opening_shift):
         """Close the linked ERPNext standard POS Opening Entry and create Closing Entry"""
-        # Check if field exists
-        if not hasattr(opening_shift, 'pos_opening_entry'):
+        # Check if field exists in database
+        if not frappe.db.has_column("POS Opening Shift", "pos_opening_entry"):
             return
-        if not opening_shift.pos_opening_entry:
+        
+        # Get the pos_opening_entry value directly from database to ensure we have latest value
+        pos_opening_entry = frappe.db.get_value("POS Opening Shift", opening_shift.name, "pos_opening_entry")
+        if not pos_opening_entry:
+            frappe.logger().warning(f"POS Opening Shift {opening_shift.name} has no linked POS Opening Entry")
             return
         
         try:
             # 1. Close POS Opening Entry
-            entry = frappe.get_doc("POS Opening Entry", opening_shift.pos_opening_entry)
+            entry = frappe.get_doc("POS Opening Entry", pos_opening_entry)
             if entry.docstatus == 1:
                 frappe.db.set_value("POS Opening Entry", entry.name, "period_end_date", self.period_end_date)
                 frappe.logger().info(f"Closed POS Opening Entry {entry.name}")
             
             # 2. Create POS Closing Entry (ERPNext standard)
+            # Update opening_shift object with the pos_opening_entry value
+            opening_shift.pos_opening_entry = pos_opening_entry
             self.create_pos_closing_entry(opening_shift)
             
         except Exception as e:
-            frappe.log_error(f"Failed to close POS Opening Entry for Shift {opening_shift.name}: {str(e)}", "POS Shift Sync")
+            frappe.log_error(f"Failed to close POS Opening Entry for Shift {opening_shift.name}: {str(e)}", "POS Closing Shift")
             # Don't raise - allow closing shift to proceed
     
     def create_pos_closing_entry(self, opening_shift):
         """Create ERPNext standard POS Closing Entry"""
-        frappe.log_error(f"DEBUG: create_pos_closing_entry called for shift {self.name}, opening_entry={opening_shift.pos_opening_entry}", "POS Debug")
+        # Check if opening_shift has pos_opening_entry linked
+        if not hasattr(opening_shift, 'pos_opening_entry') or not opening_shift.pos_opening_entry:
+            frappe.logger().warning(f"POS Opening Shift {opening_shift.name} has no linked POS Opening Entry")
+            return
+        
         try:
             # Check if already exists
             existing = frappe.db.get_value("POS Closing Entry", {
                 "pos_opening_entry": opening_shift.pos_opening_entry
             })
-            frappe.log_error(f"DEBUG: Existing closing entry: {existing}", "POS Debug")
             if existing:
+                frappe.logger().info(f"POS Closing Entry already exists: {existing}")
+                # Link existing entry to this shift
+                if hasattr(self, 'pos_closing_entry'):
+                    self.db_set("pos_closing_entry", existing)
                 return
             
             # Create POS Closing Entry
@@ -130,43 +143,27 @@ class POSClosingShift(Document):
             # Add payment reconciliation from closing shift (ensure unique modes)
             seen_modes = set()
             for payment in self.payment_reconciliation:
-                if payment.mode_of_payment not in seen_modes:
+                if payment.mode_of_payment and payment.mode_of_payment not in seen_modes:
                     seen_modes.add(payment.mode_of_payment)
                     closing_entry.append("payment_reconciliation", {
                         "mode_of_payment": payment.mode_of_payment,
-                        "opening_amount": payment.opening_amount,
-                        "expected_amount": payment.expected_amount,
-                        "closing_amount": payment.closing_amount or payment.expected_amount,
-                        "difference": payment.difference
+                        "opening_amount": flt(payment.opening_amount),
+                        "expected_amount": flt(payment.expected_amount),
+                        "closing_amount": flt(payment.closing_amount or payment.expected_amount),
+                        "difference": flt(payment.difference)
                     })
             
-            # Add POS transactions - Sales Invoice-ləri birbaşa databasedən çək
-            # self.pos_transactions çirklənmiş ola bilər, ona güvənmə
+            # Add POS transactions from self.pos_transactions
+            # These are already computed in make_closing_shift_from_opening
             seen_invoices = set()
-            
-            # Birbaşa databasedən bu shift-ə aid Sales Invoice-ləri çək
-            # consolidated_invoice boş olanları çək (əks halda artıq bağlanmış sayılır)
-            sales_invoices = frappe.db.get_all(
-                "Sales Invoice",
-                filters={
-                    "posa_pos_opening_shift": self.pos_opening_shift,
-                    "docstatus": 1,
-                    "consolidated_invoice": ["is", "not set"]
-                },
-                fields=["name", "customer", "posting_date", "grand_total", "currency"]
-            )
-            
-            frappe.log_error(f"DEBUG: Found {len(sales_invoices)} Sales Invoices in database for shift {self.pos_opening_shift}", "POS Debug")
-            
-            for inv in sales_invoices:
-                invoice_name = inv.name
-                
-                if invoice_name in seen_invoices:
+            for txn in self.pos_transactions:
+                invoice_name = txn.sales_invoice or txn.pos_invoice
+                if not invoice_name or invoice_name in seen_invoices:
                     continue
                 seen_invoices.add(invoice_name)
                 
                 # Get customer - mandatory field for ERPNext
-                customer = inv.customer
+                customer = txn.customer
                 if not customer:
                     # Use default customer from POS Profile
                     customer = frappe.db.get_value("POS Profile", self.pos_profile, "customer")
@@ -174,53 +171,65 @@ class POSClosingShift(Document):
                     # Fallback to Walk-in Customer
                     customer = "Walk-in Customer"
                 
-                # Sales Invoice istifadə edirik, POS Invoice yox
-                # pos_invoice boş saxlayırıq çünki o POS Invoice Link-dir
                 closing_entry.append("pos_transactions", {
-                    "pos_invoice": None,              # Boş saxla - POS Invoice Link deyil
-                    "sales_invoice": invoice_name,    # Sales Invoice nömrəsi
-                    "posting_date": inv.posting_date,
-                    "grand_total": inv.grand_total,
-                    "customer": customer              # Heç vaxt None olmamalı
+                    "pos_invoice": txn.pos_invoice if txn.pos_invoice else None,
+                    "sales_invoice": txn.sales_invoice if txn.sales_invoice else None,
+                    "posting_date": txn.posting_date,
+                    "grand_total": flt(txn.grand_total),
+                    "customer": customer
                 })
+            
+            # If no transactions from pos_transactions, try fetching from database
+            if not closing_entry.pos_transactions:
+                sales_invoices = frappe.db.get_all(
+                    "Sales Invoice",
+                    filters={
+                        "posa_pos_opening_shift": self.pos_opening_shift,
+                        "docstatus": 1
+                    },
+                    fields=["name", "customer", "posting_date", "grand_total"]
+                )
                 
-                frappe.log_error(f"DEBUG: Added invoice {invoice_name} to closing entry", "POS Debug")
+                for inv in sales_invoices:
+                    if inv.name in seen_invoices:
+                        continue
+                    seen_invoices.add(inv.name)
+                    
+                    customer = inv.customer
+                    if not customer:
+                        customer = frappe.db.get_value("POS Profile", self.pos_profile, "customer")
+                    if not customer:
+                        customer = "Walk-in Customer"
+                    
+                    closing_entry.append("pos_transactions", {
+                        "sales_invoice": inv.name,
+                        "posting_date": inv.posting_date,
+                        "grand_total": flt(inv.grand_total),
+                        "customer": customer
+                    })
             
-            closing_entry.grand_total = self.grand_total
-            closing_entry.net_total = self.net_total
+            # Set totals
+            closing_entry.grand_total = flt(self.grand_total)
+            closing_entry.net_total = flt(self.net_total)
             
-            # DEBUG: Check what's in pos_transactions before saving
-            frappe.log_error(f"DEBUG: Total pos_transactions in closing_entry: {len(closing_entry.pos_transactions)}", "POS Debug")
-            for i, t in enumerate(closing_entry.pos_transactions):
-                frappe.log_error(f"DEBUG: Row {i}: sales_invoice={repr(t.sales_invoice)}, pos_invoice={repr(t.pos_invoice)}", "POS Debug")
+            # Validate we have at least some data before saving
+            if not closing_entry.pos_transactions and not closing_entry.payment_reconciliation:
+                frappe.logger().warning(f"No transactions or payments for closing shift {self.name}, creating empty closing entry")
             
-            # Clear any default empty rows that might have been added by new_doc
-            # and only keep our valid rows
-            valid_rows = []
-            for t in closing_entry.pos_transactions:
-                if t.sales_invoice or t.pos_invoice:
-                    valid_rows.append(t)
-            
-            if len(valid_rows) != len(closing_entry.pos_transactions):
-                frappe.log_error(f"DEBUG: Clearing {len(closing_entry.pos_transactions) - len(valid_rows)} empty rows", "POS Debug")
-                closing_entry.set("pos_transactions", valid_rows)
-            
-            frappe.log_error(f"DEBUG: Saving closing entry with {len(closing_entry.pos_transactions)} valid rows...", "POS Debug")
-            closing_entry.save(ignore_permissions=True)
-            frappe.log_error(f"DEBUG: Submitting closing entry...", "POS Debug")
+            # Save and submit
+            closing_entry.flags.ignore_permissions = True
+            closing_entry.save()
             closing_entry.submit()
             
             # Link to this closing shift
             if hasattr(self, 'pos_closing_entry'):
-                frappe.log_error(f"DEBUG: Setting pos_closing_entry field", "POS Debug")
                 self.db_set("pos_closing_entry", closing_entry.name)
             
-            frappe.log_error(f"DEBUG: Created POS Closing Entry {closing_entry.name}", "POS Debug")
             frappe.logger().info(f"Created POS Closing Entry {closing_entry.name} for Shift {self.name}")
             
         except Exception as e:
-            frappe.log_error(f"DEBUG: ERROR creating POS Closing Entry: {str(e)}", "POS Debug")
-            frappe.log_error(f"Failed to create POS Closing Entry for Shift {self.name}: {str(e)}", "POS Shift Sync")
+            frappe.log_error(f"Failed to create POS Closing Entry for Shift {self.name}: {str(e)}", "POS Closing Shift")
+            # Don't raise - allow closing shift to proceed even if standard entry creation fails
 
     def on_cancel(self):
         if frappe.db.exists("POS Opening Shift", self.pos_opening_shift):
@@ -747,11 +756,21 @@ def make_closing_shift_from_opening(opening_shift):
 @frappe.whitelist()
 def submit_closing_shift(closing_shift):
     try:
-        closing_shift = json.loads(closing_shift)
+        closing_shift = json.loads(closing_shift) if isinstance(closing_shift, str) else closing_shift
+        
+        frappe.logger().info(f"submit_closing_shift called with {len(closing_shift.get('pos_transactions', []))} transactions")
+        
         closing_shift_doc = frappe.get_doc(closing_shift)
         closing_shift_doc.flags.ignore_permissions = True
+        
+        frappe.logger().info(f"Created closing shift doc with {len(closing_shift_doc.pos_transactions)} transactions")
+        
         closing_shift_doc.save()
+        frappe.logger().info(f"Saved closing shift {closing_shift_doc.name}")
+        
         closing_shift_doc.submit()
+        frappe.logger().info(f"Submitted closing shift {closing_shift_doc.name}")
+        
         return closing_shift_doc.name
     except Exception as e:
         frappe.log_error(f"Submit closing shift error: {str(e)}", "POS Closing Shift")
