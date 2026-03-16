@@ -834,6 +834,7 @@ export function useInvoice() {
 			doctype: targetDoctype,
 			pos_profile: posProfile.value,
 			posa_pos_opening_shift: posOpeningShift.value,
+			pos_opening_entry: posOpeningShift.value,  // ERPNext standard field (required)
 			customer: customer.value?.name || customer.value,
 			items: formatItemsForSubmission(rawItems),
 			payments: rawPayments.map((p) => ({
@@ -902,6 +903,7 @@ export function useInvoice() {
 					doctype: targetDoctype,
 					pos_profile: posProfile.value,
 					posa_pos_opening_shift: posOpeningShift.value,
+					pos_opening_entry: posOpeningShift.value,  // ERPNext standard field (required)
 					customer: customer.value?.name || customer.value,
 					restaurant_table: cartStore.restaurantTable?.name,
 					kds_status: cartStore.kdsStatus,
