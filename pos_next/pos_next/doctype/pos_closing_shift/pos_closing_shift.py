@@ -198,7 +198,7 @@ class POSClosingShift(Document):
                     customer = "Walk-in Customer"
                 
                 closing_entry.append("pos_transactions", {
-                    "pos_invoice": txn.pos_invoice if txn.pos_invoice else None,
+                    "pos_invoice": getattr(txn, "pos_invoice", None) or getattr(txn, "sales_invoice", None),
                     "sales_invoice": txn.sales_invoice if txn.sales_invoice else None,
                     "posting_date": txn.posting_date,
                     "grand_total": flt(txn.grand_total),
