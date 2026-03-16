@@ -140,11 +140,12 @@ class POSClosingShift(Document):
                         "difference": payment.difference
                     })
             
-            # Add POS transactions from Sales Invoices (not from shift transactions)
-            # We query directly from database to avoid Link validation issues
+            # Add POS transactions - Sales Invoice-ləri birbaşa databasedən çək
+            # self.pos_transactions çirklənmiş ola bilər, ona güvənmə
             seen_invoices = set()
             
-            # Get all Sales Invoices for this shift directly from database
+            # Birbaşa databasedən bu shift-ə aid Sales Invoice-ləri çək
+            # consolidated_invoice boş olanları çək (əks halda artıq bağlanmış sayılır)
             sales_invoices = frappe.db.get_all(
                 "Sales Invoice",
                 filters={
@@ -152,10 +153,10 @@ class POSClosingShift(Document):
                     "docstatus": 1,
                     "consolidated_invoice": ["is", "not set"]
                 },
-                fields=["name", "customer", "posting_date", "grand_total"]
+                fields=["name", "customer", "posting_date", "grand_total", "currency"]
             )
             
-            frappe.log_error(f"DEBUG: Found {len(sales_invoices)} Sales Invoices for shift {self.pos_opening_shift}", "POS Debug")
+            frappe.log_error(f"DEBUG: Found {len(sales_invoices)} Sales Invoices in database for shift {self.pos_opening_shift}", "POS Debug")
             
             for inv in sales_invoices:
                 invoice_name = inv.name
@@ -164,22 +165,26 @@ class POSClosingShift(Document):
                     continue
                 seen_invoices.add(invoice_name)
                 
-                # Get customer
+                # Get customer - mandatory field for ERPNext
                 customer = inv.customer
                 if not customer:
+                    # Use default customer from POS Profile
                     customer = frappe.db.get_value("POS Profile", self.pos_profile, "customer")
                 if not customer:
+                    # Fallback to Walk-in Customer
                     customer = "Walk-in Customer"
                 
-                # IMPORTANT: pos_invoice is Link to POS Invoice, so leave it empty
-                # Only fill sales_invoice which is Link to Sales Invoice
+                # Sales Invoice istifadə edirik, POS Invoice yox
+                # pos_invoice boş saxlayırıq çünki o POS Invoice Link-dir
                 closing_entry.append("pos_transactions", {
-                    "pos_invoice": None,              # Empty - avoids Link validation error
-                    "sales_invoice": invoice_name,    # Sales Invoice number
+                    "pos_invoice": None,              # Boş saxla - POS Invoice Link deyil
+                    "sales_invoice": invoice_name,    # Sales Invoice nömrəsi
                     "posting_date": inv.posting_date,
                     "grand_total": inv.grand_total,
-                    "customer": customer
+                    "customer": customer              # Heç vaxt None olmamalı
                 })
+                
+                frappe.log_error(f"DEBUG: Added invoice {invoice_name} to closing entry", "POS Debug")
             
             closing_entry.grand_total = self.grand_total
             closing_entry.net_total = self.net_total
