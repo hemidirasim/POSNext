@@ -109,11 +109,13 @@ class POSClosingShift(Document):
     
     def create_pos_closing_entry(self, opening_shift):
         """Create ERPNext standard POS Closing Entry"""
+        frappe.log_error(f"DEBUG: create_pos_closing_entry called for shift {self.name}, opening_entry={opening_shift.pos_opening_entry}", "POS Debug")
         try:
             # Check if already exists
             existing = frappe.db.get_value("POS Closing Entry", {
                 "pos_opening_entry": opening_shift.pos_opening_entry
             })
+            frappe.log_error(f"DEBUG: Existing closing entry: {existing}", "POS Debug")
             if existing:
                 return
             
@@ -146,16 +148,21 @@ class POSClosingShift(Document):
             closing_entry.grand_total = self.grand_total
             closing_entry.net_total = self.net_total
             
+            frappe.log_error(f"DEBUG: Saving closing entry...", "POS Debug")
             closing_entry.save(ignore_permissions=True)
+            frappe.log_error(f"DEBUG: Submitting closing entry...", "POS Debug")
             closing_entry.submit()
             
             # Link to this closing shift
             if hasattr(self, 'pos_closing_entry'):
+                frappe.log_error(f"DEBUG: Setting pos_closing_entry field", "POS Debug")
                 self.db_set("pos_closing_entry", closing_entry.name)
             
+            frappe.log_error(f"DEBUG: Created POS Closing Entry {closing_entry.name}", "POS Debug")
             frappe.logger().info(f"Created POS Closing Entry {closing_entry.name} for Shift {self.name}")
             
         except Exception as e:
+            frappe.log_error(f"DEBUG: ERROR creating POS Closing Entry: {str(e)}", "POS Debug")
             frappe.log_error(f"Failed to create POS Closing Entry for Shift {self.name}: {str(e)}", "POS Shift Sync")
 
     def on_cancel(self):
