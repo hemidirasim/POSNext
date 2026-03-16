@@ -29,15 +29,15 @@ class POSOpeningShift(Document):
 
     def create_pos_opening_entry(self):
         """Create ERPNext standard POS Opening Entry for validation compatibility"""
+        frappe.logger().info(f"create_pos_opening_entry called for {self.name}")
+        
         try:
             # Check if field exists and already has value
             if hasattr(self, 'pos_opening_entry') and self.pos_opening_entry:
+                frappe.logger().info(f"POS Opening Shift {self.name} already has pos_opening_entry: {self.pos_opening_entry}")
                 return
             
-            # Check if pos_opening_entry field exists in the doctype
-            if not frappe.db.has_column("POS Opening Shift", "pos_opening_entry"):
-                frappe.logger().debug("pos_opening_entry field does not exist in POS Opening Shift")
-                return
+            frappe.logger().info(f"Creating POS Opening Entry for shift {self.name}...")
             
             # Create POS Opening Entry (ERPNext standard)
             entry = frappe.new_doc("POS Opening Entry")
@@ -53,16 +53,21 @@ class POSOpeningShift(Document):
                     "opening_amount": flt(detail.amount)
                 })
             
+            frappe.logger().info(f"Saving POS Opening Entry...")
             entry.save(ignore_permissions=True)
+            frappe.logger().info(f"Submitting POS Opening Entry {entry.name}...")
             entry.submit()
             
             # Link to this shift
+            frappe.logger().info(f"Linking pos_opening_entry {entry.name} to shift {self.name}...")
             self.db_set("pos_opening_entry", entry.name)
             
-            frappe.logger().info(f"Created POS Opening Entry {entry.name} for Shift {self.name}")
+            frappe.logger().info(f"✅ Created POS Opening Entry {entry.name} for Shift {self.name}")
             
         except Exception as e:
-            frappe.log_error(f"Failed to create POS Opening Entry for Shift {self.name}: {str(e)}", "POS Opening Shift")
+            error_msg = f"Failed to create POS Opening Entry for Shift {self.name}: {str(e)}"
+            frappe.log_error(error_msg, "POS Opening Shift")
+            frappe.logger().error(error_msg)
             # Don't throw error - allow shift to work without entry
 
     def set_status(self, update=False):

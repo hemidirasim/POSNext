@@ -103,17 +103,17 @@ class POSClosingShift(Document):
         """Close the linked ERPNext standard POS Opening Entry and create Closing Entry"""
         frappe.logger().info(f"close_pos_opening_entry called for shift {opening_shift.name}")
         
-        # Check if field exists in database
-        if not frappe.db.has_column("POS Opening Shift", "pos_opening_entry"):
-            frappe.logger().warning("pos_opening_entry column does not exist")
-            return
-        
         # Get the pos_opening_entry value directly from database
-        pos_opening_entry = frappe.db.get_value("POS Opening Shift", opening_shift.name, "pos_opening_entry")
+        try:
+            pos_opening_entry = frappe.db.get_value("POS Opening Shift", opening_shift.name, "pos_opening_entry")
+        except Exception as e:
+            frappe.logger().error(f"Error reading pos_opening_entry: {e}")
+            return
+            
         frappe.logger().info(f"pos_opening_entry value: {pos_opening_entry}")
         
         if not pos_opening_entry:
-            frappe.logger().warning(f"POS Opening Shift {opening_shift.name} has no linked POS Opening Entry")
+            frappe.logger().warning(f"⚠️ POS Opening Shift {opening_shift.name} has no linked POS Opening Entry - cannot create POS Closing Entry")
             return
         
         try:
@@ -132,7 +132,9 @@ class POSClosingShift(Document):
             frappe.logger().info(f"create_pos_closing_entry completed")
             
         except Exception as e:
-            frappe.log_error(f"Failed to close POS Opening Entry for Shift {opening_shift.name}: {str(e)}\n{frappe.get_traceback()}", "POS Closing Shift")
+            error_msg = f"Failed to close POS Opening Entry for Shift {opening_shift.name}: {str(e)}"
+            frappe.log_error(f"{error_msg}\n{frappe.get_traceback()}", "POS Closing Shift")
+            frappe.logger().error(error_msg)
             # Don't raise - allow closing shift to proceed
     
     def create_pos_closing_entry(self, opening_shift):
@@ -236,23 +238,36 @@ class POSClosingShift(Document):
             closing_entry.grand_total = flt(self.grand_total)
             closing_entry.net_total = flt(self.net_total)
             
+            frappe.logger().info(f"Closing entry prepared: {len(closing_entry.pos_transactions)} transactions, {len(closing_entry.payment_reconciliation)} payments")
+            
             # Validate we have at least some data before saving
             if not closing_entry.pos_transactions and not closing_entry.payment_reconciliation:
                 frappe.logger().warning(f"No transactions or payments for closing shift {self.name}, creating empty closing entry")
             
-            # Save and submit
+            # Save
+            frappe.logger().info(f"Saving POS Closing Entry...")
             closing_entry.flags.ignore_permissions = True
             closing_entry.save()
+            frappe.logger().info(f"POS Closing Entry saved: {closing_entry.name}")
+            
+            # Submit
+            frappe.logger().info(f"Submitting POS Closing Entry {closing_entry.name}...")
             closing_entry.submit()
+            frappe.logger().info(f"POS Closing Entry {closing_entry.name} submitted successfully")
             
             # Link to this closing shift
-            if hasattr(self, 'pos_closing_entry'):
+            try:
                 self.db_set("pos_closing_entry", closing_entry.name)
+                frappe.logger().info(f"Linked pos_closing_entry {closing_entry.name} to shift {self.name}")
+            except Exception as link_error:
+                frappe.logger().warning(f"Could not link pos_closing_entry: {link_error}")
             
-            frappe.logger().info(f"Created POS Closing Entry {closing_entry.name} for Shift {self.name}")
+            frappe.logger().info(f"✅ Successfully created POS Closing Entry {closing_entry.name} for Shift {self.name}")
             
         except Exception as e:
-            frappe.log_error(f"Failed to create POS Closing Entry for Shift {self.name}: {str(e)}", "POS Closing Shift")
+            error_msg = f"Failed to create POS Closing Entry for Shift {self.name}: {str(e)}"
+            frappe.log_error(f"{error_msg}\n{frappe.get_traceback()}", "POS Closing Shift")
+            frappe.logger().error(error_msg)
             # Don't raise - allow closing shift to proceed even if standard entry creation fails
 
     def on_cancel(self):
