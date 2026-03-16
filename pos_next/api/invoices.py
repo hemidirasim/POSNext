@@ -1355,6 +1355,18 @@ def submit_invoice(invoice=None, data=None):
         # Ensure update_stock is set for Sales Invoice
         if doctype == "Sales Invoice":
             invoice_doc.update_stock = 1
+            
+            # Set posa_pos_opening_shift from current user's open shift
+            # This is critical for POS Closing Entry to find invoices
+            if not invoice_doc.get("posa_pos_opening_shift"):
+                try:
+                    from pos_next.api.shifts import check_opening_shift
+                    shift_data = check_opening_shift(frappe.session.user)
+                    if shift_data and shift_data.get("pos_opening_shift"):
+                        invoice_doc.posa_pos_opening_shift = shift_data["pos_opening_shift"].name
+                        frappe.logger().info(f"Set posa_pos_opening_shift={shift_data['pos_opening_shift'].name} for invoice {invoice_doc.name}")
+                except Exception as e:
+                    frappe.logger().warning(f"Could not set posa_pos_opening_shift: {e}")
 
         # For return invoices, set update_outstanding_for_self = 0
         # This ensures the GL entry's against_voucher points to the original invoice,
