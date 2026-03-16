@@ -188,6 +188,14 @@
    "reqd": 1
   },
   {
+   "fieldname": "pos_closing_entry",
+   "fieldtype": "Link",
+   "label": "POS Closing Entry",
+   "options": "POS Closing Entry",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
    "fieldname": "pos_payments",
    "fieldtype": "Table",
    "label": "POS Payments",

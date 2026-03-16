@@ -86,7 +86,7 @@ class POSClosingShift(Document):
         self.close_pos_opening_entry(opening_shift)
 
     def close_pos_opening_entry(self, opening_shift):
-        """Close the linked ERPNext standard POS Opening Entry"""
+        """Close the linked ERPNext standard POS Opening Entry and create Closing Entry"""
         # Check if field exists
         if not hasattr(opening_shift, 'pos_opening_entry'):
             return
@@ -94,15 +94,69 @@ class POSClosingShift(Document):
             return
         
         try:
+            # 1. Close POS Opening Entry
             entry = frappe.get_doc("POS Opening Entry", opening_shift.pos_opening_entry)
-            # Entry must be submitted and not already closed
             if entry.docstatus == 1:
-                # Use db_set to avoid validation issues
                 frappe.db.set_value("POS Opening Entry", entry.name, "period_end_date", self.period_end_date)
                 frappe.logger().info(f"Closed POS Opening Entry {entry.name}")
+            
+            # 2. Create POS Closing Entry (ERPNext standard)
+            self.create_pos_closing_entry(opening_shift)
+            
         except Exception as e:
             frappe.log_error(f"Failed to close POS Opening Entry for Shift {opening_shift.name}: {str(e)}", "POS Shift Sync")
             # Don't raise - allow closing shift to proceed
+    
+    def create_pos_closing_entry(self, opening_shift):
+        """Create ERPNext standard POS Closing Entry"""
+        try:
+            # Check if already exists
+            existing = frappe.db.get_value("POS Closing Entry", {
+                "pos_opening_entry": opening_shift.pos_opening_entry
+            })
+            if existing:
+                return
+            
+            # Create POS Closing Entry
+            closing_entry = frappe.new_doc("POS Closing Entry")
+            closing_entry.pos_opening_entry = opening_shift.pos_opening_entry
+            closing_entry.period_end_date = self.period_end_date
+            closing_entry.pos_profile = self.pos_profile
+            closing_entry.user = self.user
+            closing_entry.company = self.company
+            
+            # Add payment reconciliation from closing shift
+            for payment in self.payment_reconciliation:
+                closing_entry.append("payment_reconciliation", {
+                    "mode_of_payment": payment.mode_of_payment,
+                    "opening_amount": payment.opening_amount,
+                    "expected_amount": payment.expected_amount,
+                    "closing_amount": payment.closing_amount or payment.expected_amount,
+                    "difference": payment.difference
+                })
+            
+            # Add POS transactions
+            for txn in self.pos_transactions:
+                closing_entry.append("pos_transactions", {
+                    "sales_invoice": txn.sales_invoice or txn.pos_invoice,
+                    "posting_date": txn.posting_date,
+                    "grand_total": txn.grand_total
+                })
+            
+            closing_entry.grand_total = self.grand_total
+            closing_entry.net_total = self.net_total
+            
+            closing_entry.save(ignore_permissions=True)
+            closing_entry.submit()
+            
+            # Link to this closing shift
+            if hasattr(self, 'pos_closing_entry'):
+                self.db_set("pos_closing_entry", closing_entry.name)
+            
+            frappe.logger().info(f"Created POS Closing Entry {closing_entry.name} for Shift {self.name}")
+            
+        except Exception as e:
+            frappe.log_error(f"Failed to create POS Closing Entry for Shift {self.name}: {str(e)}", "POS Shift Sync")
 
     def on_cancel(self):
         if frappe.db.exists("POS Opening Shift", self.pos_opening_shift):
