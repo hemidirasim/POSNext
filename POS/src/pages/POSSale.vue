@@ -1304,6 +1304,8 @@ async function handleSendToKitchen() {
 		}
 		
 		console.log('[DEBUG] Unsent items:', unsentItems.length);
+		console.log('[DEBUG] currentShift:', shiftStore.currentShift);
+		console.log('[DEBUG] currentShift.name:', shiftStore.currentShift?.name);
 		
 		// Use Running Tab API - merge items to existing invoice
 		const result = await restaurantStore.mergeItemsToInvoice(

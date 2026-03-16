@@ -347,6 +347,9 @@ def merge_items_to_invoice(invoice_name, new_items, table_name=None, pos_profile
 def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_profile=None, customer=None, pos_opening_shift=None):
     """Internal implementation with retry support."""
     
+    # DEBUG: Log received parameters
+    frappe.log_error(f"DEBUG merge_items: invoice={invoice_name}, table={table_name}, profile={pos_profile}, shift={pos_opening_shift}", "POS Restaurant Debug")
+    
     # Get or create invoice with lock
     if invoice_name and frappe.db.exists("POS Invoice", invoice_name):
         # Reload to get latest version
