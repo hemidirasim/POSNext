@@ -516,6 +516,7 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     # Save critical fields BEFORE set_missing_values() - they may get cleared
     saved_restaurant_table = invoice.restaurant_table
     saved_kds_status = invoice.get('kds_status') or 'Pending'
+    saved_pos_opening_entry = invoice.pos_opening_entry  # ERPNext standard field
     was_modified = saved_kds_status != 'Pending'
     
     # Set missing values and calculate totals with error handling
@@ -538,6 +539,10 @@ def _merge_items_to_invoice_impl(invoice_name, new_items, table_name=None, pos_p
     # Restore critical fields that set_missing_values may have cleared
     if saved_restaurant_table and not invoice.restaurant_table:
         invoice.restaurant_table = saved_restaurant_table
+    
+    # Restore pos_opening_entry (ERPNext standard field required for validation)
+    if saved_pos_opening_entry and not invoice.pos_opening_entry:
+        invoice.pos_opening_entry = saved_pos_opening_entry
     
     # Reset kds_status to Pending for modified orders (or ensure it's set)
     if saved_kds_status != 'Pending':
