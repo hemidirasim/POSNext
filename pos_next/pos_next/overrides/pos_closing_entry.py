@@ -6,14 +6,20 @@ def custom_validate_pos_invoices(self):
     """
     Sales Invoice-ləri yoxla (POS Invoice yox).
     Çünki bizim POS sistemimiz Sales Invoice yaradır.
+    pos_invoice field-i boş ola bilər, sales_invoice istifadə edirik.
     """
     invalid_rows = []
     
     for d in self.pos_transactions:
-        # Həm pos_invoice, həm də sales_invoice yoxla
-        invoice_no = d.pos_invoice or d.sales_invoice
+        # Əsasən sales_invoice istifadə edirik
+        invoice_no = d.sales_invoice or d.pos_invoice
         
         if not invoice_no:
+            # Hər iki field boşdursa - xəta
+            invalid_rows.append({
+                "idx": d.idx,
+                "msg": ["Həm Sales Invoice, həm də POS Invoice boşdur"]
+            })
             continue
         
         # Sales Invoice yoxla
