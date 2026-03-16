@@ -140,11 +140,16 @@ class POSClosingShift(Document):
                         "difference": payment.difference
                     })
             
-            # Add POS transactions (ensure unique invoices)
+            # Add POS transactions (ensure unique invoices, skip empty rows)
             seen_invoices = set()
             for txn in self.pos_transactions:
                 invoice_name = txn.sales_invoice or txn.pos_invoice
-                if invoice_name and invoice_name not in seen_invoices:
+                
+                # Skip rows where both sales_invoice and pos_invoice are empty
+                if not invoice_name:
+                    continue
+                    
+                if invoice_name not in seen_invoices:
                     seen_invoices.add(invoice_name)
                     closing_entry.append("pos_transactions", {
                         "sales_invoice": invoice_name,
