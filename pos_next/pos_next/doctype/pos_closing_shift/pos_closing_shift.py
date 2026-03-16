@@ -160,7 +160,23 @@ class POSClosingShift(Document):
             closing_entry.grand_total = self.grand_total
             closing_entry.net_total = self.net_total
             
-            frappe.log_error(f"DEBUG: Saving closing entry...", "POS Debug")
+            # DEBUG: Check what's in pos_transactions before saving
+            frappe.log_error(f"DEBUG: Total pos_transactions in closing_entry: {len(closing_entry.pos_transactions)}", "POS Debug")
+            for i, t in enumerate(closing_entry.pos_transactions):
+                frappe.log_error(f"DEBUG: Row {i}: sales_invoice={repr(t.sales_invoice)}, pos_invoice={repr(t.pos_invoice)}", "POS Debug")
+            
+            # Clear any default empty rows that might have been added by new_doc
+            # and only keep our valid rows
+            valid_rows = []
+            for t in closing_entry.pos_transactions:
+                if t.sales_invoice or t.pos_invoice:
+                    valid_rows.append(t)
+            
+            if len(valid_rows) != len(closing_entry.pos_transactions):
+                frappe.log_error(f"DEBUG: Clearing {len(closing_entry.pos_transactions) - len(valid_rows)} empty rows", "POS Debug")
+                closing_entry.set("pos_transactions", valid_rows)
+            
+            frappe.log_error(f"DEBUG: Saving closing entry with {len(closing_entry.pos_transactions)} valid rows...", "POS Debug")
             closing_entry.save(ignore_permissions=True)
             frappe.log_error(f"DEBUG: Submitting closing entry...", "POS Debug")
             closing_entry.submit()
