@@ -151,8 +151,10 @@ class POSClosingShift(Document):
                     
                 if invoice_name not in seen_invoices:
                     seen_invoices.add(invoice_name)
+                    # ERPNext validates pos_invoice field, not sales_invoice!
                     closing_entry.append("pos_transactions", {
-                        "sales_invoice": invoice_name,
+                        "pos_invoice": invoice_name,      # Required for ERPNext validation
+                        "sales_invoice": invoice_name,    # Also set for compatibility
                         "posting_date": txn.posting_date,
                         "grand_total": txn.grand_total
                     })
