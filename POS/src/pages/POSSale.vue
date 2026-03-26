@@ -2723,6 +2723,31 @@ function handleClearCache() {
 	showClearCacheDialog.value = true;
 }
 
+/**
+ * Handle X Report printing (mid-shift report)
+ */
+async function handleXReport() {
+	try {
+		uiStore.showToast({
+			message: __("X Hesabatı hazırlanır..."),
+			type: "info",
+		});
+
+		await printXReport(shiftStore.currentProfile, shiftStore.currentShift?.name);
+
+		uiStore.showToast({
+			message: __("X Hesabatı çap edildi"),
+			type: "success",
+		});
+	} catch (error) {
+		console.error("Failed to print X Report:", error);
+		uiStore.showToast({
+			message: error.message || __("X Hesabatı çap edilə bilmədi"),
+			type: "error",
+		});
+	}
+}
+
 async function confirmClearCache() {
 	try {
 		// Keep overlay open to show clearing animation
