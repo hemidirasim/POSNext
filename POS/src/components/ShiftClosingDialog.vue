@@ -486,6 +486,23 @@
             {{ __('✓ Shift closed successfully') }}
           </div>
 
+          <!-- Print Z Report Button -->
+          <Button
+            v-if="!showSuccessReport && closingData"
+            variant="outline"
+            theme="gray"
+            @click="printZReportPreview"
+            :loading="printingZReport"
+            class="me-2"
+          >
+            <template #prefix>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+              </svg>
+            </template>
+            {{ __('Print Z Report') }}
+          </Button>
+
           <!-- Submit/Close button (only shown in entry mode) -->
           <Button
             v-if="!showSuccessReport"
@@ -511,6 +528,8 @@ import { useShift, shiftState } from "../composables/useShift"
 import { useFormatters } from "../composables/useFormatters"
 import { usePOSSettingsStore } from "../stores/posSettings"
 import { usePOSShiftStore } from "../stores/posShift"
+import { printZReport } from "../utils/printShiftReport"
+import { useToast } from "../composables/useToast"
 import TranslatedHTML from "./common/TranslatedHTML.vue"
 
 const props = defineProps({
@@ -538,6 +557,7 @@ const posSettingsStore = usePOSSettingsStore()
 const { hideExpectedAmount } = storeToRefs(posSettingsStore)
 
 const shiftStore = usePOSShiftStore()
+const { showSuccess, showError } = useToast()
 
 const closingData = ref(null)
 const closingDataResource = getClosingShiftData
@@ -546,6 +566,7 @@ const showInvoiceDetails = ref(false)
 const showSuccessReport = ref(false) // Track if shift is closed and showing report
 const errorMessage = ref('') // User-friendly error message
 const showIdleWarning = ref(false)
+const printingZReport = ref(false)
 let _idleWarningTimer = null
 
 // Watch dialog open state
@@ -791,6 +812,22 @@ function getShiftDuration() {
 		return __('{0}h {1}m', [hours, minutes])
 	}
 	return __('{0}m', [minutes])
+}
+
+/**
+ * Print Z Report preview before closing shift
+ */
+async function printZReportPreview() {
+	printingZReport.value = true
+	try {
+		await printZReport(shiftStore.currentProfile, props.openingShift)
+		showSuccess(__('Z Hesabatı çap edildi'))
+	} catch (error) {
+		console.error('Failed to print Z Report:', error)
+		showError(error.message || __('Z Hesabatı çap edilə bilmədi'))
+	} finally {
+		printingZReport.value = false
+	}
 }
 
 function getPaymentIcon(method) {
